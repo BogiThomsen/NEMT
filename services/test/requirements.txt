@@ -1,0 +1,4 @@
+flask
+connexion
+configparser
+swagger-ui-bundle

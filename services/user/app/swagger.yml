@@ -8,13 +8,13 @@ info:
 basePath: /api
 
 paths:
-  /hej:
+  /addUser:
     get:
       summary: Returns a string.
       description: Optional extended description in CommonMark or HTML.
-      operationId: hello.hello
+      operationId: user_api.addUser
       produces:
-        - application/json
+        - text/plain
       responses:
         200:    # status code
           description: A string

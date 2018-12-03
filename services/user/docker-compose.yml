@@ -1,6 +1,6 @@
 version: '3.7'
 services:
-    testtwo-service:
+    user-service:
         build: .
         ports:
             - 5432

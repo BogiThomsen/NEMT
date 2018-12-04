@@ -11,4 +11,4 @@ def addUser():
     return jsonify({'user': user}), 201
 
 def getUser():
-    return users
+    return jsonify(users)

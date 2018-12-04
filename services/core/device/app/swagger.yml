@@ -1,0 +1,45 @@
+swagger: "2.0"
+
+info:
+  title: "API"
+  description: description of api
+  version: "1.0"
+
+basePath: /api
+
+paths:
+  /getDevice:
+    get:
+      summary: Returns a string.
+      description: Optional extended description in CommonMark or HTML.
+      operationId: device_api.getDevice
+      produces:
+        - application/json
+      responses:
+        200:    # status code
+          description: A string
+  /addDevice:
+    post:
+      summary: Returns a string.
+      description: Optional extended description in CommonMark or HTML.
+      operationId: device_api.addDevice
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: device
+          description: The device to create.
+          schema:
+            type: object
+            required:
+              - name
+              - description
+            properties:
+              name:
+                type: string
+              description:
+                type: string
+      responses:
+        200:    # status code
+          description: A user
+

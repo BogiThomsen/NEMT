@@ -1,6 +1,6 @@
 version: '3.7'
 services:
-    test-service:
+    web-app-api-service:
         build: .
         ports:
             - 5100

@@ -3,7 +3,7 @@ services:
     user-service:
         build: .
         ports:
-            - 5432
+            - 5100
         volumes:
             - .:/code
 

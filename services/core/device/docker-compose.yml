@@ -3,7 +3,7 @@ services:
     device-service:
         build: .
         ports:
-            - 5555
+            - 5200
         volumes:
             - .:/code
 

@@ -1,0 +1,45 @@
+swagger: "2.0"
+
+info:
+  title: "API"
+  description: description of api
+  version: "1.0"
+
+basePath: /api
+
+paths:
+  /getUser:
+    get:
+      summary: Returns a string.
+      description: Optional extended description in CommonMark or HTML.
+      operationId: user_api.getUser
+      produces:
+        - application/json
+      responses:
+        200:    # status code
+          description: A string
+  /addUser:
+    post:
+      summary: Returns a string.
+      description: Optional extended description in CommonMark or HTML.
+      operationId: user_api.addUser
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: user
+          description: The user to create.
+          schema:
+            type: object
+            required:
+              - username
+              - email
+            properties:
+              username:
+                type: string
+              email:
+                type: string
+      responses:
+        200:    # status code
+          description: A user
+

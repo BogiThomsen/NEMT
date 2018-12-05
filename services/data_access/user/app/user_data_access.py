@@ -28,7 +28,7 @@ class UserAccessLayer(object):
         x["_id"] = str(x["_id"])
         return x
 
-    def get_id_by_username(self, username):
+    def get_user_id_by_username(self, username):
         x = self.user_db.find_one({"username": username})
         return str(x["_id"])
 

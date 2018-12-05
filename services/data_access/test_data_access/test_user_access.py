@@ -16,10 +16,10 @@ test_id = "5c067e0f6025271da8e45fab"
 #print(get_user(id_to_change_name))
 #print(get_user("5c0678f36025271d7857066b"))
 
-#print(get_id_by_username("LarsAllan"))
-#x.add_to_user(x.get_id_by_username("LarsAllan"), "dummy_device_id123", "available_devices")
+#print(get_user_id_by_username("LarsAllan"))
+#x.add_to_user(x.get_user_id_by_username("LarsAllan"), "dummy_device_id123", "available_devices")
 
-#x.remove_from_user(x.get_id_by_username("LarsAllan"), "dummy_device_id123", "available_devices")
+#x.remove_from_user(x.get_user_id_by_username("LarsAllan"), "dummy_device_id123", "available_devices")
 
 #x.add_to_user(test_id, "rule1", "rules")
 #x.add_to_user(test_id, "rule2", "rules")

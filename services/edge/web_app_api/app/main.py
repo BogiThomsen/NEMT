@@ -18,7 +18,7 @@ def inject_now():
     return {'now': datetime.datetime.utcnow()}
 
 @app.route('/signin', methods=['GET', 'POST'])
-def login():
+def signin():
     #if request.method == 'GET':
     #    return '''
     #           <form action='login' method='POST'>

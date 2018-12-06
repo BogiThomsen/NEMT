@@ -9,6 +9,7 @@ app = Flask(__name__)
 app.secret_key = '&0n2%~pq0B=j8TS('
 
 login_manager.login_manager.init_app(app)
+login_manager.login_manager.login_view = 'login'
 
 users = {'burla': {'password': '1234'}}
 

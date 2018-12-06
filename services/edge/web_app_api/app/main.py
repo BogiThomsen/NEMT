@@ -5,16 +5,17 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    r = requests.get("http://172.19.0.1:8085/api/getUser")
-    return render_template('index.html', text=r.json())
+    r = requests.get("http://172.20.0.2:5100/api/getUser")
+    return render_template('index.html', text=r.text)
 
 @app.route('/addUser', methods=['GET', 'POST'])
 def addUser():
     json = {}
-    json["username"] = "DRUNAR"
-    json["email"] = "e@mail.com"
-    r = requests.post("http://172.19.0.1:8085/api/addUser", json=json)
-    return render_template('index.html', text=r)
+    json["username"] = "drunar"
+    json["password"] = "mongo@meyer.service"
+    json["access_token"] = "MongoMeyer"
+    r = requests.post("http://172.20.0.2:5100/api/addUser", json=json)
+    return render_template('index.html', text=r.raise_for_status())
 
 
 if __name__ == "__main__":

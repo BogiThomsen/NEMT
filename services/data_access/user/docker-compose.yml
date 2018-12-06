@@ -6,10 +6,5 @@ services:
             - 5300
         volumes:
             - .:/code
-
-    nginx:
-        image: nginx:1.15.7
-        ports:
-            - "8085:80"
-        volumes:
-            - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+        labels:
+            - "traefik.frontend.rule=Host:useraccess.localhost"

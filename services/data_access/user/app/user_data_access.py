@@ -1,4 +1,5 @@
 import pymongo
+from flask import request
 from bson.objectid import ObjectId
 
 client = pymongo.MongoClient("mongodb+srv://Andreas:dummypassword64@sw7-3mptj.gcp.mongodb.net/admin")
@@ -6,7 +7,11 @@ db = client["database"]
 
 user_db = db["Users"]
 
-def add_user(username, password, access_token):
+def add_user():
+    username = request.json['username']
+    password = request.json['email']
+    access_token = request.json['access_token']
+
     new_user = {"username": username, "password": password, "access_token": access_token}
     user_db.insert_one(new_user)
 

@@ -33,11 +33,14 @@ paths:
             type: object
             required:
               - username
-              - email
+              - password
+              - access_token
             properties:
               username:
                 type: string
-              email:
+              password:
+                type: string
+              access_token:
                 type: string
       responses:
         200:    # status code

@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 import flask_login
 import login_manager
+import datetime
 import requests
 import sys
 
@@ -10,6 +11,10 @@ app.secret_key = '&0n2%~pq0B=j8TS('
 login_manager.login_manager.init_app(app)
 
 users = {'burla': {'password': '1234'}}
+
+@app.context_processor
+def inject_now():
+    return {'now': datetime.datetime.utcnow()}
 
 @app.route('/signin', methods=['GET', 'POST'])
 def login():

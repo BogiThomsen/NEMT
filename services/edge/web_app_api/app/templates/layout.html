@@ -15,8 +15,15 @@
         {% block head %}{% endblock %}
     </head>
     <body>
-        <header></header>
+        <header class="navbar navbar-expand navbar-dark bg-dark">
+            <a class="navbar-brand" href="/">NEMT</a>
+            <a class="btn btn-outline-primary ml-auto" href="/signout">Sign out</a>
+        </header>
         {% block content %}{% endblock %}
-        <footer></footer>
+        <footer class="footer text-muted fixed-bottom">
+            <div class="container-fluid p-3">
+                &copy; {{ now.year }} NEMT
+            </div>
+        </footer>
     </body>
 </html>

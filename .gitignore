@@ -6,3 +6,6 @@
 *.ini
 __pycache__/*
 *.pyc
+\.idea/inspectionProfiles/
+
+\.idea/

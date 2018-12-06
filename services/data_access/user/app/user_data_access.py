@@ -7,19 +7,19 @@ class UserAccessLayer(object):
         db = client["database"]
         self.user_db = db["Users"]
 
-    def add_user(self, username, password, access_token):
+    def post_user(self, username, password, access_token):
         new_user = {"username": username, "password": password, "access_token": access_token}
         self.user_db.insert_one(new_user)
 
-    def remove_user(self, user_id):
+    def delete_user(self, user_id):
         query = {"_id": ObjectId(user_id)}
         self.user_db.delete_one(query)
 
-    def change_username(self, user_id, new_username):
+    def put_username(self, user_id, new_username):
         self.user_db.update_one({"_id": ObjectId(user_id)},
                              { "$set": { "username": new_username}})
 
-    def change_password(self, user_id, new_password):
+    def put_password(self, user_id, new_password):
         self.user_db.update_one({"_id": ObjectId(user_id)},
                              { "$set": { "password": new_password}})
 
@@ -33,11 +33,11 @@ class UserAccessLayer(object):
         return str(x["_id"])
 
 
-    def add_to_user(self, user_id, id_to_add, where_to_add):
+    def post_to_user(self, user_id, id_to_add, where_to_add):
         self.user_db.update_one({"_id": ObjectId(user_id)},
                        { "$push":  {where_to_add: id_to_add} })
 
-    def remove_from_user(self, user_id, id_to_remove, Where_to_remove):
+    def delete_from_user(self, user_id, id_to_remove, Where_to_remove):
         self.user_db.update_one({"_id": ObjectId(user_id)},
                             {"$pull": {Where_to_remove: id_to_remove} })
 

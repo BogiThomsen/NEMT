@@ -8,11 +8,10 @@ info:
 basePath: /api
 
 paths:
-  /addUser:
+  /add:
     post:
-      summary: Returns a string.
-      description: Optional extended description in CommonMark or HTML.
-      operationId: user_data_access.add_user
+      summary: Adds a user to the database.
+      operationId: user_data_access.post_user
       consumes:
         - application/json
       parameters:
@@ -34,5 +33,161 @@ paths:
                 type: string
       responses:
         200:    # status code
-          description: A user
+          description: User was added Sucessfully.
+  /get:
+    get:
+      summary: Returns a user in the form of a json array.
+      operationId: user_data_access.get_user
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: user
+          description: The user to get.
+          schema:
+            type: object
+            required:
+              - userId
+            properties:
+              userId:
+                type: string
+        200:    # status code
+          description: User was returned sucessfully.
+  /getId:
+    get:
+      summary: Returns a userId.
+      operationId: user_data_access.get_user_id_by_username
+      produces:
+        - text/plain
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: username
+          description: The user to get Id of.
+          schema:
+            type: object
+            required:
+              - username
+            properties:
+              username:
+                type: string
+        200:    # status code
+          description: UserId was returned sucessfully.
+  /update/username:
+    put:
+      summary: Updates the username of a user.
+      operationId: user_data_access.put_username
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: user
+          description: The user who needs to update username.
+          schema:
+            type: object
+            required:
+              - username
+              - userId
+            properties:
+              username:
+                type: string
+              userId:
+                type: string
+        200:    # status code
+          description: Username was updated sucessfully.
+  /update/password:
+    put:
+      summary: Updates the password of a user.
+      operationId: user_data_access.put_password
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: user
+          description: The user who needs to update a password.
+          schema:
+            type: object
+            required:
+              - password
+              - userId
+            properties:
+              password:
+                type: string
+              userId:
+                type: string
+        200:    # status code
+          description: Password was updated sucessfully.
+  /delete:
+    delete:
+      summary: deletes a user.
+      operationId: user_data_access.delete_user
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: user
+          description: The user to delete.
+          schema:
+            type: object
+            required:
+              - userId
+            properties:
+              userId:
+                type: string
+        200:    # status code
+          description: User was deleted sucessfully.
+  /list/add:
+    put:
+      summary: Adds an ID to specified list.
+      operationId: user_data_access.post_to_user
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: userUpdate
+          description: The user update data.
+          schema:
+            type: object
+            required:
+              - userId
+              - updateId
+              - updateList
+            properties:
+              userId:
+                type: string
+              updateId:
+                type: string
+              updateList:
+                type: string
+        200:    # status code
+          description: User was updated sucessfully.
+  /list/remove:
+    patch: #Not sure if patch or put
+      summary: Removes an ID to specified list.
+      operationId: user_data_access.delete_from_user
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: userUpdate
+          description: The user update data.
+          schema:
+            type: object
+            required:
+              - userId
+              - updateId
+              - updateList
+            properties:
+              userId:
+                type: string
+              updateId:
+                type: string
+              updateList:
+                type: string
+        200:    # status code
+          description: User was updated sucessfully.
+  
 

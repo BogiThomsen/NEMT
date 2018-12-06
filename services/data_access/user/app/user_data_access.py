@@ -1,5 +1,4 @@
 import pymongo
-from flask import request
 from bson.objectid import ObjectId
 
 class UserAccessLayer(object):
@@ -8,14 +7,6 @@ class UserAccessLayer(object):
         db = client["database"]
         self.user_db = db["Users"]
 
-    def add_user():
-    username = request.json['username']
-    password = request.json['password']
-    access_token = request.json['access_token']
-
-    new_user = {"username": username, "password": password, "access_token": access_token}
-    user_db.insert_one(new_user)
-    
     def post_user(self, username, password, access_token):
         new_user = {"username": username, "password": password, "access_token": access_token}
         self.user_db.insert_one(new_user)
@@ -49,5 +40,3 @@ class UserAccessLayer(object):
     def delete_from_user(self, user_id, id_to_remove, Where_to_remove):
         self.user_db.update_one({"_id": ObjectId(user_id)},
                             {"$pull": {Where_to_remove: id_to_remove} })
-
-

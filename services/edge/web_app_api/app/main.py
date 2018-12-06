@@ -37,10 +37,16 @@ def login():
 
     return render_template('auth/signin.html')
 
-@app.route('/logout')
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    #register a user
+
+    return render_template('auth/register.html')
+
+@app.route('/signout')
 def logout():
     flask_login.logout_user()
-    return 'Logged out'
+    return render_template('auth/logout.html')
 
 @app.route('/protected')
 @flask_login.login_required

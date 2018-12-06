@@ -32,6 +32,12 @@ def login():
 
     return render_template('auth/signin.html')
 
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    #register a user
+
+    return render_template('auth/register.html')
+
 @app.route('/logout')
 def logout():
     flask_login.logout_user()

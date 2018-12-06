@@ -9,11 +9,14 @@ user_db = db["Users"]
 
 def add_user():
     username = request.json['username']
-    password = request.json['email']
+    password = request.json['password']
     access_token = request.json['access_token']
 
     new_user = {"username": username, "password": password, "access_token": access_token}
     user_db.insert_one(new_user)
+    print(username)
+    print(password)
+    print(access_token)
 
 def remove_user(user_id):
     query = {"_id": ObjectId(user_id)}

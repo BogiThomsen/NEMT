@@ -1,10 +1,17 @@
 version: '3.7'
 services:
-    user-data-access-service:
+    user-access:
         build: .
         ports:
-            - 5300
+            - "5200:5200"
+        expose:
+            - "5200"
         volumes:
             - .:/code
-        labels:
-            - "traefik.frontend.rule=Host:useraccess.localhost"
+        networks:
+            - user-access-net
+        container_name: user-access
+networks:
+  user-access-net:
+    external:
+      name: platform

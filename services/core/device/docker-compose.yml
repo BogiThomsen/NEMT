@@ -8,3 +8,9 @@ services:
             - .:/code
         labels:
             - "traefik.frontend.rule=Host:device.localhost"
+        networks:
+            - device-core-net
+networks:
+  device-core-net:
+    external:
+      name: reverse-proxy

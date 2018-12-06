@@ -2,6 +2,12 @@ from flask import jsonify, request
 import requests
 
 users = []
+user1 = {
+    "username" : "testuser",
+    "password" : "testpass",
+    "access_token" : "cooltoken"
+}
+users.append(user1)
 
 def addUser():
     user = {
@@ -9,7 +15,7 @@ def addUser():
         "password" : request.json["password"],
         "access_token" : request.json["access_token"]
     }
-    r = requests.post("http://172.20.0.3:5300/api/addUser", json=user)
+    r = requests.post("http://user-access:5200/api/addUser", json=user)
     return jsonify({'request': r.status_code})
 
 def getUser():

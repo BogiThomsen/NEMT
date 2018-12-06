@@ -1,10 +1,17 @@
-version: '3.7'
+version: '3.2'
 services:
-    web-app-api-service:
+    web-app:
         build: .
         ports:
-            - 5900
+            - "80:5000"
         volumes:
             - .:/code
-        labels:
-            - "traefik.frontend.rule=Host:webapp.localhost"
+        networks:
+            - platform
+        container_name: web-app
+
+
+networks:
+    platform:
+        external:
+            name: platform

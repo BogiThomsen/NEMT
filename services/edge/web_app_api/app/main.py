@@ -11,25 +11,26 @@ login_manager.login_manager.init_app(app)
 
 users = {'burla': {'password': '1234'}}
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/signin', methods=['GET', 'POST'])
 def login():
-    if request.method == 'GET':
-        return '''
-               <form action='login' method='POST'>
-                <input type='text' name='username' id='username' placeholder='username'/>
-                <input type='password' name='password' id='password' placeholder='password'/>
-                <input type='submit' name='submit'/>
-               </form>
-               '''
+    #if request.method == 'GET':
+    #    return '''
+    #           <form action='login' method='POST'>
+    #            <input type='text' name='username' id='username' placeholder='username'/>
+    #            <input type='password' name='password' id='password' placeholder='password'/>
+    #            <input type='submit' name='submit'/>
+    #           </form>
+    #           '''
 
-    username = request.form['username']
-    if request.form['password'] == users[username]['password']:
-        user = login_manager.User()
-        user.id = username
-        flask_login.login_user(user)
-        return redirect(url_for('protected'))
+    if request.method == 'POST':
+        username = request.form['username']
+        if request.form['password'] == users[username]['password']:
+            user = login_manager.User()
+            user.id = username
+            flask_login.login_user(user)
+            return redirect(url_for('protected'))
 
-    return 'Bad login'
+    return render_template('auth/signin.html')
 
 @app.route('/logout')
 def logout():
@@ -47,4 +48,3 @@ def index():
 
 if __name__ == "__main__":
   app.run(debug=True)
-  

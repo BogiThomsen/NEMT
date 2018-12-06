@@ -33,7 +33,7 @@ def signin():
             user = login_manager.User()
             user.id = username
             flask_login.login_user(user)
-            return redirect(url_for('protected'))
+            return redirect(url_for('dashboard'))
 
     return render_template('auth/signin.html')
 
@@ -47,6 +47,21 @@ def register():
 def logout():
     flask_login.logout_user()
     return render_template('auth/logout.html')
+
+@app.route('/dashboard')
+@flask_login.login_required
+def dashboard():
+    return render_template('pages/dashboard.html')
+
+@app.route('/devices')
+@flask_login.login_required
+def devices():
+    return render_template('pages/devices.html')
+
+@app.route('/rules')
+@flask_login.login_required
+def rules():
+    return render_template('pages/rules.html')
 
 @app.route('/protected')
 @flask_login.login_required

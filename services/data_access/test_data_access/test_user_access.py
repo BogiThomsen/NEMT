@@ -16,7 +16,9 @@ test_id = "5c067e0f6025271da8e45fab"
 #print(get_user(id_to_change_name))
 #print(get_user("5c0678f36025271d7857066b"))
 
-#print(get_user_id_by_username("LarsAllan"))
+user = x.get_user(x.get_user_id_by_username("default username"))
+print(user["available_devices"])
+
 #x.post_to_user(x.get_user_id_by_username("LarsAllan"), "dummy_device_id123", "available_devices")
 
 #x.delete_from_user(x.get_user_id_by_username("LarsAllan"), "dummy_device_id123", "available_devices")

@@ -68,5 +68,14 @@ class DeviceAccessLayer(object):
         self.device_db.update_one({"_id": ObjectId(device_id), "sensors.id": sensor_id},
                                   {"$pull": {"sensors.$.access_tokens": access_token}})
 
+    def post_action_access_token(self, device_id, action_id, access_token):
+        self.device_db.update_one({"_id": ObjectId(device_id), "sensors.id": action_id},
+                                  {"$push": {"actions.$.access_tokens": access_token}})
+
+    def delete_action_access_token(self, device_id, action_id, access_token):
+        self.device_db.update_one({"_id": ObjectId(device_id), "sensors.id": action_id},
+                                  {"$pull": {"actions.$.access_tokens": access_token}})
+
+
     #def tester(self, device_id, sensor_name):
         #print(self.device_db.find_one({"_id": ObjectId(device_id), "sensor_name": [sensor_name]}))

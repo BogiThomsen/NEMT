@@ -1,4 +1,4 @@
-from data_access.user.app.device_data_access import DeviceAccessLayer
+from data_access.device.device_data_access import DeviceAccessLayer
 #Testies
 x = DeviceAccessLayer()
 
@@ -41,3 +41,5 @@ dummy_device = { "token": "dummyString",
 #x.post_device(dummy_device)
 #x.post_rule(x.get_device_id_by_name("dummyName"), "new_rule")
 
+print(x.get_device(x.get_device_id_by_name("dummyName")))
+x.post_sensor_access_token(x.get_device_id_by_name("dummyName"), "dummyId1", "my_new_id")

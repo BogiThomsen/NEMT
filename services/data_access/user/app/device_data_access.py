@@ -7,11 +7,10 @@ class DeviceAccessLayer(object):
         db = client["database"]
         self.device_db = db["Devices"]
 
-    def add_device(self, name, mac_address):
-        new_device = {"name": name, "mac_address": mac_address}
-        self.device_db.insert_one(new_device)
+    def post_device(self, device):
+        self.device_db.insert_one(device)
 
-    def remove_device(self, device_id):
+    def delete_device(self, device_id):
         query = {"_id": ObjectId(device_id)}
         self.device_db.delete_one(query)
 
@@ -19,28 +18,47 @@ class DeviceAccessLayer(object):
         x = self.device_db.find_one({"name": name})
         return str(x["_id"])
 
-    def change_name(self, device_id, new_name):
+    def get_device(self, device_id):
+        x = self.device_db.find_one({"_id": ObjectId(device_id)})
+        x["_id"] = str(x["_id"])
+        return x
+
+    def put_name(self, device_id, new_name):
         self.device_db.update_one({"_id": ObjectId(device_id)},
                                 {"$set": {"name": new_name}})
 
-    def add_to_device(self, device_id, id_to_add, where_to_add):
+    def post_sensor(self, device_id, sensor):
         self.device_db.update_one({"_id": ObjectId(device_id)},
-                       { "$push":  {where_to_add: id_to_add} })
+                       { "$push":  {"sensors": sensor} })
 
-    def remove_from_device(self, device_id, id_to_remove, Where_to_remove):
+    def delete_sensor(self, device_id, sensor_id):
         self.device_db.update_one({"_id": ObjectId(device_id)},
-                            {"$pull": {Where_to_remove: id_to_remove} })
+                            {"$pull": {"sensors": { "id": sensor_id}}})
 
+    def post_action(self, device_id, action):
+        self.device_db.update_one({"_id": ObjectId(device_id)},
+                       { "$push":  {"actions": action} })
 
-    def update_last_state(self, device_id, sensor_name, value, time):
-        self.device_db.update_one({"_id": ObjectId(device_id), "sensor_values.sensor_name": sensor_name},
+    def delete_action(self, device_id, action_id):
+        self.device_db.update_one({"_id": ObjectId(device_id)},
+                            {"$pull": {"actions": { "id": action_id}}})
+
+    def put_last_state(self, device_id, sensor_id, value, time):
+        self.device_db.update_one({"_id": ObjectId(device_id), "last_state.sensor_values.sensor_id": sensor_id},
                                   {"$set":
                                        {
-                                           "value": value,
+                                           "last_state.sensor_values.$.value": value,
+                                           "last_state.sensor_values.$.timestamp": time
                                        }
                                   }
                                 )
+    def post_rule(self, device_id, rule_id):
+        self.device_db.update_one({"_id": ObjectId(device_id)},
+                       { "$push":  {"rules": rule_id} })
 
+    def delete_rule(self, device_id, rule_id):
+        self.device_db.update_one({"_id": ObjectId(device_id)},
+                       { "$pull":  {"rules": rule_id} })
 
     #def tester(self, device_id, sensor_name):
         #print(self.device_db.find_one({"_id": ObjectId(device_id), "sensor_name": [sensor_name]}))

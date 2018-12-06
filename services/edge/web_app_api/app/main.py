@@ -2,20 +2,24 @@ from flask import Flask, render_template, request
 import requests
 import sys
 app = Flask(__name__)
+headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.76 Safari/537.36'}
+session = requests.Session()
+session.trust_env = False
 
 @app.route('/')
 def index():
-    r = requests.get("http://172.19.0.1:8085/api/getUser")
+    r = session.get("http://user-service:5100/api/getUser", headers=headers)
     return render_template('index.html', text=r.json())
 
 @app.route('/addUser', methods=['GET', 'POST'])
 def addUser():
     json = {}
-    json["username"] = "DRUNAR"
-    json["email"] = "e@mail.com"
-    r = requests.post("http://172.19.0.1:8085/api/addUser", json=json)
+    json["username"] = "drunar3"
+    json["password"] = "mongo@meyer.service"
+    json["access_token"] = "MongoMeyer"
+    r = session.post("http://user-service:5100/api/addUser", json=json, headers=headers)
     return render_template('index.html', text=r)
 
 
 if __name__ == "__main__":
-  app.run(debug=True,host='0.0.0.0')
+    app.run(debug=True,host='0.0.0.0')

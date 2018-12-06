@@ -8,21 +8,11 @@ info:
 basePath: /api
 
 paths:
-  /getUser:
-    get:
-      summary: Returns a string.
-      description: Optional extended description in CommonMark or HTML.
-      operationId: user_api.getUser
-      produces:
-        - application/json
-      responses:
-        200:    # status code
-          description: A string
   /addUser:
     post:
       summary: Returns a string.
       description: Optional extended description in CommonMark or HTML.
-      operationId: user_api.addUser
+      operationId: user_data_access.add_user
       consumes:
         - application/json
       parameters:
@@ -33,11 +23,14 @@ paths:
             type: object
             required:
               - username
-              - email
+              - password
+              - access_token
             properties:
               username:
                 type: string
-              email:
+              password:
+                type: string
+              access_token:
                 type: string
       responses:
         200:    # status code

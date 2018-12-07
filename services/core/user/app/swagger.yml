@@ -8,17 +8,67 @@ info:
 basePath: /api
 
 paths:
-  /getUser:
+  /users/{userId}:
     get:
-      summary: Returns a string.
+      summary: Returns a user.
       description: Optional extended description in CommonMark or HTML.
       operationId: user_api.getUser
       produces:
         - application/json
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
       responses:
         200:    # status code
           description: A string
-  /addUser:
+    delete:
+      summary: Deletes a user.
+      description: Optional extended description in CommonMark or HTML.
+      operationId: user_api.removeUser
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: string
+          required: true
+      responses:
+        200:    # status code
+          description: A string
+    patch:
+      summary: update a user.
+      description: Optional extended description in CommonMark or HTML.
+      operationId: user_api.patchUser
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: string
+          required: true
+        - in: body
+          name: update
+          description: The information to update.
+          schema:
+            type: object
+            properties:
+              username:
+                type: string
+              password:
+                type: string
+              deviceList:
+                type: string
+              ruleList:
+                type: string
+              groupList:
+                type: string
+      responses:
+        200:    # status code
+          description: A user
+  /users:
     post:
       summary: Returns a string.
       description: Optional extended description in CommonMark or HTML.
@@ -45,4 +95,3 @@ paths:
       responses:
         200:    # status code
           description: A user
-

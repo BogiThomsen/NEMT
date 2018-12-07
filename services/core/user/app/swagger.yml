@@ -8,21 +8,33 @@ info:
 basePath: /api
 
 paths:
-  /getUser:
+  /users: #Hvad med username?
     get:
-      summary: Returns a string.
+      summary: Returns a user.
       description: Optional extended description in CommonMark or HTML.
-      operationId: user_api.getUser
+      operationId: user_api.get_user
       produces:
         - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: user
+          description: The user to get.
+          schema:
+            type: object
+            properties:
+              username:
+                type: string
+              userId:
+                type: string
       responses:
         200:    # status code
           description: A string
-  /addUser:
     post:
       summary: Returns a string.
       description: Optional extended description in CommonMark or HTML.
-      operationId: user_api.addUser
+      operationId: user_api.add_user
       consumes:
         - application/json
       parameters:
@@ -45,4 +57,48 @@ paths:
       responses:
         200:    # status code
           description: A user
-
+  /users/{userId}:
+    patch:
+      summary: update a user.
+      description: Optional extended description in CommonMark or HTML.
+      operationId: user_api.patch_user
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: string
+          required: true
+        - in: body
+          name: update
+          description: The information to update.
+          schema:
+            type: object
+            properties:
+              username:
+                type: string
+              password:
+                type: string
+              deviceList:
+                type: string
+              ruleList:
+                type: string
+              groupList:
+                type: string
+      responses:
+        200:    # status code
+          description: A user
+    delete:
+      summary: Deletes a user.
+      description: Optional extended description in CommonMark or HTML.
+      operationId: user_api.delete_user
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: string
+          required: true
+      responses:
+        200:    # status code
+          description: A string

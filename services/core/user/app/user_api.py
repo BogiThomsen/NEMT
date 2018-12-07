@@ -11,6 +11,7 @@ users.append(user1)
 
 
 ### Data Access Endpoints
+
 def add_user():
     user = {
         "username" : request.json["username"],
@@ -20,6 +21,7 @@ def add_user():
     r = requests.post("http://user-access:5200/api/add", json=user)
     return jsonify({'response': r})
 
+## Skal laves om ift. userId
 def delete_user():
     user = get_user_id(request.json["userId"])
     r = requests.post("http://user-access:5200/api/delete", json=user)
@@ -38,6 +40,8 @@ def get_user_id():
     r = requests.get("http://user-access:5200/api/getId"
     return jsonify('userId' : r.json))
 
+
+## Herfra og ned er patch user.
 
 def update_username():
     user = {

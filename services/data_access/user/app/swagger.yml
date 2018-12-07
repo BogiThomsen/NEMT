@@ -77,9 +77,9 @@ paths:
         200:    # status code
           description: UserId was returned sucessfully.
   /update/username:
-    put:
+    patch:
       summary: Updates the username of a user.
-      operationId: user_data_access.put_username
+      operationId: user_data_access.patch_username
       consumes:
         - application/json
       parameters:
@@ -99,9 +99,9 @@ paths:
         200:    # status code
           description: Username was updated sucessfully.
   /update/password:
-    put:
+    patch:
       summary: Updates the password of a user.
-      operationId: user_data_access.put_password
+      operationId: user_data_access.patch_password
       consumes:
         - application/json
       parameters:
@@ -140,9 +140,9 @@ paths:
         200:    # status code
           description: User was deleted sucessfully.
   /list/add:
-    put:
+    patch:
       summary: Adds an ID to specified list.
-      operationId: user_data_access.post_to_user
+      operationId: user_data_access.add_to_user
       consumes:
         - application/json
       parameters:
@@ -165,7 +165,7 @@ paths:
         200:    # status code
           description: User was updated sucessfully.
   /list/remove:
-    patch: #Not sure if patch or put
+    patch:
       summary: Removes an ID to specified list.
       operationId: user_data_access.delete_from_user
       consumes:

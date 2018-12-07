@@ -1,6 +1,6 @@
 import pymongo
 from bson.objectid import ObjectId
-from flask import request
+from flask import request, jsonify
 
 def connect_to_db():
     return pymongo.MongoClient("mongodb+srv://Andreas:dummypassword64@sw7-3mptj.gcp.mongodb.net/admin")["database"]["Users"]

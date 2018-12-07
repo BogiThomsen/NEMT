@@ -38,14 +38,14 @@ paths:
     get:
       summary: Returns a user in the form of a json array.
       operationId: user_data_access.get_user
-      produces:
-        - application/json
       consumes:
+        - application/json
+      produces:
         - application/json
       parameters:
         - in: body
           name: user
-          description: The user to get.
+          description: The user to create.
           schema:
             type: object
             required:
@@ -53,6 +53,7 @@ paths:
             properties:
               userId:
                 type: string
+      responses:
         200:    # status code
           description: User was returned sucessfully.
   /getId:
@@ -74,6 +75,7 @@ paths:
             properties:
               username:
                 type: string
+      responses:
         200:    # status code
           description: UserId was returned sucessfully.
   /update/username:
@@ -96,6 +98,7 @@ paths:
                 type: string
               userId:
                 type: string
+      responses:
         200:    # status code
           description: Username was updated sucessfully.
   /update/password:
@@ -118,6 +121,7 @@ paths:
                 type: string
               userId:
                 type: string
+      responses:
         200:    # status code
           description: Password was updated sucessfully.
   /delete:
@@ -137,6 +141,7 @@ paths:
             properties:
               userId:
                 type: string
+      responses:
         200:    # status code
           description: User was deleted sucessfully.
   /list/add:
@@ -162,6 +167,7 @@ paths:
                 type: string
               updateList:
                 type: string
+      responses:
         200:    # status code
           description: User was updated sucessfully.
   /list/remove:
@@ -187,6 +193,7 @@ paths:
                 type: string
               updateList:
                 type: string
+      responses:
         200:    # status code
           description: User was updated sucessfully.
   

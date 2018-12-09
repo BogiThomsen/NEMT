@@ -88,26 +88,15 @@ paths:
   #     responses:
   #       200:    # status code
   #         description: Password was updated sucessfully.
-  # /delete:
-  #   delete:
-  #     summary: deletes a user.
-  #     operationId: user_data_access.delete_user
-  #     consumes:
-  #       - application/json
-  #     parameters:
-  #       - in: body
-  #         name: user
-  #         description: The user to delete.
-  #         schema:
-  #           type: object
-  #           required:
-  #             - userId
-  #           properties:
-  #             userId:
-  #               type: string
-  #     responses:
-  #       200:    # status code
-  #         description: User was deleted sucessfully.
+  /delete/{id}:
+    delete:
+      summary: deletes a user.
+      operationId: user_data_access.delete_user
+      parameters:
+        - $ref: '#/parameters/id'
+      responses:
+        200:    # status code
+          description: User was deleted sucessfully.
   # /list/add:
   #   patch:
   #     summary: Adds an ID to specified list.

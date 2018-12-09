@@ -23,7 +23,7 @@ def add_user():
 
 ## Skal laves om ift. userId
 def delete_user(id):
-    r = requests.post("http://user-access:5200/api/delete/{}".format(id))
+    r = requests.delete("http://user-access:5200/api/delete/{}".format(id))
     return r.text
 
 def get_user(id):

@@ -20,7 +20,7 @@ def post_user():
 
 def delete_user(id):
     user_db = connect_to_db()
-    query = {"_id": ObjectId(user_id)}
+    query = {"_id": ObjectId(id)}
     user_db.delete_one(query)
     return "user with ID: {}, was deleted.".format(id)
 

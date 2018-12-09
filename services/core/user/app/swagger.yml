@@ -8,29 +8,7 @@ info:
 basePath: /api
 
 paths:
-  /users: #Hvad med username?
-    get:
-      summary: Returns a user.
-      description: Optional extended description in CommonMark or HTML.
-      operationId: user_api.get_user
-      produces:
-        - application/json
-      consumes:
-        - application/json
-      parameters:
-        - in: body
-          name: user
-          description: The user to get.
-          schema:
-            type: object
-            properties:
-              username:
-                type: string
-              userId:
-                type: string
-      responses:
-        200:    # status code
-          description: A string
+  /users:
     post:
       summary: Returns a string.
       description: Optional extended description in CommonMark or HTML.
@@ -57,48 +35,78 @@ paths:
       responses:
         200:    # status code
           description: A user
-  /users/{userId}:
-    patch:
-      summary: update a user.
+  /users/{id}:
+    get:
+      summary: Returns a user.
       description: Optional extended description in CommonMark or HTML.
-      operationId: user_api.patch_user
-      consumes:
-        - application/json
-      parameters:
-        - in: path
-          name: userId
-          schema:
-            type: string
-          required: true
-        - in: body
-          name: update
-          description: The information to update.
-          schema:
-            type: object
-            properties:
-              username:
-                type: string
-              password:
-                type: string
-              deviceList:
-                type: string
-              ruleList:
-                type: string
-              groupList:
-                type: string
+      operationId: user_api.get_user
       responses:
         200:    # status code
-          description: A user
+          description: User was returned successfuly
+      parameters:
+        - $ref: '#/parameters/id'
+    # patch:
+    #   summary: update a user.
+    #   description: Optional extended description in CommonMark or HTML.
+    #   operationId: user_api.patch_user
+    #   consumes:
+    #     - application/json
+    #   parameters:
+    #     - in: path
+    #       name: user_id
+    #       schema:
+    #         type: string
+    #       required: true
+    #     - in: body
+    #       name: update
+    #       description: The information to update.
+    #       schema:
+    #         type: object
+    #         properties:
+    #           username:
+    #             type: string
+    #           password:
+    #             type: string
+    #           deviceList:
+    #             type: string
+    #           ruleList:
+    #             type: string
+    #           groupList:
+    #             type: string
+    #   responses:
+    #     200:    # status code
+    #       description: A user
     delete:
       summary: Deletes a user.
       description: Optional extended description in CommonMark or HTML.
       operationId: user_api.delete_user
       parameters:
-        - in: path
-          name: userId
-          schema:
-            type: string
-          required: true
+        - $ref: '#/parameters/id'
       responses:
         200:    # status code
           description: A string
+  /users/getId/{username}:
+    get:
+      summary: Returns a user_id.
+      description: Optional extended description in CommonMark or HTML.
+      operationId: user_api.get_user_id
+      responses:
+        200:    # status code
+          description: User was returned successfuly
+      parameters:
+        - $ref: '#/parameters/username'
+
+parameters:
+  id:
+    name: id
+    description: a user id
+    in: path
+    type: string
+    required: true
+  username:
+    name: username
+    description: a username
+    in: path
+    type: string
+    required: true
+  

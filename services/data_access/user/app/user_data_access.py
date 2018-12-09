@@ -1,5 +1,6 @@
 import pymongo
 from bson.objectid import ObjectId
+from bson.json_util import dumps
 from flask import request, jsonify
 
 def connect_to_db():
@@ -17,11 +18,11 @@ def post_user():
     user_db.insert_one(new_user)
 
 
-def delete_user():
-    user_id = request.json["userId"]
+def delete_user(id):
     user_db = connect_to_db()
     query = {"_id": ObjectId(user_id)}
     user_db.delete_one(query)
+    return "user with ID: {}, was deleted.".format(id)
 
 
 def patch_username():
@@ -40,16 +41,14 @@ def patch_password():
                          { "$set": { "password": new_password}})
 
 
-def get_user():
-    user_id = request.json["userId"]
+def get_user(id):
     user_db = connect_to_db()
-    x = user_db.find_one({"_id": ObjectId(user_id)})
+    x = user_db.find_one({"_id": ObjectId(id)})
     x["_id"] = str(x["_id"])
-    return x
+    return dumps(x)
 
 
-def get_user_id_by_username():
-    username = request.json["username"]
+def get_user_id_by_username(username):
     user_db = connect_to_db()
     x = user_db.find_one({"username": username})
     return str(x["_id"])

@@ -1,21 +1,32 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, json
 import requests
 import sys
-app = Flask(__name__)
+import urllib
 
-@app.route('/')
+app = Flask(__name__)
+headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.76 Safari/537.36'}
+session = requests.Session()
+session.trust_env = False
+
+@app.route('/', methods=['GET', 'DELETE'])
 def index():
-    r = requests.get("http://172.19.0.1:8085/api/getUser")
-    return render_template('index.html', text=r.json())
+    username = "bogiergud"
+    user_id = session.get("http://user-service:5100/api/users/getId/{}".format(username), headers=headers).text
+    # Please find en bedre måde at fjerne quotes og html encodet newline(%0A)
+    user_id = user_id.replace('\"', '').rstrip()
+    user = session.get("http://user-service:5100/api/users/{}".format(user_id), headers=headers)
+    r = session.delete("http://user-service:5100/api/users/{}".format(user_id), headers=headers)
+    return render_template('index.html', user=user.json(), id=user_id, delete=r.text)
 
 @app.route('/addUser', methods=['GET', 'POST'])
 def addUser():
     json = {}
-    json["username"] = "DRUNAR"
-    json["email"] = "e@mail.com"
-    r = requests.post("http://172.19.0.1:8085/api/addUser", json=json)
+    json["username"] = "bogiergud"
+    json["password"] = "bogi@er.nice"
+    json["access_token"] = "sudo giv mig adgang"
+    r = session.post("http://user-service:5100/api/users", json=json, headers=headers)
     return render_template('index.html', text=r)
 
 
 if __name__ == "__main__":
-  app.run(debug=True,host='0.0.0.0')
+    app.run(debug=True,host='0.0.0.0')

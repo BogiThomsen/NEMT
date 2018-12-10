@@ -1,6 +1,4 @@
-from data_access.user.app.device_data_access import DeviceAccessLayer
-#Testies
-x = DeviceAccessLayer()
+import data_access.device.device_data_access as db
 
 #x.post_device("newlyAddedDevice1", "mac_address1")
 #x.post_device("newlyAddedDevice2", "mac_address2")
@@ -41,3 +39,9 @@ dummy_device = { "token": "dummyString",
 #x.post_device(dummy_device)
 #x.post_rule(x.get_device_id_by_name("dummyName"), "new_rule")
 
+#print(db.get_device(db.get_device_id_by_name("dummyName")))
+#db.post_sensor_access_token(db.get_device_id_by_name("dummyName"), "dummyId1", "my_new_id123")
+
+cur = db.get_devices(["5c07d63060252761a4377167", "5c07d63060252761a4377169", "5c091abe602527ee30e6cece"])
+for line in cur:
+    print(line)

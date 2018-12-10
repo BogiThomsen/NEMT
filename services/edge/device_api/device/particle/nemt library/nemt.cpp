@@ -7,6 +7,7 @@ void callback_action(CoapPacket &packet, IPAddress ip, int port);
 
 void InvokeAction(String name);
 
+bool hasExposed = false;
 
 int sensorCount = 0;
 int actionCount = 0;
@@ -18,16 +19,21 @@ long int currentTime = millis();
 IPAddress serverIP = IPAddress(172, 31, 91, 180);
 String deviceID = "1234:567:89:1234:56";
 
-struct Sensor
-{
-  String name;
-  String value;
-};
 
-struct Action{
-  String name;
-  void (*function)();
-};
+
+struct Sensor
+  {
+    String name;
+    String value;
+  };
+
+struct Action
+  {
+    String name;
+    void (*function)();
+  };
+
+
 
 
 Sensor sensors[100];
@@ -55,6 +61,56 @@ void NemtServer::PutSensors(){
     coap.put(serverIP, 5683, "devices", payload);
   }
 }
+
+
+void ExposeSensors(){
+
+  char payload[256] = "";
+  strcat(payload, deviceID);
+
+  for(int i = 0; i < sensorCount; i++){
+    strcat(payload, "/");
+    strcat(payload, sensors[i].name);
+  }
+  coap.put(serverIP, 5683, "exposeSensors", payload);
+}
+
+
+
+void ExposeActions(){
+  for(int i = 0; i < actionCount; i++){
+    char payload[256] = "";
+    strcat(payload, deviceID);
+    strcat(payload, "/");
+    strcat(payload, actions[i].name);
+    coap.put(serverIP, 5683, "exposeActions", payload);
+  }
+}
+
+
+bool IsSensorsUnique(){
+  for(int i = 0; i < sensorCount; i++){
+    for (int j = i+1; j < sensorCount; j++) {
+      if(sensors[i].name == sensors[j].name != NULL){
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+bool IsActionsUnique(){
+  for(int i = 0; i < actionCount; i++){
+    for (int j = i+1; j < actionCount - i; j++) {
+      if(actions[i].name == actions[j].name != NULL){
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+
 
 
 // CoAP server endpoint URL
@@ -105,12 +161,34 @@ void NemtServer::start() {
     Serial.begin(9600);
     delay(3000);
 
+    if(IsSensorsUnique() == false || IsActionsUnique() == false){
+      do
+      {
+        Serial.println("Sensors and actions must be unqiue. Please fix this");
+        Serial.print("Sensor Uniqueness: ");
+        Serial.println(IsSensorsUnique(), DEC);
+        Serial.print("Action Uniqueness: ");
+        Serial.println(IsActionsUnique(), DEC);
+
+        Serial.println("\n\n\n");
+        delay(1000);
+      } while (1);
+    }
+
     Serial.println(WiFi.localIP());
 
 
     coap.server(callback_action, "action");
     coap.response(callback_response);
     coap.start();
+    
+    delay(2000);
+    ExposeActions();
+    delay(100);
+    coap.loop();
+    delay(100);
+    ExposeSensors();
+
 }
 
 void NemtServer::CreateAction(String name, void (*function)()){
@@ -126,7 +204,7 @@ void PerformAction(void (*function)()){
 
 
 void InvokeAction(String name){
-  for(int i = 0; i < sizeof(actions) / sizeof(Action); i++){
+  for(int i = 0; i < actionCount; i++){
     if(actions[i].name == name){
       PerformAction(actions[i].function);
     }
@@ -137,7 +215,7 @@ void InvokeAction(String name){
 
 void NemtServer::loop() {
 
-  if(millis() - currentTime > 1000){
+  if(millis() - currentTime > 10000){
     PutSensors();
     currentTime = millis();
   }

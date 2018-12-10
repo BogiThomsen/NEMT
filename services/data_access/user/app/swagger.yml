@@ -19,7 +19,9 @@ paths:
       responses:
         200:    # status code
           description: User was added Sucessfully.
-  /get/{id}:
+        400:
+          description: User already exists
+  /get/{username}:
     get:
       summary: Returns a user in the form of a json array.
       operationId: user_data_access.get_user
@@ -29,7 +31,7 @@ paths:
         200:    # status code
           description: User was returned sucessfully.
       parameters:
-        - $ref: '#/parameters/id'
+        - $ref: '#/parameters/username'
 
   /getId/{username}:
     get:
@@ -88,12 +90,12 @@ paths:
   #     responses:
   #       200:    # status code
   #         description: Password was updated sucessfully.
-  /delete/{id}:
+  /delete/{username}:
     delete:
       summary: deletes a user.
       operationId: user_data_access.delete_user
       parameters:
-        - $ref: '#/parameters/id'
+        - $ref: '#/parameters/username'
       responses:
         200:    # status code
           description: User was deleted sucessfully.

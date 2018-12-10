@@ -57,7 +57,8 @@ def dashboard():
 @app.route('/devices')
 @flask_login.login_required
 def devices():
-    return render_template('pages/devices.html')
+    webDevices = testDevices
+    return render_template('pages/devices.html', webDevices=webDevices)
 
 @app.route('/rules')
 @flask_login.login_required
@@ -75,3 +76,7 @@ def index():
 
 if __name__ == "__main__":
   app.run(debug=True)
+
+
+## Testing variables
+testDevices = [["test1", "1"],["test2", "2"],["test3", "3"],["test4", "4"],["test5", "5"],["test6", "6"],["test7", "7"],["test8", "8"],["test9", "9"],["test10", "10"],["test11", "11"],["test12", "12"],]

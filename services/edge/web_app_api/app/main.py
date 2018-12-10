@@ -33,7 +33,7 @@ def signin():
             flask_login.login_user(user)
             next = request.args.get('next')
             if not next or urlparse(next).netloc != '':
-                next = url_for('index')
+                next = url_for('dashboard')
             return redirect(next)
 
     return render_template('auth/signin.html', form=form)
@@ -50,6 +50,22 @@ def logout():
     flask_login.logout_user()
     return render_template('auth/logout.html')
 
+@app.route('/dashboard')
+@flask_login.login_required
+def dashboard():
+    return render_template('pages/dashboard.html')
+
+@app.route('/devices')
+@flask_login.login_required
+def devices():
+    webDevices = testDevices
+    return render_template('pages/devices.html', webDevices=webDevices)
+
+@app.route('/rules')
+@flask_login.login_required
+def rules():
+    return render_template('pages/rules.html')
+
 @app.route('/protected')
 @flask_login.login_required
 def protected():
@@ -61,3 +77,7 @@ def index():
 
 if __name__ == "__main__":
   app.run(debug=True)
+
+
+## Testing variables
+testDevices = [["test1", "1"],["test2", "2"],["test3", "3"],["test4", "4"],["test5", "5"],["test6", "6"],["test7", "7"],["test8", "8"],["test9", "9"],["test10", "10"],["test11", "11"],["test12", "12"],]

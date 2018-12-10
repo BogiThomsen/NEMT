@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+{% block title %}Sign out{% endblock %}
+{% block content %}
+
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-2 d-none d-md-block sidebar">
+                <div class="sidebar-sticky">
+                    <ul class="nav navbar-nav">
+                    <li><a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav">
+                        <li><a class="nav-link" href="{{ url_for('devices') }}">Devices</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav">
+                        <li><a class="nav-link" href="{{ url_for('rules') }}">Rules</a></li>
+                    </ul>
+                </div>
+
+            </nav>
+            <div class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            {% block pagecontent %}{% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

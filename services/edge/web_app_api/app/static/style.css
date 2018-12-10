@@ -36,3 +36,27 @@ body{
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+
+.sidebar {
+  width: 80px !important;
+  background-color: #212529;
+  min-height: calc(100vh - 56px);
+}
+
+.sidebar-sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 48px; /* Height of navbar */
+  height: calc(100vh - 68px);
+  padding-top: .5rem;
+}
+
+.dashboard-list{
+    max-height: 500px;
+    overflow-y: auto;
+    min-width: 300px;
+}
+
+.dashboard-list .dashitem{
+    min-height: 50px;
+}

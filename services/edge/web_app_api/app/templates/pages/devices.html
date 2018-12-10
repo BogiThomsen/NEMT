@@ -1,0 +1,39 @@
+{% extends 'pages/pagelayout.html' %}
+{% block title %}Devices{% endblock %}
+{% block pagecontent %}
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Left side - list of devices -->
+            <div class="card mr-5" style="width: 20vw;">
+                <div class="card-header bg-light">
+                    <h5>Your Devices</h5>
+                </div>
+                <!-- List Group -->
+                <div class="list-group dashboard-list" role="tablist">
+                    {% for d in webDevices %}
+                        <button type="button"
+                                class="list-group-item list-group-item-action dashitem"
+                                data-toggle="list"
+                                href="#{{d[0]}}"
+                                role="tab">{{ d[0] }}
+                        </button>
+                    {% endfor %}
+                </div>
+            </div>
+            <!-- Right side - device information -->
+            <!-- Tab panes -->
+            <div class="tab-content">
+                {% for d in webDevices %}
+                    <div class="tab-pane" id="{{ d[0] }}" role="tabpanel">
+                        <div class="card" style="width: 50vw;">
+                            <div class="card-header bg-light">
+                                <h5>Device Information</h5>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -23,8 +23,9 @@ def post_user():
         return "user: {}, was added".format(username)
 
 
-def delete_user(username):
+def delete_user():
     user_db = connect_to_db()
+    username = request.json["username"]
     query = {"username": username}
     if (user_db.count_documents({"username": username})) < 1 :
         return make_response("username exists", 400)
@@ -49,8 +50,9 @@ def patch_password():
     user_db.update_one({"_id": ObjectId(user_id)},
                          { "$set": { "password": new_password}})
 
-def get_user(username):
+def get_user():
     user_db = connect_to_db()
+    username = request.json["username"]
     if (user_db.count_documents({"username": username})) < 1 :
         return make_response("username doesnt exists", 400)
     else:
@@ -79,5 +81,46 @@ def delete_from_user():
     user_db = connect_to_db()
     user_db.update_one({"_id": ObjectId(user_id)},
                         {"$pull": {where_to_remove: id_to_remove} })
+
+
+def patch_user():
+    strings = {"password", "username"}
+    strings_dict = string_dict()
+    lists = {"device", "rule", "grouping", "other_devices"}
+    lists_dict = list_dict()
+    user_id = request.json["userId"]
+    user_db = connect_to_db()
+    for val in lists:
+        if val in request.json:
+            if request.json["operation"]:
+                user_db.update_one({"_id": ObjectId(user_id)},
+                                   {"$pull": {lists_dict[val]: request.json[val]}})
+            if request.json["operation"] == False:
+                user_db.update_one({"_id": ObjectId(user_id)},
+                                   {"$addToSet": {lists_dict[val]: request.json[val]}})
+    for val in strings:
+        if val in request.json:
+            if ((val == "username") and (user_db.count_documents({"username": request.json[val]})) > 0):
+                return make_response("username already exists", 400)
+            else:
+                user_db.update_one({"_id": ObjectId(user_id)},
+                                   {"$set": {strings_dict[val]: request.json[val]}})
+
+
+def string_dict():
+    dict = {
+        "username": "username",
+        "password": "password",
+    }
+    return dict
+
+def list_dict():
+    dict = {
+        "device": "devices",
+        "rule": "rules",
+        "grouping": "groupings",
+        "other_device": "other_devices"
+    }
+    return dict
 
 

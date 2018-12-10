@@ -5,10 +5,10 @@ info:
   description: description of api
   version: "1.0"
 
-basePath: /api
+basePath: /v1
 
 paths:
-  /add:
+  /users:
     post:
       summary: Adds a user to the database.
       operationId: user_data_access.post_user
@@ -21,7 +21,6 @@ paths:
           description: User was added Sucessfully.
         400:
           description: User already exists
-  /get/{username}:
     get:
       summary: Returns a user in the form of a json array.
       operationId: user_data_access.get_user
@@ -32,18 +31,34 @@ paths:
           description: User was returned sucessfully.
       parameters:
         - $ref: '#/parameters/username'
-
-  /getId/{username}:
-    get:
-      summary: Returns a userId.
-      operationId: user_data_access.get_user_id_by_username
-      produces:
-        - text/plain
+    delete:
+      summary: deletes a user.
+      operationId: user_data_access.delete_user
       parameters:
         - $ref: '#/parameters/username'
       responses:
         200:    # status code
-          description: UserId was returned sucessfully.
+          description: User was deleted sucessfully.
+    patch:
+      summary: patches user info
+      operationId: user_data_access.patch_user
+      parameters:
+        - $ref: '#/parameters/patchUser'
+      responses:
+        200:    #status code
+          description: user was patched successfully
+
+  #/getId/{username}:
+  #  get:
+  #    summary: Returns a userId.
+  #    operationId: user_data_access.get_user_id_by_username
+  #    produces:
+  #      - text/plain
+  #    parameters:
+  #      - $ref: '#/parameters/username'
+  #    responses:
+  #      200:    # status code
+  #        description: UserId was returned sucessfully.
   # /update/username:
   #   patch:
   #     summary: Updates the username of a user.
@@ -90,15 +105,7 @@ paths:
   #     responses:
   #       200:    # status code
   #         description: Password was updated sucessfully.
-  /delete/{username}:
-    delete:
-      summary: deletes a user.
-      operationId: user_data_access.delete_user
-      parameters:
-        - $ref: '#/parameters/username'
-      responses:
-        200:    # status code
-          description: User was deleted sucessfully.
+
   # /list/add:
   #   patch:
   #     summary: Adds an ID to specified list.
@@ -162,11 +169,15 @@ parameters:
     type: string
     required: true
   username:
+    in: body
     name: username
-    description: a username
-    in: path
-    type: string
-    required: true
+    schema:
+      type: object
+      required:
+        - username
+      properties:
+        username:
+          type: string
   user:
     in: body
     name: user
@@ -184,3 +195,31 @@ parameters:
           type: string
         access_token:
           type: string
+  patchUser:
+    in: body
+    name: userInfo
+    description: User info to be patched
+    schema:
+      type: object
+      required:
+        - userId
+        - operation
+      properties:
+        userId:
+          type: string
+        username:
+          type: string
+        operation:
+          type: boolean
+        password:
+          type: string
+        device:
+          type: string
+        rule:
+          type: string
+        grouping:
+          type: string
+        other_device:
+          type: string
+
+

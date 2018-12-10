@@ -15,10 +15,11 @@ test_id = "5c067e0f6025271da8e45fab"
 #print(get_user(id_to_change_name))
 #print(get_user("5c0678f36025271d7857066b"))
 
-user = x.get_user(("default username"))
+#user = x.get_user(("default username"))
 db = x.connect_to_db()
-print(db.count_documents({"username": "Changed username"}))
-print(x.get_user("default username"))
+#print(db.count_documents({"username": "Changed username"}))
+#print(x.get_user("default username"))
+x.patch_user()
 
 #x.post_to_user(x.get_user_id_by_username("LarsAllan"), "dummy_device_id123", "available_devices")
 

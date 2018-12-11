@@ -83,9 +83,9 @@ def delete_from_device():
 
 
 def patch_device(id):
-    strings = {"password", "devicename"}
+    strings = {"name"}
     strings_dict = string_dict()
-    lists = {"device", "rule", "grouping", "other_devices"}
+    lists = {"sensor", "rule", "action"}
     lists_dict = list_dict()
     device_db = connect_to_db()
     for val in lists:
@@ -98,8 +98,8 @@ def patch_device(id):
                                    {"$addToSet": {lists_dict[val]: request.json[val]}})
     for val in strings:
         if val in request.json:
-            if ((val == "devicename") and (device_db.count_documents({"devicename": request.json[val]})) > 0):
-                return make_response("devicename already exists", 400)
+            if ((val == "name") and (device_db.count_documents({"name": request.json[val]})) > 0):
+                return make_response("name already exists", 400)
             else:
                 device_db.update_one({"_id": ObjectId(id)},
                                    {"$set": {strings_dict[val]: request.json[val]}})
@@ -107,17 +107,15 @@ def patch_device(id):
 
 def string_dict():
     dict = {
-        "devicename": "devicename",
-        "password": "password",
+        "name": "name"
     }
     return dict
 
 def list_dict():
     dict = {
-        "device": "devices",
+        "action": "actions",
         "rule": "rules",
-        "grouping": "groupings",
-        "other_device": "other_devices"
+        "sensor": "sensors"
     }
     return dict
 

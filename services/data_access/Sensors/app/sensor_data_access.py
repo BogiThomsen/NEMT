@@ -7,11 +7,17 @@ def connect_to_db():
     return pymongo.MongoClient("mongodb+srv://Andreas:dummypassword64@sw7-3mptj.gcp.mongodb.net/admin")["database"]["Sensors"]
 
 
-def Sensor_user():
+def post_sensor():
     sensor_db = connect_to_db()
     name = request.json["name"]
-    sensor_db.insert_one({"name": name})
-    sensor = sensor_db.find_one({"username": name})
+    if 'prettyname' not in request.json:
+        new_sensor = {"name": name,
+                      "pretty_name": name}
+    else:
+        new_sensor = {"name": name,
+                      "pretty_name": request.json["pretty_name"]}
+    _id = sensor_db.insert_one(new_sensor)
+    sensor = sensor_db.find_one({"_id": _id})
     sensor["_id"] = str(sensor["_id"])
     return sensor
 

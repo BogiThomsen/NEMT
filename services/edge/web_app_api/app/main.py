@@ -58,8 +58,10 @@ def dashboard():
 @app.route('/devices')
 @flask_login.login_required
 def devices():
-    webDevices = testDevices
-    return render_template('pages/devices.html', webDevices=webDevices)
+    userDevices = testDevices
+    userSensors = testSensors
+    userActions = testActions
+    return render_template('pages/devices.html', userDevices=userDevices, userSensors=userSensors, userActions=userActions)
 
 @app.route('/rules')
 @flask_login.login_required
@@ -80,4 +82,26 @@ if __name__ == "__main__":
 
 
 ## Testing variables
-testDevices = [["test1", "1"],["test2", "2"],["test3", "3"],["test4", "4"],["test5", "5"],["test6", "6"],["test7", "7"],["test8", "8"],["test9", "9"],["test10", "10"],["test11", "11"],["test12", "12"],]
+testDevices = [
+    {"id": "001", "device_token": "001", "name": "Controller001", "prettyname": "Living Room", "sensors": ["001", "002"], "actions":["001", "002", "005"], "rules":[]},
+    {"id": "002", "device_token": "002", "name": "Controller002", "prettyname": "Bed Room", "sensors": ["003", "004"], "actions": ["003", "004", "006"], "rules": []},
+    {"id": "001", "device_token": "003", "name": "Controller003", "prettyname": "Weather Station", "sensors": ["999"], "actions": [], "rules": []},
+
+]
+
+testSensors = [
+    {"id": "001", "name": "Light001", "prettyname": "Livingroom light sensor", "value": "70", "timestamp": "11-12@13:30", "public": False, "access_tokens": ["1", "2"]},
+    {"id": "002", "name": "Temp001", "prettyname": "Livingroom Temperature", "value": "21", "timestamp": "11-12@13:30", "public": False, "access_tokens": ["1", "2"]},
+    {"id": "003", "name": "Light002", "prettyname": "Bedroom light sensor", "value": "50", "timestamp": "11-12@12:31", "public": False, "access_tokens": ["1", "2"]},
+    {"id": "004", "name": "Temp002", "prettyname": "Bedroom Temperature", "value": "17", "timestamp": "11-12@13:30", "public": True, "access_tokens": ["1", "2"]},
+    {"id": "999", "name": "Temp999", "prettyname": "Aalborg Temperature", "value": "25", "timestamp": "11-12@09:11", "public": True, "access_tokens": ["1", "2"]}
+]
+
+testActions = [
+    {"id": "001", "name": "LightOnLiv", "prettyname": "turn on livingroom lights", "public": False, "access_tokens": ["1", "2"]},
+    {"id": "002", "name": "LightOffLiv", "prettyname": "turn off livingroom lights", "public": False, "access_tokens": ["1", "2"]},
+    {"id": "003", "name": "LightOnBed", "prettyname": "turn on bedroom lights", "public": False, "access_tokens": ["1", "2"]},
+    {"id": "004", "name": "LightOffBed", "prettyname": "turn off bedroom lights", "public": False, "access_tokens": ["1", "2"]},
+    {"id": "005", "name": "HeatUpLiv", "prettyname": "increase livingroom temperature", "public": False, "access_tokens": ["1", "2"]},
+    {"id": "006", "name": "CoolBed", "prettyname": "cool off bedroom", "public": False, "access_tokens": ["1", "2"]}
+]

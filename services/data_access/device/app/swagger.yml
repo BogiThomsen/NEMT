@@ -71,11 +71,11 @@ parameters:
         - pretty_name
         - token
       properties:
-        devicename:
+        name:
           type: string
-        password:
+        pretty_name:
           type: string
-        access_token:
+        token:
           type: string
   patchdevice:
     in: body

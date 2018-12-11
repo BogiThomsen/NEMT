@@ -10,11 +10,11 @@ session.trust_env = False
 
 @app.route('/', methods=['GET', 'DELETE'])
 def index():
-    username = "bogiergud"
-    user_id = session.get("http://user-service:5100/api/users/getId/{}".format(username), headers=headers).text
+    username = "patchvirkerstadig"
+    user_id = session.get("http://user-service:5100/v1/users/getId/{}".format(username), headers=headers).text
     # Please find en bedre måde at fjerne quotes og html encodet newline(%0A)
     user_id = user_id.replace('\"', '').rstrip()
-    user = session.get("http://user-service:5100/api/users/{}".format(user_id), headers=headers)
+    user = session.get("http://user-service:5100/v1/users/{}".format(user_id), headers=headers)
 
     return render_template('index.html', user=user.json(), id=user_id, delete="no")
 
@@ -24,27 +24,30 @@ def addUser():
     json["username"] = "bogiergud"
     json["password"] = "bogi@er.nice"
     json["access_token"] = "sudo giv mig adgang"
-    r = session.post("http://user-service:5100/api/users", json=json, headers=headers)
+    r = session.post("http://user-service:5100/v1/users", json=json, headers=headers)
     return render_template('index.html', text=r)
 
 @app.route('/patchUser', methods=['GET', 'POST', 'PATCH'])
 def patchUser():
-    user_id = session.get("http://user-service:5100/api/users/{}".format(username), headers=headers).text
+    username = "patchvirkerstadig"
+    user_id = session.get("http://user-service:5100/v1/users/getId/{}".format(username), headers=headers).text
     # Please find en bedre måde at fjerne quotes og html encodet newline(%0A)
     user_id = user_id.replace('\"', '').rstrip()
 
     json = {}
-    json["userId"] = user_id
     json["operation"] = False
-    json["username"] = "guderbogi"
-    json["password"] = "nytpassword"
-    json["device"] = "pissefeddeviceid!"
-    json["rule"] = "DetErIkkeMigDerLaverReglerne"
+    json["username"] = "meyer"
+    json["password"] = "meyer"
+    json["device"] = "meyer"
+    json["rule"] = "meyer"
+    json["grouping"] = "meyer"
+    json["other_device"] = "meyer"
+
+    user_patch = session.patch("http://user-service:5100/v1/users/{}".format(user_id), json=json, headers=headers)
 
 
-
-    user = session.get("http://user-service:5100/api/users/{}".format(user_id), headers=headers)
-    return render_template('index.html', text=user.json())
+    user = session.get("http://user-service:5100/v1/users/{}".format(user_id), headers=headers)
+    return render_template('index.html', user=user.json(), id=user_id, deleted="patched")
 
 
 if __name__ == "__main__":

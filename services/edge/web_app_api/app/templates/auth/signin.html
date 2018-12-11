@@ -2,12 +2,19 @@
 {% block title %}Sign in{% endblock %}
 {% block content %}
     <form class="form-signin text-center mt-5" method="POST">
+        {{ form.hidden_tag() }}
         <h1 class="h3 font-weight-normal">Sign in</h1>
         <p><a href="{{url_for('register') }}" class="mb-3 text-primary">or register</a></p>
-        <label for="username" class="sr-only">Username</label>
-        <input type="username" name="username" id="username" class="form-control" placeholder="Username" required>
-        <label for="password" class="sr-only">Password</label>
-        <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        {{ form.username.label(class_='sr-only') }}<br>
+        {{ form.username(class_='form-control', placeholder='Username') }}<br>
+        {% for error in form.username.errors %}
+            <span style="color: red">[{{ error }}]</span>
+        {% endfor %}
+        {{ form.password.label(class_='sr-only') }}<br>
+        {{ form.password(class_='form-control', placeholder='Password') }}<br>
+        {% for error in form.password.errors %}
+            <span style="color: red">[{{ error }}]</span>
+        {% endfor %}
+        {{ form.submit(class_='btn btn-lg btn-primary btn-block') }}
     </form>
 {% endblock %}

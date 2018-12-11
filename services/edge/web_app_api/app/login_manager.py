@@ -31,6 +31,8 @@ def request_loader(request):
 
     return user
 
+'''
 @login_manager.unauthorized_handler
 def unauthorized_handler():
     return 'Unauthorized'
+'''

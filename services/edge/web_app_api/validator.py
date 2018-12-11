@@ -8,15 +8,36 @@ def is_alphanumeric(string):
     return r.match(string).group() == string
 
 
+def is_alphanumeric_or_whitespace(string):
+    r = re.compile('([A-Z]|[a-z]|[1-9]| )')
+    return r.match(string).group() == string
+
+
+def is_only_expected_data(recieved_dictionary, expected_dictionary):
+    for key in expected_dictionary:
+        if key not in list(recieved_dictionary.keys()):
+            return False
+
+    for key in list(recieved_dictionary.keys()):
+        if key not in expected_dictionary:
+            return False;
+    return True;
+
+
 def validate_user_request(request):
+
+    if is_only_expected_data(request.json, ["username", "password"]) == False:
+        return False
+
     username = request.json["username"]
     password = request.json["password"]
+    
     return is_alphanumeric(username) and is_alphanumeric(password)
 
 
 def validate_device_request(request):
     prettyName = request.json["prettyName"]
-    return is_alphanumeric(prettyName)
+    return is_alphanumeric_or_whitespace(prettyName)
 
 
 def validate_sensor_request(request):
@@ -28,4 +49,4 @@ def validate_sensor_request(request):
         if(is_alphanumeric(token) == False):
             return False;
 
-    return is_alphanumeric(prettyname) and isinstance(public, bool)
+    return is_alphanumeric_or_whitespace(prettyname) and isinstance(public, bool)

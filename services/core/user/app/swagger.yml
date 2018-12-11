@@ -5,7 +5,7 @@ info:
   description: description of api
   version: "1.0"
 
-basePath: /api
+basePath: /v1
 
 paths:
   /users:
@@ -16,22 +16,7 @@ paths:
       consumes:
         - application/json
       parameters:
-        - in: body
-          name: user
-          description: The user to create.
-          schema:
-            type: object
-            required:
-              - username
-              - password
-              - access_token
-            properties:
-              username:
-                type: string
-              password:
-                type: string
-              access_token:
-                type: string
+        - $ref: '#/parameters/user'
       responses:
         200:    # status code
           description: A user
@@ -47,8 +32,9 @@ paths:
         - $ref: '#/parameters/id'
     patch:
       summary: patches user info
-      operationId: user_data_access.patch_user
+      operationId: user_api.patch_user
       parameters:
+        - $ref: '#/parameters/id'
         - $ref: '#/parameters/patchUser'
       responses:
         200:    #status code
@@ -93,11 +79,8 @@ parameters:
     schema:
       type: object
       required:
-        - userId
         - operation
       properties:
-        userId:
-          type: string
         username:
           type: string
         operation:
@@ -112,5 +95,21 @@ parameters:
           type: string
         other_device:
           type: string
-
+  user:
+    in: body
+    name: user
+    description: A user.
+    schema:
+      type: object
+      required:
+        - username
+        - password
+        - access_token
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+        access_token:
+          type: string
   

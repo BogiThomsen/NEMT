@@ -1,16 +1,17 @@
-version: '3.7'
+version: '3.6'
 services:
     device-service:
         build: .
         ports:
-            - 5200
+            - "5400:5400"
+        expose:
+            - "5400"
         volumes:
             - .:/code
-        labels:
-            - "traefik.frontend.rule=Host:device.localhost"
         networks:
             - device-core-net
+        container_name: device-service
 networks:
   device-core-net:
     external:
-      name: reverse-proxy
+      name: platform

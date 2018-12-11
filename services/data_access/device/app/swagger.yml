@@ -1,0 +1,121 @@
+swagger: "2.0"
+
+info:
+  title: "API"
+  description: description of api
+  version: "1.0"
+
+basePath: /v1
+
+paths:
+  /devices:
+    post:
+      summary: Adds a device to the database.
+      operationId: device_data_access.post_device
+      consumes:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/device'
+      responses:
+        200:    # status code
+          description: device was added Sucessfully.
+        400:
+          description: device already exists
+  /devices/{id}:  
+    get:
+      summary: Returns a device in the form of a json array.
+      operationId: device_data_access.get_device
+      produces:
+        - application/json
+      responses:
+        200:    # status code
+          description: device was returned sucessfully.
+      parameters:
+        - $ref: '#/parameters/id'
+    delete:
+      summary: deletes a device.
+      operationId: device_data_access.delete_device
+      parameters:
+        - $ref: '#/parameters/id'
+      responses:
+        200:    # status code
+          description: device was deleted sucessfully.
+    patch:
+      summary: patches device info
+      operationId: device_data_access.patch_device
+      parameters:
+        - $ref: '#/parameters/id'
+        - $ref: '#/parameters/patchdevice'
+      responses:
+        200:    #status code
+          description: device was patched successfully
+
+  /devices/getId/{devicename}:
+    get:
+      summary: Returns a deviceId.
+      operationId: device_data_access.get_device_id_by_devicename
+      produces:
+        - text/plain
+      parameters:
+        - $ref: '#/parameters/devicename'
+      responses:
+        200:    # status code
+          description: deviceId was returned sucessfully.
+
+  
+parameters:
+  id:
+    name: id
+    description: a device id
+    in: path
+    type: string
+    required: true
+  devicename:
+    name: devicename
+    description: a devicename
+    in: path
+    type: string
+    required: true
+
+  device:
+    in: body
+    name: device
+    description: A device.
+    schema:
+      type: object
+      required:
+        - devicename
+        - password
+        - access_token
+      properties:
+        devicename:
+          type: string
+        password:
+          type: string
+        access_token:
+          type: string
+  patchdevice:
+    in: body
+    name: deviceInfo
+    description: device info to be patched
+    schema:
+      type: object
+      required:
+        - operation
+      properties:
+        devicename:
+          type: string
+        operation:
+          type: boolean
+        password:
+          type: string
+        device:
+          type: string
+        rule:
+          type: string
+        grouping:
+          type: string
+        other_device:
+          type: string
+
+

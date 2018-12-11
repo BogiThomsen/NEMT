@@ -84,9 +84,9 @@ parameters:
     schema:
       type: object
       required:
-        - devicename
-        - password
-        - access_token
+        - name
+        - pretty_name
+        - token
       properties:
         devicename:
           type: string
@@ -103,19 +103,19 @@ parameters:
       required:
         - operation
       properties:
-        devicename:
+        name:
           type: string
         operation:
           type: boolean
-        password:
+        prettyname:
           type: string
-        device:
+        token:
           type: string
         rule:
           type: string
-        grouping:
+        sensor:
           type: string
-        other_device:
+        action:
           type: string
 
 

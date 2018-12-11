@@ -30,12 +30,12 @@ paths:
         200:    # status code
           description: User was returned sucessfully.
       parameters:
-        - $ref: '#/parameters/username'
+        - $ref: '#/parameters/id'
     delete:
       summary: deletes a user.
       operationId: user_data_access.delete_user
       parameters:
-        - $ref: '#/parameters/username'
+        - $ref: '#/parameters/id'
       responses:
         200:    # status code
           description: User was deleted sucessfully.
@@ -44,21 +44,22 @@ paths:
       operationId: user_data_access.patch_user
       parameters:
         - $ref: '#/parameters/patchUser'
+        - $ref: '#/parameters/id'
       responses:
         200:    #status code
           description: user was patched successfully
 
-  #/getId/{username}:
-  #  get:
-  #    summary: Returns a userId.
-  #    operationId: user_data_access.get_user_id_by_username
-  #    produces:
-  #      - text/plain
-  #    parameters:
-  #      - $ref: '#/parameters/username'
-  #    responses:
-  #      200:    # status code
-  #        description: UserId was returned sucessfully.
+  /getId/{username}:
+    get:
+      summary: Returns a userId.
+      operationId: user_data_access.get_user_id_by_username
+      produces:
+        - text/plain
+      parameters:
+        - $ref: '#/parameters/username'
+      responses:
+        200:    # status code
+          description: UserId was returned sucessfully.
   # /update/username:
   #   patch:
   #     summary: Updates the username of a user.
@@ -202,11 +203,8 @@ parameters:
     schema:
       type: object
       required:
-        - userId
         - operation
       properties:
-        userId:
-          type: string
         username:
           type: string
         operation:

@@ -23,15 +23,14 @@ def post_user():
         return "user: {}, was added".format(username)
 
 
-def delete_user():
+def delete_user(user_id):
     user_db = connect_to_db()
-    username = request.json["username"]
-    query = {"username": username}
-    if (user_db.count_documents({"username": username})) < 1 :
-        return make_response("username exists", 400)
+    query = {"_id": ObjectId(user_id)}
+    if (user_db.count_documents(query)) < 1 :
+        return make_response("user doesnt exist", 400)
     else:
         user_db.delete_one(query)
-        return "user: {}, was deleted.".format(username)
+        return "user: {}, was deleted.".format(user_id)
 
 def patch_username():
     username = request.json["username"]
@@ -50,13 +49,13 @@ def patch_password():
     user_db.update_one({"_id": ObjectId(user_id)},
                          { "$set": { "password": new_password}})
 
-def get_user():
+def get_user(user_id):
     user_db = connect_to_db()
-    username = request.json["username"]
-    if (user_db.count_documents({"username": username})) < 1 :
-        return make_response("username doesnt exists", 400)
+    query = {"_id": ObjectId(user_id)}
+    if (user_db.count_documents(query)) < 1 :
+        return make_response("user doesnt exists", 400)
     else:
-        x = user_db.find_one({"username": username})
+        x = user_db.find_one(query)
         x["_id"] = str(x["_id"])
         return dumps(x)
 
@@ -83,12 +82,11 @@ def delete_from_user():
                         {"$pull": {where_to_remove: id_to_remove} })
 
 
-def patch_user():
+def patch_user(user_id):
     strings = {"password", "username"}
     strings_dict = string_dict()
     lists = {"device", "rule", "grouping", "other_devices"}
     lists_dict = list_dict()
-    user_id = request.json["userId"]
     user_db = connect_to_db()
     for val in lists:
         if val in request.json:

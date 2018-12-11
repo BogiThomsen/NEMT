@@ -58,8 +58,16 @@ def dashboard():
 @app.route('/devices')
 @flask_login.login_required
 def devices():
+    # UI links all devices to their sensors and actions
+    # Needed fields for Device: ["name"], ["prettyname"], ["sensors"], ["actions"]
+    # Needed fields for Actions ["id"], ["prettyname"], ["public"]
+    # Needed fields for Sensors ["id"], ["prettyname"], ["value"], ["public"]
+
+    # Expected: all devices to a given user
     userDevices = testDevices
+    # Expected: all sensors to a given user
     userSensors = testSensors
+    # Expected: all actions to a given user
     userActions = testActions
     return render_template('pages/devices.html', userDevices=userDevices, userSensors=userSensors, userActions=userActions)
 
@@ -81,7 +89,7 @@ if __name__ == "__main__":
   app.run(debug=True)
 
 
-## Testing variables
+# "/devices" testing variables. May be deleted when "/devices" has been correctly implemented
 testDevices = [
     {"id": "001", "device_token": "001", "name": "Controller001", "prettyname": "Living Room", "sensors": ["001", "002"], "actions":["001", "002", "005"], "rules":[]},
     {"id": "002", "device_token": "002", "name": "Controller002", "prettyname": "Bed Room", "sensors": ["003", "004"], "actions": ["003", "004", "006"], "rules": []},

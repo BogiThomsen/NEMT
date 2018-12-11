@@ -5,41 +5,56 @@ info:
   description: description of api
   version: "1.0"
 
-basePath: /api
+basePath: /v1
 
 paths:
-  /getDevice:
-    get:
-      summary: Returns a string.
-      description: Optional extended description in CommonMark or HTML.
-      operationId: device_api.getDevice
-      produces:
-        - application/json
-      responses:
-        200:    # status code
-          description: A string
-  /addDevice:
+  /devices:
     post:
       summary: Returns a string.
       description: Optional extended description in CommonMark or HTML.
-      operationId: device_api.addDevice
+      operationId: device_api.add_device
       consumes:
         - application/json
       parameters:
-        - in: body
-          name: device
-          description: The device to create.
-          schema:
-            type: object
-            required:
-              - name
-              - description
-            properties:
-              name:
-                type: string
-              description:
-                type: string
+        - $ref: '#/parameters/device'
       responses:
         200:    # status code
-          description: A user
+          description: A device
+  /devices/{id}:
+    get:
+      summary: Returns a device.
+      description: Optional extended description in CommonMark or HTML.
+      operationId: device_api.get_device
+      responses:
+        200:    # status code
+          description: device was returned successfuly
+      parameters:
+        - $ref: '#/parameters/id'
+    patch:
+      summary: patches device info
+      operationId: device_api.patch_device
+      parameters:
+        - $ref: '#/parameters/id'
+        - $ref: '#/parameters/device'
+      responses:
+        200:    #status code
+          description: device was patched successfully
+    delete:
+      summary: Deletes a device.
+      description: Optional extended description in CommonMark or HTML.
+      operationId: device_api.delete_device
+      parameters:
+        - $ref: '#/parameters/id'
+      responses:
+        200:    # status code
+          description: A string
+  
 
+parameters:
+  id:
+    name: id
+    description: a device id
+    in: path
+    type: string
+    required: true
+  # device:

@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <div class="row">
             <!-- Left side - list of devices -->
-            <div class="card mr-5" style="width: 20vw;">
+            <div class="card mr-5" style="width: 20vw; min-width: 300px; height: min-content;">
                 <div class="card-header bg-light">
                     <h5>Your Devices</h5>
                 </div>
@@ -26,7 +26,7 @@
                 {% for dev in userDevices %}
                     <!-- id must match list href -->
                     <div class="tab-pane" id="{{ dev["name"] }}" role="tabpanel">
-                        <div class="card" style="width: 50vw;">
+                        <div class="card" style="width: 50vw; min-width: 500px">
                             <div class="card-header bg-light">
                                 <h5>Device Information: {{ dev["prettyname"] }}</h5>
                             </div>

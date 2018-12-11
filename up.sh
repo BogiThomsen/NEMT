@@ -19,5 +19,5 @@ cd ..
 cd device
 docker-compose up -d
 cd ..
-cd Service
+cd sensors
 docker-compose up -d

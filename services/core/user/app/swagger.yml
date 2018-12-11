@@ -27,7 +27,7 @@ paths:
       operationId: user_api.get_user
       responses:
         200:    # status code
-          description: User was returned successfuly
+          description: User was returned successfully
       parameters:
         - $ref: '#/parameters/id'
     patch:
@@ -48,6 +48,12 @@ paths:
       responses:
         200:    # status code
           description: A string
+    /{inputid}:
+      summary:
+      description:
+      operationId:
+      parameters:
+      responses:
   /users/getId/{username}:
     get:
       summary: Returns a user_id.
@@ -55,9 +61,21 @@ paths:
       operationId: user_api.get_user_id
       responses:
         200:    # status code
-          description: User was returned successfuly
+          description: User was returned successfully
       parameters:
         - $ref: '#/parameters/username'
+  /users/authenticate:
+    authenticate:
+      summary: Authenticates a user login
+      description: blank for now
+      operationId: user_api.authenticate_user
+      responses:
+        200:    #status code
+          description: User was authenticated successfully
+        401:    #status code
+          descripteion: Authorization failed
+      parameters:
+        - $ref: '#/parameters/authenticationBody'
 
 parameters:
   id:
@@ -112,4 +130,18 @@ parameters:
           type: string
         access_token:
           type: string
-  
+
+  authenticationBody:
+    in: body
+    name: authenticationBody
+    description: A body containing the username and password of a user  to authenticate
+    schema:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+        password:
+          type: string

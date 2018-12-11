@@ -8,7 +8,7 @@ info:
 basePath: /v1
 
 paths:
-  /devices:
+  users/{userid}/devices:
     post:
       summary: Returns a string.
       description: Optional extended description in CommonMark or HTML.
@@ -20,7 +20,7 @@ paths:
       responses:
         200:    # status code
           description: A device
-  /devices/{id}:
+  users/{userid}/devices/{deviceid}:
     get:
       summary: Returns a device.
       description: Optional extended description in CommonMark or HTML.

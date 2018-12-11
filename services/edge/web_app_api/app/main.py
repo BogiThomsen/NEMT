@@ -29,19 +29,19 @@ def addUser():
 
 @app.route('/patchUser', methods=['GET', 'POST', 'PATCH'])
 def patchUser():
-    username = "patchvirkerstadig"
+    username = "meyer"
     user_id = session.get("http://user-service:5100/v1/users/getId/{}".format(username), headers=headers).text
     # Please find en bedre måde at fjerne quotes og html encodet newline(%0A)
     user_id = user_id.replace('\"', '').rstrip()
 
     json = {}
     json["operation"] = False
-    json["username"] = "meyer"
-    json["password"] = "meyer"
-    json["device"] = "meyer"
-    json["rule"] = "meyer"
-    json["grouping"] = "meyer"
-    json["other_device"] = "meyer"
+    json["username"] = "burla"
+    json["password"] = "burla"
+    json["device"] = "burla"
+    json["rule"] = "burla"
+    json["grouping"] = "burla"
+    json["other_device"] = "burla"
 
     user_patch = session.patch("http://user-service:5100/v1/users/{}".format(user_id), json=json, headers=headers)
 

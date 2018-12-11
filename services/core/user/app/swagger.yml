@@ -5,7 +5,7 @@ info:
   description: description of api
   version: "1.0"
 
-basePath: /api
+basePath: /v1
 
 paths:
   /users:
@@ -16,22 +16,7 @@ paths:
       consumes:
         - application/json
       parameters:
-        - in: body
-          name: user
-          description: The user to create.
-          schema:
-            type: object
-            required:
-              - username
-              - password
-              - access_token
-            properties:
-              username:
-                type: string
-              password:
-                type: string
-              access_token:
-                type: string
+        - $ref: '#/parameters/user'
       responses:
         200:    # status code
           description: A user
@@ -45,37 +30,15 @@ paths:
           description: User was returned successfuly
       parameters:
         - $ref: '#/parameters/id'
-    # patch:
-    #   summary: update a user.
-    #   description: Optional extended description in CommonMark or HTML.
-    #   operationId: user_api.patch_user
-    #   consumes:
-    #     - application/json
-    #   parameters:
-    #     - in: path
-    #       name: user_id
-    #       schema:
-    #         type: string
-    #       required: true
-    #     - in: body
-    #       name: update
-    #       description: The information to update.
-    #       schema:
-    #         type: object
-    #         properties:
-    #           username:
-    #             type: string
-    #           password:
-    #             type: string
-    #           deviceList:
-    #             type: string
-    #           ruleList:
-    #             type: string
-    #           groupList:
-    #             type: string
-    #   responses:
-    #     200:    # status code
-    #       description: A user
+    patch:
+      summary: patches user info
+      operationId: user_api.patch_user
+      parameters:
+        - $ref: '#/parameters/id'
+        - $ref: '#/parameters/patchUser'
+      responses:
+        200:    #status code
+          description: user was patched successfully
     delete:
       summary: Deletes a user.
       description: Optional extended description in CommonMark or HTML.
@@ -109,4 +72,44 @@ parameters:
     in: path
     type: string
     required: true
+  patchUser:
+    in: body
+    name: userInfo
+    description: User info to be patched
+    schema:
+      type: object
+      required:
+        - operation
+      properties:
+        username:
+          type: string
+        operation:
+          type: boolean
+        password:
+          type: string
+        device:
+          type: string
+        rule:
+          type: string
+        grouping:
+          type: string
+        other_device:
+          type: string
+  user:
+    in: body
+    name: user
+    description: A user.
+    schema:
+      type: object
+      required:
+        - username
+        - password
+        - access_token
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+        access_token:
+          type: string
   

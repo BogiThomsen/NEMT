@@ -9,19 +9,13 @@ def connect_to_db():
 
 def post_device():
     device_db = connect_to_db()
-    devicename = request.json["devicename"]
-
-    if (device_db.count_documents({"devicename": devicename})) > 0 :
-        return make_response("devicename exists", 400)
-    else:
-        new_device = {
-            "devicename": devicename,
-            "password": request.json["password"],
-            "access_token": request.json["access_token"]
-        }
-        device_db.insert_one(new_device)
-        return "device: {}, was added".format(devicename)
-
+    new_device = {
+        "name": request.json["name"],
+        "pretty_name": request.json["pretty_name"],
+        "token": request.json["token"],
+    }
+    device_db.insert_one(new_device)
+    return "device: {}, was added".format(devicename)
 
 def delete_device(id):
     device_db = connect_to_db()
@@ -31,23 +25,6 @@ def delete_device(id):
     else:
         device_db.delete_one(query)
         return "device: {}, was deleted.".format(id)
-
-def patch_devicename():
-    devicename = request.json["devicename"]
-    device_id = request.json["deviceId"]
-    device_db = connect_to_db()
-    if (device_db.count_documents({"devicename": devicename})) > 0 :
-        return make_response("devicename exists", 400)
-    else:
-        device_db.update_one({"_id": ObjectId(device_id)},
-                            { "$set": { "devicename": devicename}})
-
-def patch_password():
-    new_password = request.json["password"]
-    device_id = request.json["deviceId"]
-    device_db = connect_to_db()
-    device_db.update_one({"_id": ObjectId(device_id)},
-                         { "$set": { "password": new_password}})
 
 def get_device(id):
     device_db = connect_to_db()
@@ -60,30 +37,8 @@ def get_device(id):
         return dumps(x)
 
 
-def get_device_id_by_devicename(devicename):
-    device_db = connect_to_db()
-    x = device_db.find_one({"devicename": devicename})
-    return str(x["_id"])
-
-def add_to_device():
-    device_id = request.json["deviceId"]
-    id_to_add = request.json["updateId"]
-    where_to_add = request.json["updateList"]
-    device_db = connect_to_db()
-    device_db.update_one({"_id": ObjectId(device_id)},
-                   { "$addToSet":  {where_to_add: id_to_add} })
-
-def delete_from_device():
-    device_id = request.json["deviceId"]
-    id_to_remove = request.json["updateId"]
-    where_to_remove = request.json["updateList"]
-    device_db = connect_to_db()
-    device_db.update_one({"_id": ObjectId(device_id)},
-                        {"$pull": {where_to_remove: id_to_remove} })
-
-
 def patch_device(id):
-    strings = {"name"}
+    strings = {"pretty_name"}
     strings_dict = string_dict()
     lists = {"sensor", "rule", "action"}
     lists_dict = list_dict()
@@ -98,16 +53,15 @@ def patch_device(id):
                                    {"$addToSet": {lists_dict[val]: request.json[val]}})
     for val in strings:
         if val in request.json:
-            if ((val == "name") and (device_db.count_documents({"name": request.json[val]})) > 0):
+            if ((val == "pretty_name") and (device_db.count_documents({"pretty_name": request.json[val]})) > 0):
                 return make_response("name already exists", 400)
             else:
                 device_db.update_one({"_id": ObjectId(id)},
                                    {"$set": {strings_dict[val]: request.json[val]}})
 
-
 def string_dict():
     dict = {
-        "name": "name"
+        "pretty_name": "pretty_name"
     }
     return dict
 

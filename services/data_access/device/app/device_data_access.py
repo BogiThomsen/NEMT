@@ -6,13 +6,12 @@ from flask import request, jsonify, make_response
 def connect_to_db():
     return pymongo.MongoClient("mongodb+srv://Andreas:dummypassword64@sw7-3mptj.gcp.mongodb.net/admin")["database"]["Devices"]
 
-
 def post_device():
     device_db = connect_to_db()
     new_device = {
         "name": request.json["name"],
-        "pretty_name": request.json["pretty_name"],
-        "token": request.json["token"],
+        "pretty_name": request.json["name"],
+        "token": request.json["token"]
     }
     _id = device_db.insert_one(new_device)
     device = device_db.find_one({"_id": _id})

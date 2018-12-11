@@ -6,3 +6,5 @@
 *.ini
 __pycache__/*
 *.pyc
+*.xml
+services/edge/web_app_api/\.idea/web_app_api\.iml

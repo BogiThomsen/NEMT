@@ -10,7 +10,6 @@ def add_device():
     r = requests.post("http://device-access:5200/v1/devices", json=device)
     return jsonify({'response': r.json()})
 
-## Skal laves om ift. deviceId
 def delete_device(id):
     r = requests.delete("http://device-access:5200/v1/devices/{}".format(id))
     return r.text

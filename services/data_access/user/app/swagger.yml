@@ -44,13 +44,13 @@ paths:
       summary: patches user info
       operationId: user_data_access.patch_user
       parameters:
-        - $ref: '#/parameters/patchUser'
         - $ref: '#/parameters/id'
+        - $ref: '#/parameters/patchUser'
       responses:
         200:    #status code
           description: user was patched successfully
 
-  /getId/{username}:
+  /users/getId/{username}:
     get:
       summary: Returns a userId.
       operationId: user_data_access.get_user_id_by_username
@@ -171,15 +171,12 @@ parameters:
     type: string
     required: true
   username:
-    in: body
     name: username
-    schema:
-      type: object
-      required:
-        - username
-      properties:
-        username:
-          type: string
+    description: a username
+    in: path
+    type: string
+    required: true
+
   user:
     in: body
     name: user

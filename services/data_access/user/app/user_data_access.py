@@ -23,14 +23,14 @@ def post_user():
         return "user: {}, was added".format(username)
 
 
-def delete_user(user_id):
+def delete_user(id):
     user_db = connect_to_db()
-    query = {"_id": ObjectId(user_id)}
+    query = {"_id": ObjectId(id)}
     if (user_db.count_documents(query)) < 1 :
         return make_response("user doesnt exist", 400)
     else:
         user_db.delete_one(query)
-        return "user: {}, was deleted.".format(user_id)
+        return "user: {}, was deleted.".format(id)
 
 def patch_username():
     username = request.json["username"]
@@ -49,9 +49,9 @@ def patch_password():
     user_db.update_one({"_id": ObjectId(user_id)},
                          { "$set": { "password": new_password}})
 
-def get_user(user_id):
+def get_user(id):
     user_db = connect_to_db()
-    query = {"_id": ObjectId(user_id)}
+    query = {"_id": ObjectId(id)}
     if (user_db.count_documents(query)) < 1 :
         return make_response("user doesnt exists", 400)
     else:
@@ -82,7 +82,7 @@ def delete_from_user():
                         {"$pull": {where_to_remove: id_to_remove} })
 
 
-def patch_user(user_id):
+def patch_user(id):
     strings = {"password", "username"}
     strings_dict = string_dict()
     lists = {"device", "rule", "grouping", "other_devices"}
@@ -91,17 +91,17 @@ def patch_user(user_id):
     for val in lists:
         if val in request.json:
             if request.json["operation"]:
-                user_db.update_one({"_id": ObjectId(user_id)},
+                user_db.update_one({"_id": ObjectId(id)},
                                    {"$pull": {lists_dict[val]: request.json[val]}})
             if request.json["operation"] == False:
-                user_db.update_one({"_id": ObjectId(user_id)},
+                user_db.update_one({"_id": ObjectId(id)},
                                    {"$addToSet": {lists_dict[val]: request.json[val]}})
     for val in strings:
         if val in request.json:
             if ((val == "username") and (user_db.count_documents({"username": request.json[val]})) > 0):
                 return make_response("username already exists", 400)
             else:
-                user_db.update_one({"_id": ObjectId(user_id)},
+                user_db.update_one({"_id": ObjectId(id)},
                                    {"$set": {strings_dict[val]: request.json[val]}})
 
 

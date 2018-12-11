@@ -13,6 +13,9 @@ cd ..
 cd device
 docker-compose build
 cd ..
+cd Service
+docker-compose build
+cd ..
 cd ..
 cd edge/web_app_api
 docker-compose build

@@ -93,15 +93,15 @@ def patch_user(id):
     user = user_db.find_one({"_id": ObjectId(id)})
     for val in lists:
         if val in request.json:
-            if request.json["operation"]:
+            if request.json["operation"] == "remove":
                 for item in request.json[val]:
                     user_db.update_one({"_id": ObjectId(id)},
                                        {"$pull": {lists_dict[val]: item}})
-            if request.json["operation"] == False:
+            if request.json["operation"] == "add":
                 for item in request.json[val]:
                     user_db.update_one({"_id": ObjectId(id)},
                                        {"$addToSet": {lists_dict[val]: item}})
-    if request.json["operation"] == False:
+    if request.json["operation"] == "add":
         for val in strings:
             if val in request.json:
                 if ((val == "username") and (user_db.count_documents({"username": request.json[val]})) > 0):

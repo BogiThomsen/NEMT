@@ -206,8 +206,7 @@ parameters:
         username:
           type: string
         operation:
-          type: string
-          enum: [add, remove]
+          type: boolean
         password:
           type: string
         device:

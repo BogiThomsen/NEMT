@@ -41,27 +41,20 @@ def patch_user(id):
     lists = {"device", "rule", "grouping", "other_devices"}
     lists_dict = list_dict()
     sensor_db = connect_to_db()
-    sensor = sensor_db.find_one({"_id": ObjectId(id)})
     for val in lists:
         if val in request.json:
-            if request.json["operation"]:
+            if request.json["operation"] == "remove":
                 for item in request.json[val]:
-                    user_db.update_one({"_id": ObjectId(id)},
+                    sensor_db.update_one({"_id": ObjectId(id)},
                                        {"$pull": {lists_dict[val]: item}})
-            if request.json["operation"] == False:
+            if request.json["operation"] == "add":
                 for item in request.json[val]:
-                    user_db.update_one({"_id": ObjectId(id)},
+                    sensor_db.update_one({"_id": ObjectId(id)},
                                        {"$addToSet": {lists_dict[val]: item}})
-    if request.json["operation"] == False:
+    if request.json["operation"] == "add":
         for val in strings:
             if val in request.json:
-                if ((val == "username") and (user_db.count_documents({"username": request.json[val]})) > 0):
-                    if request.json[val] == user["username"]:
-                        continue
-                    else:
-                        return make_response("username already exists", 400)
-                else:
-                    user_db.update_one({"_id": ObjectId(id)},
+                sensor_db.update_one({"_id": ObjectId(id)},
                                        {"$set": {strings_dict[val]: request.json[val]}})
 
 

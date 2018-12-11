@@ -20,7 +20,6 @@ def add_user():
     r = requests.post("http://user-access:5200/v1/users", json=user)
     return jsonify({'response': r.json()})
 
-## Skal laves om ift. userId
 def delete_user(id):
     r = requests.delete("http://user-access:5200/v1/users/{}".format(id))
     return r.text

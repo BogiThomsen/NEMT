@@ -68,12 +68,9 @@ parameters:
       type: object
       required:
         - name
-        - pretty_name
         - token
       properties:
         name:
-          type: string
-        pretty_name:
           type: string
         token:
           type: string
@@ -86,19 +83,22 @@ parameters:
       required:
         - operation
       properties:
-        name:
+        pretty_name:
           type: string
         operation:
-          type: boolean
-        prettyname:
           type: string
-        token:
-          type: string
-        rule:
-          type: string
+          enum: [add, remove]
         sensor:
-          type: string
+          type: array
+          items:
+            type: string
         action:
-          type: string
+          type: array
+          items:
+            type: string
+        rule:
+          type: array
+          items:
+            type: string
 
 

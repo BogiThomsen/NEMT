@@ -3,8 +3,14 @@
 cd services/core/user
 docker-compose build
 cd ..
+cd device
+docker-compose build
+cd ..
 cd ..
 cd data_access/user
+docker-compose build
+cd ..
+cd device
 docker-compose build
 cd ..
 cd ..

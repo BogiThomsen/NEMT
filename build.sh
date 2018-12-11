@@ -13,7 +13,7 @@ cd ..
 cd device
 docker-compose build
 cd ..
-cd Service
+cd sensors
 docker-compose build
 cd ..
 cd ..

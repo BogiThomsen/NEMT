@@ -25,7 +25,7 @@ def is_only_expected_data(recieved_dictionary, expected_dictionary):
     return True
 
 
-def validate_user_request(request):
+def validate_users_request(request):
     if is_only_expected_data(request.json, ["username", "password"]) == False:
         return False
 
@@ -35,7 +35,7 @@ def validate_user_request(request):
     return is_alphanumeric(username) and is_alphanumeric(password)
 
 
-def validate_device_request(request):
+def validate_devices_request(request):
 
     if is_only_expected_data(request.json, ["prettyName"]) == False:
         return False
@@ -45,7 +45,7 @@ def validate_device_request(request):
     return is_alphanumeric_or_whitespace(prettyName)
 
 
-def validate_sensor_request(request):
+def validate_sensors_request(request):
     if is_only_expected_data(request.json, ["prettyName", "public", "accessTokens"]) == False:
         return False
 
@@ -60,7 +60,7 @@ def validate_sensor_request(request):
     return is_alphanumeric_or_whitespace(prettyname) and isinstance(public, bool)
 
 
-def validate_action_request(request):
+def validate_actions_request(request):
     if is_only_expected_data(request.json, ["prettyName", "public", "accessTokens"]) == False:
         return False
 

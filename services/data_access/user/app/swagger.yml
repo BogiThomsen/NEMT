@@ -21,6 +21,7 @@ paths:
           description: User was added Sucessfully.
         400:
           description: User already exists
+  /users/{id}:  
     get:
       summary: Returns a user in the form of a json array.
       operationId: user_data_access.get_user

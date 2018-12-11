@@ -16,7 +16,7 @@ def post_sensor():
     else:
         new_sensor = {"name": name,
                       "pretty_name": request.json["pretty_name"]}
-    _id = sensor_db.insert_one(new_sensor)
+    _id = sensor_db.insert_one(new_sensor).inserted_id
     sensor = sensor_db.find_one({"_id": _id})
     sensor["_id"] = str(sensor["_id"])
     return sensor

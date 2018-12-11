@@ -1,4 +1,5 @@
 from flask import jsonify, request
+import requests
 
 devices = []
 

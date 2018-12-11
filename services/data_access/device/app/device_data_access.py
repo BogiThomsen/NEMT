@@ -14,8 +14,10 @@ def post_device():
         "pretty_name": request.json["pretty_name"],
         "token": request.json["token"],
     }
-    device_db.insert_one(new_device)
-    return "device: {}, was added".format(devicename)
+    _id = device_db.insert_one(new_device)
+    device = device_db.find_one({"_id": _id})
+    device["_id"] = str(device["_id"])
+    return device
 
 def delete_device(id):
     device_db = connect_to_db()
@@ -46,18 +48,18 @@ def patch_device(id):
     for val in lists:
         if val in request.json:
             if request.json["operation"]:
-                device_db.update_one({"_id": ObjectId(id)},
-                                   {"$pull": {lists_dict[val]: request.json[val]}})
+                for item in request.json[val]:
+                    user_db.update_one({"_id": ObjectId(id)},
+                                       {"$pull": {lists_dict[val]: item}})
             if request.json["operation"] == False:
-                device_db.update_one({"_id": ObjectId(id)},
-                                   {"$addToSet": {lists_dict[val]: request.json[val]}})
-    for val in strings:
-        if val in request.json:
-            if ((val == "pretty_name") and (device_db.count_documents({"pretty_name": request.json[val]})) > 0):
-                return make_response("name already exists", 400)
-            else:
-                device_db.update_one({"_id": ObjectId(id)},
-                                   {"$set": {strings_dict[val]: request.json[val]}})
+                for item in request.json[val]:
+                    user_db.update_one({"_id": ObjectId(id)},
+                                       {"$addToSet": {lists_dict[val]: item}})
+    if request.json["operation"] == False:
+        for val in strings:
+            if val in request.json:
+                user_db.update_one({"_id": ObjectId(id)},
+                                    {"$set": {strings_dict[val]: request.json[val]}})
 
 def string_dict():
     dict = {

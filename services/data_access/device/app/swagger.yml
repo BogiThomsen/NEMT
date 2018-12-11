@@ -50,17 +50,7 @@ paths:
         200:    #status code
           description: device was patched successfully
 
-  /devices/getId/{devicename}:
-    get:
-      summary: Returns a deviceId.
-      operationId: device_data_access.get_device_id_by_devicename
-      produces:
-        - text/plain
-      parameters:
-        - $ref: '#/parameters/devicename'
-      responses:
-        200:    # status code
-          description: deviceId was returned sucessfully.
+ 
 
   
 parameters:
@@ -70,13 +60,6 @@ parameters:
     in: path
     type: string
     required: true
-  devicename:
-    name: devicename
-    description: a devicename
-    in: path
-    type: string
-    required: true
-
   device:
     in: body
     name: device

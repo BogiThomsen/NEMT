@@ -1,7 +1,55 @@
 {% extends 'pages/pagelayout.html' %}
 {% block title %}Dashboard{% endblock %}
 {% block pagecontent %}
-    <form class="form-signin text-center">
-        <h1 class="h4 font-weight-normal">Welcome to your dashboard</h1>
-    </form>
+    <container class="mr-5 mt-1 ml-5 mb-5" style="width: max-content; height: 75vm;" >
+        <h1 class="h1 text-center font-weight-normal">Welcome to your dashboard</h1>
+        <container>
+            <div class="row">
+                <div class="card dashboard-card mx-auto">
+                    <div class="card-header bg-light">
+                        <h5>Available Actions</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <tbody>
+                            {% for act in userActions %}
+                                <tr>
+                                    <td scope="row">{{ act["prettyname"] }}</td>
+                                    <td><button class="btn btn-primary btn-sm">Activate</button></td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card dashboard-card mx-auto">
+                    <div class="card-header bg-light">
+                        <h5>Available Sensors</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <tbody>
+                            {% for sen in userSensors %}
+                                <tr>
+                                    <td scope="row">{{ sen["prettyname"] }}</td>
+                                    <td>{{ sen["value"] }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+                <div class="card dashboard-card mx-auto">
+                    <div class="card-header bg-light">
+                        <h5>Public devices nearby</h5>
+                    </div>
+                    <div class="card-body">
+
+                    </div>
+                </div>
+            </div>
+        </container>
+    </container>
+
 {% endblock %}

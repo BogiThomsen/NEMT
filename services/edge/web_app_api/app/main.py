@@ -53,7 +53,9 @@ def logout():
 @app.route('/dashboard')
 @flask_login.login_required
 def dashboard():
-    return render_template('pages/dashboard.html')
+    userSensors = testSensors
+    userActions = testActions
+    return render_template('pages/dashboard.html', userSensors=userSensors, userActions=userActions)
 
 @app.route('/devices')
 @flask_login.login_required

@@ -8,42 +8,42 @@ info:
 basePath: /v1
 
 paths:
-  /sensors:
+  /actions:
     post:
-      summary: Adds a sensor to the database.
-      operationId: sensor_data_access.post_sensor
+      summary: Adds a actions to the database.
+      operationId: action_data_access.post_action
       consumes:
         - application/json
       parameters:
-        - $ref: '#/parameters/sensor'
+        - $ref: '#/parameters/actions'
       responses:
         200:    # status code
-          description: Sensor was added Sucessfully.
-  /sensors/{id}:
+          description: Action was added Sucessfully.
+  /actions/{id}:
     get:
-      summary: Returns a sensor in the form of a json array.
-      operationId: sensor_data_access.get_sensor
+      summary: Returns an action in the form of a json array.
+      operationId: action_data_access.get_action
       produces:
         - application/json
       responses:
         200:    # status code
-          description: sensor was returned sucessfully.
+          description: action was returned sucessfully.
       parameters:
         - $ref: '#/parameters/id'
     delete:
-      summary: deletes a sensor.
-      operationId: sensor_data_access.delete_sensor
+      summary: deletes an action.
+      operationId: action_data_access.delete_action
       parameters:
         - $ref: '#/parameters/id'
       responses:
         200:    # status code
-          description: Sensor was deleted sucessfully.
+          description: Action was deleted sucessfully.
     patch:
-      summary: patches sensor info
-      operationId: sensor_data_access.patch_sensor
+      summary: patches action info
+      operationId: action_data_access.patch_action
       parameters:
         - $ref: '#/parameters/id'
-        - $ref: '#/parameters/patchSensor'
+        - $ref: '#/parameters/patchAction'
       responses:
         200:    #status code
           description: sensor was patched successfully
@@ -51,15 +51,15 @@ paths:
 parameters:
   id:
     name: id
-    description: a sensor id
+    description: an action id
     in: path
     type: string
     required: true
 
-  sensor:
+  actions:
     in: body
-    name: sensor
-    description: A sensor.
+    name: action
+    description: An action.
     schema:
       type: object
       required:
@@ -69,10 +69,10 @@ parameters:
           type: string
         pretty_name:
           type: string
-  patchSensor:
+  patchAction:
     in: body
-    name: sensorInfo
-    description: sensor info to be patched
+    name: actionInfo
+    description: Action info to be patched
     schema:
       type: object
       required:
@@ -84,10 +84,6 @@ parameters:
           type: string
           enum: [add, remove]
         pretty_name:
-          type: string
-        value:
-          type: string
-        timestamp:
           type: string
         public:
           type: boolean

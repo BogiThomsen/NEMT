@@ -48,12 +48,6 @@ paths:
       responses:
         200:    # status code
           description: A string
-    /{inputid}:
-      summary:
-      description:
-      operationId:
-      parameters:
-      responses:
   /users/getId/{username}:
     get:
       summary: Returns a user_id.
@@ -65,7 +59,7 @@ paths:
       parameters:
         - $ref: '#/parameters/username'
   /users/authenticate:
-    authenticate:
+    post:
       summary: Authenticates a user login
       description: blank for now
       operationId: user_api.authenticate_user
@@ -130,7 +124,6 @@ parameters:
           type: string
         access_token:
           type: string
-
   authenticationBody:
     in: body
     name: authenticationBody

@@ -78,6 +78,12 @@ def devices():
 def rules():
     return render_template('pages/rules.html')
 
+@app.route('/rule/new')
+def createrule():
+    userSensors = testSensors
+    userActions = testActions
+    return render_template('pages/createrule.html', userSensors=userSensors, userActions=userActions)
+
 @app.route('/protected')
 @flask_login.login_required
 def protected():

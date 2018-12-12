@@ -62,6 +62,8 @@ body{
 }
 
 .dashboard-card{
-  width: 23vw;
+  width: 25vw;
   min-width: 150px;
+  max-height: 500px;
+  overflow-y: auto;
 }

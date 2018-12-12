@@ -43,7 +43,7 @@ def authenticate_user():
     }
     userId = requests.get("http://user-access:5200/v1/users/getId/{}".format(login["username"])).text
     userId = userId.replace('\"', '').rstrip()
-    user = requests.get("http://user-access:5200/v1/users/{}".format(userId), json=login).json()
+    user = requests.get("http://user-access:5200/v1/users/{}".format(userId)).json()
     if checkPassword(login["password"], user["password"]):
         user["password"] = None
         return user

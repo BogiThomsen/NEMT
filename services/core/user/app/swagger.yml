@@ -63,11 +63,13 @@ paths:
       summary: Authenticates a user login
       description: blank for now
       operationId: user_api.authenticate_user
+      consumes: 
+        - application/json
       responses:
         200:    #status code
           description: User was authenticated successfully
         401:    #status code
-          descripteion: Authorization failed
+          description: Authorization failed
       parameters:
         - $ref: '#/parameters/authenticationBody'
 

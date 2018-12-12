@@ -8,47 +8,51 @@ info:
 basePath: /v1
 
 paths:
-  /users/{userid}/devices:
+  /users/{userid}/devices/{deviceid}/actions:
     post:
-      summary: Returns a string.
+      summary: Adds an action.
       description: Optional extended description in CommonMark or HTML.
-      operationId: device_api.add_device
+      operationId: action_api.add_action
       consumes:
         - application/json
       parameters:
         - $ref: '#/parameters/userid'
-        - $ref: '#/parameters/device'
+        - $ref: '#/parameters/deviceid'
+        - $ref: '#/parameters/action'
       responses:
         200:    # status code
-          description: A device
-  /users/{userid}/devices/{deviceid}:
+          description: An action was added
+  /users/{userid}/devices/{deviceid}/actions/{actionid}:
     get:
-      summary: Returns a device.
+      summary: Returns a action.
       description: Optional extended description in CommonMark or HTML.
-      operationId: device_api.get_device
+      operationId: action_api.get_action
       responses:
         200:    # status code
-          description: device was returned successfuly
+          description: action was returned successfuly
       parameters:
         - $ref: '#/parameters/userid'
         - $ref: '#/parameters/deviceid'
+        - $ref: '#/parameters/actionid'
     patch:
-      summary: patches device info
-      operationId: device_api.patch_device
+      summary: patches action info
+      operationId: action_api.patch_action
       parameters:
         - $ref: '#/parameters/userid'
         - $ref: '#/parameters/deviceid'
-        - $ref: '#/parameters/device'
+        - $ref: '#/parameters/actionid'
+        - $ref: '#/parameters/patchAction'
       responses:
         200:    #status code
-          description: device was patched successfully
+          description: action was patched successfully
     delete:
-      summary: Deletes a device.
+      summary: Deletes a action.
       description: Optional extended description in CommonMark or HTML.
-      operationId: device_api.delete_device
+      operationId: action_api.delete_action
       parameters:
         - $ref: '#/parameters/userid'
         - $ref: '#/parameters/deviceid'
+        - $ref: '#/parameters/actionid'
       responses:
         200:    # status code
           description: A string
@@ -57,7 +61,7 @@ paths:
 parameters:
   userid:
     name: userid
-    description: a user id
+    description: a device id
     in: path
     type: string
     required: true
@@ -67,43 +71,44 @@ parameters:
     in: path
     type: string
     required: true
-  device:
+  actionid:
+    name: actionid
+    description: a device id
+    in: path
+    type: string
+    required: true
+  action:
     in: body
-    name: device
-    description: A device.
+    name: action
+    description: An action.
     schema:
       type: object
       required:
         - name
-        - token
       properties:
         name:
           type: string
-        token:
+        pretty_name:
           type: string
-  patchdevice:
+  patchAction:
     in: body
-    name: deviceInfo
-    description: device info to be patched
+    name: actionInfo
+    description: Action info to be patched
     schema:
       type: object
       required:
         - operation
       properties:
-        pretty_name:
+        name:
           type: string
         operation:
           type: string
           enum: [add, remove]
-        sensor:
-          type: array
-          items:
-            type: string
-        action:
-          type: array
-          items:
-            type: string
-        rule:
+        pretty_name:
+          type: string
+        public:
+          type: boolean
+        access_token:
           type: array
           items:
             type: string

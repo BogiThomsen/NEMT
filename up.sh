@@ -12,6 +12,12 @@ cd ..
 cd device
 docker-compose up -d
 cd ..
+cd sensor
+docker-compose up -d
+cd ..
+cd action
+docker-compose up -d
+cd ..
 cd ..
 cd data_access/user
 docker-compose up -d

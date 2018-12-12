@@ -6,6 +6,12 @@ cd ..
 cd device
 docker-compose build
 cd ..
+cd sensor
+docker-compose build
+cd ..
+cd action
+docker-compose build
+cd ..
 cd ..
 cd data_access/user
 docker-compose build

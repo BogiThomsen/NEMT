@@ -18,3 +18,6 @@ docker-compose up -d
 cd ..
 cd device
 docker-compose up -d
+cd ..
+cd sensors
+docker-compose up -d

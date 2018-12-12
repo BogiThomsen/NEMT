@@ -206,16 +206,25 @@ parameters:
         username:
           type: string
         operation:
-          type: boolean
+          type: string
+          enum: [add, remove]
         password:
           type: string
         device:
-          type: string
+          type: array
+          items:
+            type: string
         rule:
-          type: string
+          type: array
+          items:
+            type: string
         grouping:
-          type: string
-        other_device:
-          type: string
+          type: array
+          items:
+            type: string
+        other_devices:
+          type: array
+          items:
+            type: string
 
 

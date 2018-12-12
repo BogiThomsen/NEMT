@@ -41,7 +41,7 @@ def get_sensor(id):
         x["_id"] = str(x["_id"])
         return dumps(x)
 
-def patch_user(id):
+def patch_sensor(id):
     strings = {"password", "username"}
     strings_dict = string_dict()
     lists = {"device", "rule", "grouping", "other_devices"}

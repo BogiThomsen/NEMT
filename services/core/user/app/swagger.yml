@@ -96,7 +96,8 @@ parameters:
         username:
           type: string
         operation:
-          type: boolean
+          type: string
+          enum: [add, remove]
         password:
           type: string
         device:

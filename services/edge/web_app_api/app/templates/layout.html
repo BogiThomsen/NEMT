@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
         <title>{% block title %}{% endblock %}</title>
 
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 
@@ -36,7 +37,10 @@
             {% if current_user.is_anonymous %}
                 <a class="btn btn-outline-primary ml-auto" href="/signin">Sign in</a>
             {% else %}
-                <a class="btn btn-outline-primary ml-auto" href="/signout">Sign out</a>
+                <a class="ml-auto" href="/profile">
+                    <i class="fas fa-user-circle" style="font-size:38px"></i>
+                </a>
+                <a class="btn btn-primary ml-3" href="/signout">Sign out</a>
             {% endif %}
         </header>
         {% block content %}{% endblock %}

@@ -21,3 +21,6 @@ docker-compose up -d
 cd ..
 cd sensors
 docker-compose up -d
+cd ..
+cd actions
+docker-compose up -d

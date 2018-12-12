@@ -44,7 +44,7 @@ def get_sensor(id):
         return dumps(x)
 
 def patch_sensor(id):
-    strings = {"name", "pretty_name", "value", "timestamp", "public"}
+    strings = {"pretty_name", "value", "timestamp", "public"}
     strings_dict = string_dict()
     lists = {"access_token"}
     lists_dict = list_dict()
@@ -68,7 +68,6 @@ def patch_sensor(id):
 
 def string_dict():
     dict = {
-        "name": "name",
         "pretty_name": "pretty_name",
         "value": "value",
         "timestamp": "timestamp",

@@ -44,7 +44,7 @@ def get_action(id):
         return dumps(x)
 
 def patch_action(id):
-    strings = {"name", "pretty_name", "public"}
+    strings = {"pretty_name", "public"}
     strings_dict = string_dict()
     lists = {"access_token"}
     lists_dict = list_dict()
@@ -68,7 +68,6 @@ def patch_action(id):
 
 def string_dict():
     dict = {
-        "name": "name",
         "pretty_name": "pretty_name",
         "public": "public"
     }

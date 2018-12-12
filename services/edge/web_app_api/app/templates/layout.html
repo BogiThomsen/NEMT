@@ -12,6 +12,22 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
+        <script>
+            $(function () {
+                $('.searchInput').keyup(function () {
+                    var enableOnInput = $(this).data('enable-on-input');
+                    if ($(this).val() == '') {
+                        //Check to see if there is any text entered
+                        // If there is no text within the input ten disable the button
+                        $('#' + enableOnInput).prop('disabled', true);
+                    } else {
+                        //If there is text in the input, then enable the button
+                        $('#' + enableOnInput).prop('disabled', false);
+                    }
+                });
+            });
+        </script>
+
         {% block head %}{% endblock %}
     </head>
     <body>

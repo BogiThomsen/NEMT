@@ -13,7 +13,7 @@ def post_device():
         "pretty_name": request.json["name"],
         "token": request.json["token"]
     }
-    _id = device_db.insert_one(new_device)
+    _id = device_db.insert_one(new_device).inserted_id
     device = device_db.find_one({"_id": _id})
     device["_id"] = str(device["_id"])
     return device
@@ -48,16 +48,16 @@ def patch_device(id):
         if val in request.json:
             if request.json["operation"]:
                 for item in request.json[val]:
-                    user_db.update_one({"_id": ObjectId(id)},
+                    device_db.update_one({"_id": ObjectId(id)},
                                        {"$pull": {lists_dict[val]: item}})
             if request.json["operation"] == False:
                 for item in request.json[val]:
-                    user_db.update_one({"_id": ObjectId(id)},
+                    device_db.update_one({"_id": ObjectId(id)},
                                        {"$addToSet": {lists_dict[val]: item}})
     if request.json["operation"] == False:
         for val in strings:
             if val in request.json:
-                user_db.update_one({"_id": ObjectId(id)},
+                device_db.update_one({"_id": ObjectId(id)},
                                     {"$set": {strings_dict[val]: request.json[val]}})
 
 def string_dict():

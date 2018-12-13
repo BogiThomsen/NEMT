@@ -66,7 +66,7 @@ def check_password(userPassword, hashedPassword):
     return password == hashlib.sha256(foo.encode() + userPassword.encode()).hexdigest()
 
 def authorize_user(id):
-    access_token = request.json["access_token"]
+    access_token = request.json["accessToken"]
     #Fra data access får jeg enten en 200 for at token eksisterer, eller 404 for at den ikke gør
     response = requests.get("http://user-acess:5200/v1/users/{}".format(access_token))
     user = response.json()

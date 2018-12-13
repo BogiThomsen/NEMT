@@ -161,7 +161,7 @@ def validate_sensors_request(request):
             return result
 
 
-        public = request.json.data["public"]
+        public = request.json["data"]["public"]
         accesstokens = request.json["data"]["accessTokens"]
 
         for token in accesstokens:
@@ -191,7 +191,7 @@ def validate_sensors_request(request):
         if request.json["data"]["operation"] not in ["add", "remove"]:
             return "operation should be either add or remove. it is " + request.json["data"]
 
-        public = request.json.data["public"]
+        public = request.json["data"]["public"]
         accesstokens = request.json["data"]["accessTokens"]
 
         for token in accesstokens:

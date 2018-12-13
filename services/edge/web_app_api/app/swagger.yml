@@ -366,7 +366,6 @@ parameters:
     schema:
       type: object
       required:
-        - accessToken
         - data
       properties:
         accessToken:

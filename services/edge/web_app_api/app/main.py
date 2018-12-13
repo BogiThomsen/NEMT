@@ -78,7 +78,7 @@ def devices():
 def rules():
     return render_template('pages/rules.html')
 
-@app.route('/rule/new')
+@app.route('/rules/new')
 def createrule():
     userSensors = testSensors
     userActions = testActions

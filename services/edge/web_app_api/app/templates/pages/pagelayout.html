@@ -4,16 +4,23 @@
 
     <div class="container-fluid">
         <div class="row">
-            <nav class="col-md-2 d-none d-md-block sidebar">
+            <nav class="col-md-2 d-none d-md-block sidebar border-right" style="background-color: #f3f3f3">
                 <div class="sidebar-sticky">
-                    <ul class="nav navbar-nav">
-                    <li><a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                    <ul class="nav navbar-nav mt-4">
+                    <li>
+                        <a class="h5 text-dark" href="{{ url_for('dashboard') }}">
+                            <i class="mr-2 fas fa-home"></i>Dashboard
+                        </a>
+                    </li>
                     </ul>
-                    <ul class="nav navbar-nav">
-                        <li><a class="nav-link" href="{{ url_for('devices') }}">Devices</a></li>
+                    <ul class="nav navbar-nav mt-4">
+                        <li><a class="h5 text-dark" href="{{ url_for('devices') }}">
+                            <i class="mr-2 fas fa-tachometer-alt"></i>Devices</a>
+                        </li>
                     </ul>
-                    <ul class="nav navbar-nav">
-                        <li><a class="nav-link" href="{{ url_for('rules') }}">Rules</a></li>
+                    <ul class="nav navbar-nav mt-4">
+                        <li><a class="h5 pb-1 text-dark" href="{{ url_for('rules') }}">
+                            <i class="mr-2 fas fa-list-alt"></i>Rules</a></li>
                     </ul>
                 </div>
 

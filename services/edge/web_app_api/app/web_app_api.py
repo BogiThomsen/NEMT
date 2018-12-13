@@ -15,7 +15,7 @@ def post_users_authenticate():
     validation = validate_users_request(request)
     if validation == '':
         user_response = requests.post(user_url + '/users/authenticate', headers=headers, data=request.json)
-        return make_response(user_response.content, user_response.status_code)
+        return make_response(user_response.json(), user_response.status_code)
     else:
         return make_response(json.dumps({"error": validation, "body": request.json}), 400, headers)
 

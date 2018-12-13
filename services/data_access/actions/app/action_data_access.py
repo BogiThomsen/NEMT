@@ -1,6 +1,6 @@
 import pymongo
+import json
 from bson.objectid import ObjectId
-from bson.json_util import dumps
 from flask import request, jsonify, make_response
 
 def connect_to_db():
@@ -10,7 +10,7 @@ def connect_to_db():
 def post_action():
     action_db = connect_to_db()
     name = request.json["name"]
-    if 'prettyname' not in request.json:
+    if 'pretty_name' not in request.json:
         new_action = {"name": name,
                       "pretty_name": name,
                       "public": False}
@@ -21,27 +21,27 @@ def post_action():
     _id = action_db.insert_one(new_action).inserted_id
     action = action_db.find_one({"_id": _id})
     action["_id"] = str(action["_id"])
-    return action
+    return make_response(make_response(json.dumps(action), 201))
 
 
 def delete_action(id):
     action_db = connect_to_db()
     query = {"_id": ObjectId(id)}
     if (action_db.count_documents(query)) < 1 :
-        return make_response("action doesnt exist", 400)
+        return make_response("action with id: " + id + " doesnt exist", 404)
     else:
         action_db.delete_one(query)
-        return "action: {}, was deleted.".format(id)
+        return make_response("", 200)
 
 def get_action(id):
     action_db = connect_to_db()
     query = {"_id": ObjectId(id)}
     if (action_db.count_documents(query)) < 1 :
-        return make_response("action doesnt exists", 400)
+        return make_response("action with id: " + id + " doesnt exist", 404)
     else:
         x = action_db.find_one(query)
         x["_id"] = str(x["_id"])
-        return dumps(x)
+        return make_response(json.dumps(x), 200)
 
 def patch_action(id):
     strings = {"pretty_name", "public"}

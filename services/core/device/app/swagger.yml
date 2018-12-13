@@ -38,7 +38,7 @@ paths:
       parameters:
         - $ref: '#/parameters/userid'
         - $ref: '#/parameters/deviceid'
-        - $ref: '#/parameters/device'
+        - $ref: '#/parameters/patchDevice'
       responses:
         200:    #status code
           description: device was patched successfully
@@ -52,7 +52,28 @@ paths:
       responses:
         200:    # status code
           description: A string
-  
+  /device/{deviceid}/sensors/{sensorid}:
+    patch:
+      summary: patches device info
+      operationId: device_api.patch_sensor_values
+      parameters:
+        - $ref: '#/parameters/sensorid'
+        - $ref: '#/parameters/deviceid'
+        - $ref: '#/parameters/patchSensor'
+      responses:
+        200:    #status code
+          description: device was patched successfully
+  /devices/{deviceid}/action/{actionid}:
+    patch:
+      summary: patches action info
+      operationId: action_api.patch_action_values
+      parameters:
+        - $ref: '#/parameters/deviceid'
+        - $ref: '#/parameters/actionid'
+        - $ref: '#/parameters/patchAction'
+      responses:
+        200:    #status code
+          description: action was patched successfully
 
 parameters:
   userid:
@@ -104,6 +125,54 @@ parameters:
           items:
             type: string
         rule:
+          type: array
+          items:
+            type: string
+  patchSensor:
+    in: body
+    name: sensorInfo
+    description: sensor info to be patched
+    schema:
+      type: object
+      required:
+        - operation
+      properties:
+        name:
+          type: string
+        operation:
+          type: string
+          enum: [add, remove]
+        pretty_name:
+          type: string
+        value:
+          type: string
+        timestamp:
+          type: string
+        public:
+          type: boolean
+        access_token:
+          type: array
+          items:
+            type: string
+  patchAction:
+    in: body
+    name: actionInfo
+    description: Action info to be patched
+    schema:
+      type: object
+      required:
+        - operation
+      properties:
+        name:
+          type: string
+        operation:
+          type: string
+          enum: [add, remove]
+        pretty_name:
+          type: string
+        public:
+          type: boolean
+        access_token:
           type: array
           items:
             type: string

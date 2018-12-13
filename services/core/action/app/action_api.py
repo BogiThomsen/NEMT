@@ -32,3 +32,7 @@ def get_action(userid, deviceid, actionid):
 def patch_action(userid, deviceid, actionid):
     r = requests.patch("http://action-access:5700/v1/actions/{}".format(actionid), json=request.json)
     return r.text
+
+def activate_action(userid, deviceid, actionid):
+    r = requests.get("http://action-access:5700/v1/actions/{}".format(actionid), json=request.json)
+    return r.text

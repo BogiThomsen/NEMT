@@ -18,11 +18,25 @@ def add_device(userid):
     return make_response(json.dumps(created_device), device_response.status_code)
 
 def delete_device(userid, deviceid):
-    device_response = requests.delete("http://device-access:5500/v1/devices/{}".format(deviceid))
+    device = requests.get("http://device-access:5500/v1/devices/{}".format(deviceid)).json()
+
+    for x in device["sensors"]:
+        sensordata=x.split(':')
+        sensor_id = sensordata[1]
+        requests.delete("http://sensor-service:5900/v1/devices/{0}/sensors/{1}".format(deviceid, sensor_id))
+
+    for x in device["actions"]:
+        actiondata = x.split(':')
+        action_id = actiondata[1]
+        requests.delete("http://action-service:5800/v1/devices/{0}/actions/{1}".format(deviceid, action_id))
+
     json = {
         "operation":"remove",
         "device":deviceid
     }
+
+    device_response = requests.delete("http://device-access:5500/v1/devices/{}".format(deviceid), json=json)
+
     requests.patch("http://user-service:5100/v1/users/{}".format(userid), json=json)
     return make_response(device_response.content, device_response.status_code)
 

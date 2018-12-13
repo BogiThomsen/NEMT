@@ -1,7 +1,7 @@
 import pymongo
 import json
 from bson.objectid import ObjectId
-from flask import request, jsonify, make_response
+from flask import request, make_response
 
 def connect_to_db():
     return pymongo.MongoClient("mongodb+srv://Andreas:dummypassword64@sw7-3mptj.gcp.mongodb.net/admin")["database"]["Actions"]

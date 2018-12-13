@@ -2,15 +2,13 @@ import pymongo
 import re
 import json
 from bson.objectid import ObjectId
-from bson.json_util import dumps
-from flask import request, jsonify, make_response
+from flask import request, make_response
 
 def connect_to_db():
     return pymongo.MongoClient("mongodb+srv://Andreas:dummypassword64@sw7-3mptj.gcp.mongodb.net/admin")["database"]["Devices"]
 
 def post_device():
     device_db = connect_to_db()
-    url = "http://192.168.99.100:5500/v1/devices"
     mac_address = request.json["device_token"]
     if (device_db.count_documents({"device_token": mac_address})) > 0 :
         return make_response(json.dumps({"error": "device with Mac Address: "+ mac_address + "already exists"}), 400)

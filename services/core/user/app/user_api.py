@@ -17,8 +17,9 @@ def add_user():
         "password" : hashPassword(request.json["password"]),
         "access_token" : request.json["access_token"]
     }
-    r = requests.post("http://user-access:5200/v1/users", json=user)
-    return jsonify({'response': r.json()})
+    user = requests.post("http://user-access:5200/v1/users", json=user)
+
+    return user
 
 def delete_user(id):
     r = requests.delete("http://user-access:5200/v1/users/{}".format(id))

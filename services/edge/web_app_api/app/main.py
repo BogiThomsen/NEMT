@@ -24,8 +24,8 @@ def addUser():
     json["username"] = "SubscribeToPewdiepie"
     json["password"] = "bro@fi.st"
     json["access_token"] = "i only hacked 50k printers"
-    r = session.post("http://user-service:5100/v1/users", json=json, headers=headers)
-    return render_template('index.html', text=r.json())
+    user = session.post("http://user-service:5100/v1/users", json=json, headers=headers)
+    return render_template('index.html', id=user, user=user)
 
 @app.route('/patchUser', methods=['GET', 'POST', 'PATCH'])
 def patchUser():

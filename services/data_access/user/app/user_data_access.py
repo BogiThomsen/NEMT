@@ -1,8 +1,7 @@
 import pymongo
 import json
 from bson.objectid import ObjectId
-from bson.json_util import dumps
-from flask import request, jsonify, make_response
+from flask import request, make_response
 
 
 
@@ -13,7 +12,6 @@ def connect_to_db():
 def post_user():
     user_db = connect_to_db()
     username = request.json["username"]
-    url = "http://192.168.99.100:5200/v1/users"
     if (user_db.count_documents({"username": username})) > 0 :
         return make_response(json.dumps({"error": "user with username: "+ username +" already exists"}), 400)
     else:

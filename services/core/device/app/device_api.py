@@ -58,7 +58,7 @@ def patch_sensor_values(deviceid, sensorid):
         if sensordata[0] == sensorid:
             sensor_id = sensordata[1]
             break
-    sensor_response =requests.patch("http://sensor-service:5800/v1/devices/{0}/sensors/{1}".format(deviceid, sensor_id), json=sensor_patch)
+    sensor_response =requests.patch("http://sensor-service:5900/v1/devices/{0}/sensors/{1}".format(deviceid, sensor_id), json=sensor_patch)
     
     return make_response(sensor_response.content, sensor_response.status_code)
     #When sensor is found, make get request for sensor
@@ -74,5 +74,5 @@ def patch_action_values(deviceid, actionid):
         if actiondata[0] == actionid:
             action_id = actiondata[1]
             break
-    action_response = requests.patch("http://action-service:5900/v1/devices/{0}/actions/{1}".format(deviceid, action_id), json=action_patch)
+    action_response = requests.patch("http://action-service:5800/v1/devices/{0}/actions/{1}".format(deviceid, action_id), json=action_patch)
     return make_response(action_response.content, action_response.status_code)

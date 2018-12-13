@@ -16,7 +16,7 @@ def add_user():
     access_token = hashlib.sha224(random.encode())
     user = {
         "username" : request.json["username"],
-        "password" : hashPassword(request.json["password"]),
+        "password" : hash_password(request.json["password"]),
         "access_token" : access_token
     }
     user_response = requests.post("http://user-access:5200/v1/users", json=user)

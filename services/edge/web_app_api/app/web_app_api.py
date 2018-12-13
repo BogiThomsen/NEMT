@@ -4,10 +4,10 @@ from authorizer import authorize
 import requests
 import json
 
-user_url = 'user-service:5100/v1'
-device_url = 'device-service:5200/v1'
-action_url = 'action-service:5800/v1'
-sensor_url = 'sensor-service:5900/v1'
+user_url = 'http://user-service:5100/v1'
+device_url = 'http://device-service:5200/v1'
+action_url = 'http://action-service:5800/v1'
+sensor_url = 'http://sensor-service:5900/v1'
 
 headers = {'User-Agent': 'web-app-api', 'Content-Type': 'application/json'}
 

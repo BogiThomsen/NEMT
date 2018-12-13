@@ -73,7 +73,7 @@ def authorize_user(userid):
     #hvis 200, send 200 #ellers hvis 404, send 401 tilbage
     if response.status_code == 404:
         return make_response(401)
-    elif user["_id"] == userid:
+    elif user["_id"] != userid:
         return make_response(401)
     else:
         return make_response(response.content, response.status_code)

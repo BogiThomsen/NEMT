@@ -12,10 +12,12 @@ users.append(user1)
 ### Data Access Endpoints
 
 def add_user():
+    random = uuid.uuid4().hex
+    access_token = hashlib.sha224(random.encode())
     user = {
         "username" : request.json["username"],
         "password" : hashPassword(request.json["password"]),
-        "access_token" : request.json["access_token"]
+        "access_token" : access_token
     }
     user_response = requests.post("http://user-access:5200/v1/users", json=user)
     user = user_response.json()

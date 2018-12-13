@@ -133,13 +133,10 @@ parameters:
       required:
         - username
         - password
-        - access_token
       properties:
         username:
           type: string
         password:
-          type: string
-        access_token:
           type: string
   authenticationBody:
     in: body

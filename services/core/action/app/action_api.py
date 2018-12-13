@@ -11,7 +11,7 @@ def add_action(userid, deviceid):
     created_action = requests.post("http://action-access:5700/v1/actions", json=action).json()
     json = {
         "operation":"add",
-        "action":created_action["_id"]
+        "action":created_action["name"]+":"+created_action["_id"]
     }
     device_response = requests.patch("http://device-service:5400/v1/users/{0}/devices/{1}".format(userid, deviceid), json=json)
     return created_action

@@ -60,9 +60,20 @@ def checkPassword(userPassword, hashedPassword):
 
 def authorize_user():
     access_token = request.json["access_token"]
+    #Fra data access får jeg enten en 200 for at token eksisterer, eller 404 for at den ikke gør
+    response = requests.get("http://user-acess:5200/v1/users/{}".format(access_token)).json()
+    #hvis 200, send 200 #ellers hvis 404, send 401 tilbage
+    if response.status_code == 404:
+        return 401
+    else:
+        return reponse
+
 
 #Tag et device id og et device liste og et user id
 #Check device id not in list
 #if true call user/id med patch request. Den skal have en operation, og en entry i otherdevice.
 #Operation og device skal i en json body.
+
+#MEYER: LAV ALT TIL 200 OG SEND OBJEKTET MED
+
 

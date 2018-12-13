@@ -81,7 +81,7 @@ paths:
         - application/json
       responses:
         200:    #status code
-          description: User was authenticated successfully
+          description: User was authorized successfully
         401:    #status code
           description: Authorization failed
       parameters:

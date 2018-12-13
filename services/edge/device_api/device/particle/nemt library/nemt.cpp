@@ -47,7 +47,7 @@ void callback_response(CoapPacket &packet, IPAddress ip, int port) {
     char p[packet.payloadlen + 1];
     memcpy(p, packet.payload, packet.payloadlen);
     p[packet.payloadlen] = NULL;
-
+    coap.sendResponse(ip, port, packet.messageid, "1");
 }
 
 void NemtServer::PutSensors(){
@@ -58,7 +58,7 @@ void NemtServer::PutSensors(){
     strcat(payload, sensors[i].name);
     strcat(payload, "/");
     strcat(payload, sensors[i].value);
-    coap.put(serverIP, 5683, "devices", payload);
+    coap.put(serverIP, 5683, "updateValue", payload);
   }
 }
 
@@ -122,8 +122,11 @@ void callback_action(CoapPacket &packet, IPAddress ip, int port) {
 
     String message(p);
 
-
-    coap.sendResponse(ip, port, packet.messageid, "1");
+    Serial.println(p);
+    coap.sendResponse(ip, port, packet.messageid, "200",
+                      strlen("200"), COAP_CONTENT,
+                      COAP_TEXT_PLAIN, packet.token,
+                      2);
 
     InvokeAction(p);
 }
@@ -181,13 +184,15 @@ void NemtServer::start() {
     coap.server(callback_action, "action");
     coap.response(callback_response);
     coap.start();
-    
-    delay(2000);
-    ExposeActions();
-    delay(100);
-    coap.loop();
-    delay(100);
-    ExposeSensors();
+
+    for(int i = 0; i < 3; i++){
+      delay(2000);
+      ExposeActions();
+      delay(100);
+      coap.loop();
+      delay(100);
+      ExposeSensors();
+    }
 
 }
 

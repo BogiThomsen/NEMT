@@ -17,18 +17,19 @@ def add_user():
         "password" : hashPassword(request.json["password"]),
         "access_token" : request.json["access_token"]
     }
-    user = requests.post("http://user-access:5200/v1/users", json=user)
+    user_response = requests.post("http://user-access:5200/v1/users", json=user)
 
-    return user
+    return make_response(json.dumps(user_response.json()), user_response.status_code)
 
 def delete_user(id):
-    r = requests.delete("http://user-access:5200/v1/users/{}".format(id))
-    return r.text
+    user_response = requests.delete("http://user-access:5200/v1/users/{}".format(id))
+    return make_response(json.dumps(user_response.json()), user_response.status_code)
 
 def get_user(id):
-    r = requests.get("http://user-access:5200/v1/users/{}".format(id))
-    r["password"] = None
-    return r.json()
+    user_response = requests.get("http://user-access:5200/v1/users/{}".format(id))
+    user = user_response.json()
+    user["password"] = ""
+    return make_response(json.dumps(user), user_response.status_code)
 
 def get_user_id(username):
     r = requests.get("http://user-access:5200/v1/users/getId/{}".format(username))

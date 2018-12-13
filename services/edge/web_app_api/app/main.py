@@ -10,22 +10,22 @@ session.trust_env = False
 
 @app.route('/', methods=['GET', 'DELETE'])
 def index():
-    username = "drunar"
+    username = "SubscribeToPewdiepie"
     user_id = session.get("http://user-service:5100/v1/users/getId/{}".format(username), headers=headers).text
     # Please find en bedre måde at fjerne quotes og html encodet newline(%0A)
     user_id = user_id.replace('\"', '').rstrip()
     user = session.get("http://user-service:5100/v1/users/{}".format(user_id), headers=headers)
 
-    return render_template('index.html', user=user.json(), id=user_id, delete="no")
+    return render_template('index.html', user=user.text, id=user.status_code, delete="no")
 
 @app.route('/addUser', methods=['GET', 'POST'])
 def addUser():
     json = {}
-    json["username"] = "SubscribeToPewdiepie"
+    json["username"] = "SubscribeToPewdiepie2"
     json["password"] = "bro@fi.st"
     json["access_token"] = "i only hacked 50k printers"
     user = session.post("http://user-service:5100/v1/users", json=json, headers=headers)
-    return render_template('index.html', id=user, user=user)
+    return render_template('index.html', id=user, user=user.text)
 
 @app.route('/patchUser', methods=['GET', 'POST', 'PATCH'])
 def patchUser():

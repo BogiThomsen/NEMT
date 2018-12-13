@@ -72,6 +72,20 @@ paths:
           description: Authorization failed
       parameters:
         - $ref: '#/parameters/authenticationBody'
+  /users/authorize:
+    post:
+      summary: Authorizes a users access token
+      description: blank for now
+      operationId: user_api.authorize_user
+      consumes:
+        - application/json
+      responses:
+        200:    #status code
+          description: User was authenticated successfully
+        401:    #status code
+          description: Authorization failed
+      parameters:
+        - $ref: '#/parameters/authenticationBody'
 
 parameters:
   id:

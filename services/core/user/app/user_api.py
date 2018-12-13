@@ -58,6 +58,9 @@ def checkPassword(userPassword, hashedPassword):
     password, foo = hashedPassword.split(':')
     return password == hashlib.sha256(foo.encode() + userPassword.encode()).hexdigest()
 
+def authorize_user():
+    access_token = request.json["access_token"]
+
 #Tag et device id og et device liste og et user id
 #Check device id not in list
 #if true call user/id med patch request. Den skal have en operation, og en entry i otherdevice.

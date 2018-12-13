@@ -8,7 +8,7 @@ info:
 basePath: /v1
 
 paths:
-  /users/{userid}/devices/{devicetoken}/sensors:
+  /users/{userid}/devices/{deviceid}/sensors:
     post:
       summary: Adds an sensor.
       description: Optional extended description in CommonMark or HTML.
@@ -17,12 +17,12 @@ paths:
         - application/json
       parameters:
         - $ref: '#/parameters/userid'
-        - $ref: '#/parameters/devicetoken'
+        - $ref: '#/parameters/deviceid'
         - $ref: '#/parameters/sensor'
       responses:
         200:    # status code
           description: An sensor was added
-  /users/{userid}/devices/{devicetoken}/sensors/{sensorid}:
+  /users/{userid}/devices/{deviceid}/sensors/{sensorid}:
     get:
       summary: Returns a sensor.
       description: Optional extended description in CommonMark or HTML.
@@ -32,14 +32,14 @@ paths:
           description: sensor was returned successfuly
       parameters:
         - $ref: '#/parameters/userid'
-        - $ref: '#/parameters/devicetoken'
+        - $ref: '#/parameters/deviceid'
         - $ref: '#/parameters/sensorid'
     patch:
       summary: patches sensor info
       operationId: sensor_api.patch_sensor
       parameters:
         - $ref: '#/parameters/userid'
-        - $ref: '#/parameters/devicetoken'
+        - $ref: '#/parameters/deviceid'
         - $ref: '#/parameters/sensorid'
         - $ref: '#/parameters/patchSensor'
       responses:
@@ -51,11 +51,22 @@ paths:
       operationId: sensor_api.delete_sensor
       parameters:
         - $ref: '#/parameters/userid'
-        - $ref: '#/parameters/devicetoken'
+        - $ref: '#/parameters/deviceid'
         - $ref: '#/parameters/sensorid'
       responses:
         200:    # status code
           description: A string
+  /devices/{devicetoken}/sensors/{sensorid}:
+    patch:
+      summary: patches sensor info
+      operationId: sensor_api.patch_sensor
+      parameters:
+        - $ref: '#/parameters/devicetoken'
+        - $ref: '#/parameters/sensorname'
+        - $ref: '#/parameters/patchSensor'
+      responses:
+        200:    #status code
+          description: sensor was patched successfully
   
 
 parameters:

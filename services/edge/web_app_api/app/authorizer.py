@@ -1,7 +1,7 @@
 import requests
 
 def authorize(access_token, userid):
-    r = requests.post('http://user-service:5100/v1/users/authorize/{}'.format(userid), data={'accessToken': access_token})
+    r = requests.post('http://user-service:5100/v1/users/authorize/{}'.format(userid), json={'accessToken': access_token})
 
     if r.status_code == 200:
         return ''

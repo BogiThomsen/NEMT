@@ -56,13 +56,13 @@ paths:
       responses:
         200:    # status code
           description: A string
-  /devices/{devicetoken}/sensors/{sensorid}:
+  /devices/{deviceid}/sensors/{sensorid}:
     patch:
       summary: patches sensor info
       operationId: sensor_api.patch_sensor
       parameters:
-        - $ref: '#/parameters/devicetoken'
-        - $ref: '#/parameters/sensorname'
+        - $ref: '#/parameters/deviceid'
+        - $ref: '#/parameters/sensorid'
         - $ref: '#/parameters/patchSensor'
       responses:
         200:    #status code
@@ -76,8 +76,8 @@ parameters:
     in: path
     type: string
     required: true
-  devicetoken:
-    name: devicetoken
+  deviceid:
+    name: deviceid
     description: a device id
     in: path
     type: string

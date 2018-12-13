@@ -29,6 +29,12 @@ def is_alphanumeric_or_whitespace(string):
     else:
         return "Not allowed: \"" + string.replace(r.match(string).group(), "") + "\" in " + "\"" + string + "\""
 
+def data_is_any_of(recieved_dictionary, expected_dictionary):
+    for key in list(recieved_dictionary.keys()):
+        if key not in expected_dictionary:
+            return "Expected: {" + ', '.join(expected_dictionary) + "}\nGot: {" + ', '.join(recieved_dictionary.keys()) + "}\nDidnt expect: " + key
+    return ""
+
 
 def is_only_expected_data(recieved_dictionary, expected_dictionary):
 
@@ -64,7 +70,7 @@ def validate_users_request(request):
 
     if request.method == "GET" or request.method == "DELETE":
         return validate_body_result
-    else:
+    elif request.method == "POST":
         if validate_body_result != "":
             return validate_body_result
 
@@ -81,13 +87,32 @@ def validate_users_request(request):
 
         return ""
 
+    else:
+        if validate_body_result != "":
+            return validate_body_result
+
+        result = data_is_any_of(request.json["data"], ["username", "password"])
+        if result != "":
+            return result
+
+        expected_fields = ["username", "password"]
+
+        for field in expected_fields:
+            result = is_alphanumeric(request.json["data"][field])
+            if result != "":
+                return result
+
+        return ""
+
+
+
 
 def validate_devices_request(request):
     validate_body_result = validate_request_body(request)
 
     if request.method == "GET" or request.method == "DELETE":
         return validate_body_result
-    else:
+    elif request.method == "POST":
         if validate_body_result != "":
             return validate_body_result
 
@@ -103,7 +128,22 @@ def validate_devices_request(request):
                 return result
 
         return ""
+    else:
+        if validate_body_result != "":
+            return validate_body_result
 
+        result = data_is_any_of(request.json["data"], ["prettyName"])
+        if result != "":
+            return result
+
+        expected_fields = ["prettyName"]
+
+        for field in expected_fields:
+            result = is_alphanumeric_or_whitespace(request.json["data"][field])
+            if result != "":
+                return result
+
+        return ""
 
 
 def validate_sensors_request(request):

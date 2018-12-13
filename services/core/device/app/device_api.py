@@ -32,7 +32,7 @@ def get_device(userid, deviceid):
 
 def patch_device(userid, deviceid):
     device_response = requests.patch("http://device-access:5500/v1/devices/{}".format(deviceid), json=request.json)
-    return return make_response(device_response.content, device_response.status_code)
+    return make_response(device_response.content, device_response.status_code)
 
 def patch_sensor_values(deviceid, sensorid):
     device = requests.get("http://device-access:5500/v1/devices/{}".format(deviceid)).json()

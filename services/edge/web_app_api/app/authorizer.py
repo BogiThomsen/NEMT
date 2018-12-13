@@ -1,11 +1,9 @@
 import requests
 
 def authorize(access_token, userid):
-    r = requests.post('http://user-service:5100/v1/users/authorize/{}'.format(userid), json={'accessToken': access_token})
+    response = requests.post('http://user-service:5100/v1/users/authorize/{}'.format(userid), json={'accessToken': access_token})
 
-    if r.status_code == 200:
-        return ''
-    elif r.status_code == 401:
-        return r.content
+    if response.status_code == 200:
+        return ""
     else:
-        return r.content
+        return "error"

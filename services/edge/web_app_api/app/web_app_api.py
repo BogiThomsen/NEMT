@@ -103,7 +103,7 @@ def delete_users_user_id_devices_device_id(user_id, device_id):
     else:
         return make_response(json.dumps({"error": validation, "body": request.json}), 400, headers)
 
-def post_users_id_devices_device_id_actions(user_id, device_id):
+def post_users_user_id_devices_device_id_actions(user_id, device_id):
     validation = validate_actions_request(request)
     if validation == '':
         authorization = authorize(request.json['accessToken'])
@@ -114,7 +114,7 @@ def post_users_id_devices_device_id_actions(user_id, device_id):
     else:
         return make_response(json.dumps({"error": validation, "body": request.json}), 400, headers)
 
-def get_users_id_devices_device_id_actions_action_id(user_id, device_id, action_id):
+def get_users_user_id_devices_device_id_actions_action_id(user_id, device_id, action_id):
     validation = validate_actions_request(request)
     if validation == '':
         authorization = authorize(request.json['accessToken'])
@@ -125,7 +125,7 @@ def get_users_id_devices_device_id_actions_action_id(user_id, device_id, action_
     else:
         return make_response(json.dumps({"error": validation, "body": request.json}), 400, headers)
 
-def patch_users_id_devices_device_id_actions_action_id(user_id, device_id, action_id):
+def patch_users_user_id_devices_device_id_actions_action_id(user_id, device_id, action_id):
     validation = validate_actions_request(request)
     if validation == '':
         authorization = authorize(request.json['accessToken'])
@@ -137,7 +137,7 @@ def patch_users_id_devices_device_id_actions_action_id(user_id, device_id, actio
     else:
         return make_response(json.dumps({"error": validation, "body": request.json}), 400, headers)
 
-def delete_users_id_devices_device_id_actions_action_id(user_id, device_id, action_id):
+def delete_users_user_id_devices_device_id_actions_action_id(user_id, device_id, action_id):
     validation = validate_actions_request(request)
     if validation == '':
         authorization = authorize(request.json['accessToken'])
@@ -149,7 +149,7 @@ def delete_users_id_devices_device_id_actions_action_id(user_id, device_id, acti
     else:
         return make_response(json.dumps({"error": validation, "body": request.json}), 400, headers)
 
-def post_users_id_devices_device_id_sensors(user_id, device_id):
+def post_users_user_id_devices_device_id_sensors(user_id, device_id):
     validation = validate_sensors_request(request)
     if validation == '':
         authorization = authorize(request.json['accessToken'])
@@ -161,7 +161,7 @@ def post_users_id_devices_device_id_sensors(user_id, device_id):
     else:
         return make_response(json.dumps({"error": validation, "body": request.json}), 400, headers)
 
-def get_users_id_devices_device_id_sensors_sensor_id(user_id, device_id, sensor_id):
+def get_users_user_id_devices_device_id_sensors_sensor_id(user_id, device_id, sensor_id):
     validation = validate_sensors_request(request)
     if validation == '':
         authorization = authorize(request.json['accessToken'])
@@ -172,7 +172,7 @@ def get_users_id_devices_device_id_sensors_sensor_id(user_id, device_id, sensor_
     else:
         return make_response(json.dumps({"error": validation, "body": request.json}), 400, headers)
 
-def patch_users_id_devices_device_id_sensors_sensor_id(user_id, device_id, sensor_id):
+def patch_users_user_id_devices_device_id_sensors_sensor_id(user_id, device_id, sensor_id):
     validation = validate_sensors_request(request)
     if validation == '':
         authorization = authorize(request.json['accessToken'])
@@ -184,7 +184,7 @@ def patch_users_id_devices_device_id_sensors_sensor_id(user_id, device_id, senso
     else:
         return make_response(json.dumps({"error": validation, "body": request.json}), 400, headers)
 
-def delete_users_id_devices_device_id_sensors_sensor_id(user_id, device_id, sensor_id):
+def delete_users_user_id_devices_device_id_sensors_sensor_id(user_id, device_id, sensor_id):
     validation = validate_sensors_request(request)
     if validation == '':
         authorization = authorize(request.json['accessToken'])

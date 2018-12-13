@@ -28,6 +28,20 @@
                 });
             });
         </script>
+        <script>
+            $(function () {
+                $("#addNewAction").click(function () {
+                    $("#chooseActions").children().first().clone().appendTo("#chooseActions");
+                });
+            });
+        </script>
+        <script>
+            $(function () {
+                $("#addNewSensor").click(function () {
+                    $("#chooseSensors").children().first().clone().appendTo("#chooseSensors");
+                });
+            });
+        </script>
 
         {% block head %}{% endblock %}
     </head>

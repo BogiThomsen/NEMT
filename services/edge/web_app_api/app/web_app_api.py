@@ -27,48 +27,48 @@ def post_users():
     else:
         return make_response(json.dumps({"error": validation, "body": request.json}), 400, headers)
 
-def get_users_id(id):
+def get_users_id(userid):
     validation = validate_users_request(request)
     if validation == '':
         authorization = authorize(request.json['accessToken'])
         if authorization == '':
-            user_response = requests.get(user_url + '/users/' + id, headers=headers)
+            user_response = requests.get(user_url + '/users/' + userid, headers=headers)
             return make_response(user_response.content, user_response.status_code)
         else:
             return make_response(json.dumps({"error": authorization, "body": request.json}), 401, headers)
     else:
         return make_response(json.dumps({"error": validation, "body": request.json}), 400, headers)
 
-def patch_users_id(id):
+def patch_users_id(userid):
     validation = validate_users_request(request)
     if validation == '':
         authorization = authorize(request.json['accessToken'])
         if authorization == '':
-            user_response = requests.patch(user_url + '/users/' + id, headers=headers, data=request.json.data)
+            user_response = requests.patch(user_url + '/users/' + userid, headers=headers, data=request.json.data)
             return make_response(user_response.content, user_response.status_code)
         else:
             return make_response(json.dumps({"error": authorization, "body": request.json}), 401, headers)
     else:
         return make_response(json.dumps({"error": validation, "body": request.json}), 400, headers)
 
-def delete_users_id(id):
+def delete_users_id(userid):
     validation = validate_users_request(request)
     if validation == '':
         authorization = authorize(request.json['accessToken'])
         if authorization == '':
-            user_response = requests.delete(user_url + '/users/' + id, headers=headers)
+            user_response = requests.delete(user_url + '/users/' + userid, headers=headers)
             return make_response(user_response.content, user_response.status_code)
         else:
             return make_response(json.dumps({"error": authorization, "body": request.json}), 401, headers)
     else:
         return make_response(json.dumps({"error": validation, "body": request.json}), 400, headers)
 
-def post_users_id_devices(id):
+def post_users_id_devices(userid):
     validation = validate_devices_request(request)
     if validation == '':
         authorization = authorize(request.json['accessToken'])
         if authorization == '':
-            device_response = requests.post(device_url + '/users/' + id + '/devices', headers=headers, data=request.json.data)
+            device_response = requests.post(device_url + '/users/' + userid + '/devices', headers=headers, data=request.json.data)
             return make_response(device_response.content, device_response.status_code)
         else:
             return make_response(json.dumps({"error": authorization, "body": request.json}), 401, headers)

@@ -152,7 +152,7 @@ def validate_sensors_request(request):
 
     if request.method == "GET" or request.method == "DELETE":
         return validate_body_result
-    else:
+    elif request.method == "POST":
         if validate_body_result != "":
             return validate_body_result
 
@@ -180,25 +180,80 @@ def validate_sensors_request(request):
 
         return ""
 
+    else:
+        if validate_body_result != "":
+            return validate_body_result
+
+        result = data_is_any_of(request.json["data"], ["operation", "prettyName", "public", "accessTokens"])
+        if result != "":
+            return result
+
+        if request.json["data"]["operation"] not in ["add", "remove"]:
+            return "operation should be either add or remove. it is " + request.json["data"]
+
+        public = request.json.data["public"]
+        accesstokens = request.json["data"]["accessTokens"]
+
+        for token in accesstokens:
+            if (is_alphanumeric(token) == False):
+                return False
+
+        if isinstance(public, bool) == False:
+            return "\"public\" must be of type bool"
+
+        expected_fields = ["prettyName"]
+
+        for field in expected_fields:
+            result = is_alphanumeric_or_whitespace(request.json["data"][field])
+            if result != "":
+                return result
+
+        return ""
+
 
 def validate_actions_request(request):
     validate_body_result = validate_request_body(request)
 
     if request.method == "GET" or request.method == "DELETE":
         return validate_body_result
-    else:
-
+    elif request.method == "POST":
 
         result = is_only_expected_data(request.json["data"], ["prettyName", "public", "accessTokens"])
         if result != "":
             return result
-
 
         public = request.json["data"]["public"]
         accesstokens = request.json["dataaccessTokens"]
 
         for token in accesstokens:
             if(is_alphanumeric(token) == False):
+                return False
+
+        if isinstance(public, bool) == False:
+            return "\"public\" must be of type bool"
+
+        expected_fields = ["prettyName"]
+
+        for field in expected_fields:
+            result = is_alphanumeric_or_whitespace(request.json["data"][field])
+            if result != "":
+                return result
+
+        return ""
+
+    else:
+        result = data_is_any_of(request.json["data"], ["operation", "prettyName", "public", "accessTokens"])
+        if result != "":
+            return result
+
+        if request.json["data"]["operation"] not in ["add", "remove"]:
+            return "operation should be either add or remove. it is " + request.json["data"]
+
+        public = request.json["data"]["public"]
+        accesstokens = request.json["dataaccessTokens"]
+
+        for token in accesstokens:
+            if (is_alphanumeric(token) == False):
                 return False
 
         if isinstance(public, bool) == False:

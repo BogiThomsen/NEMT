@@ -74,7 +74,7 @@ def authorize_user(userid):
     if response.status_code == 404:
         return make_response(401)
     elif user["_id"] != userid:
-        return make_response(401)
+        return make_response(402)
     else:
         return make_response(response.content, response.status_code)
 

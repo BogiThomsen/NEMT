@@ -36,19 +36,15 @@ def patch_device(userid, deviceid):
 
 def patch_sensor_values(deviceid, sensorname):
     device = requests.get("http://device-access:5500/v1/devices/{}".format(deviceid)).json()
-    updates_to_sensor = request.json["sensor"]
-    sensorid = None
-    device["sensors"]
+    sensor_patch = request.json()
 
     #Iterate thorugh the list of sensors and match sensorid
-    for x[1] in device["sensors"]:
-        if x == sensorname:
-            sensorid = x[2]
+    for x in device["sensors"]:
+        sensordata=x.split(':')
+        if sensordata[0] == sensorname:
+            sensor_id = sensordata[1]
             break
-
-    sensor = requests.get("http://sensor-access:5600/v1/sensors/{}".format(sensorid)).json()
-    sensor["value"] = updates_to_sensor["value"]
-    requests.patch("http://sensor-access:5600/v1/sensors/{}".format(sensor["id"]), json=sensor)
+    requests.patch("http://sensor-service:5900/v1/devices/{0}/sensors/{1}".format(deviceid, sensor_id), json=sensor_patch)
 
     #When sensor is found, make get request for sensor
     #When sensor is retrieved, update sensor with body and make patch request

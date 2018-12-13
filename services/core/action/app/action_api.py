@@ -5,8 +5,7 @@ import requests
 
 def add_action(userid, deviceid):
     action = {
-        "name" : request.json["name"],
-        "token" : request.json["token"]
+        "name" : request.json["name"]
     }
     created_action = requests.post("http://action-access:5700/v1/actions", json=action).json()
     json = {

@@ -59,7 +59,7 @@ paths:
   /devices/{deviceid}/sensors/{sensorid}:
     patch:
       summary: patches sensor info
-      operationId: sensor_api.patch_sensor
+      operationId: sensor_api.device_patch_sensor
       parameters:
         - $ref: '#/parameters/deviceid'
         - $ref: '#/parameters/sensorid'

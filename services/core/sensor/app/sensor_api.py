@@ -32,3 +32,7 @@ def get_sensor(userid, devicetoken, sensorid):
 def patch_sensor(userid, devicetoken, sensorid):
     r = requests.patch("http://sensor-access:5600/v1/sensors/{}".format(sensorid), json=request.json)
     return make_response("??????????", 200)
+
+def device_patch_sensor(devicetoken, sensorid):
+    r = requests.patch("http://sensor-access:5600/v1/sensors/{}".format(sensorid), json=request.json)
+    return make_response("??????????", 200)

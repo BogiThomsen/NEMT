@@ -66,7 +66,7 @@ paths:
   /devices/{deviceid}/action/{actionid}:
     patch:
       summary: patches action info
-      operationId: action_api.patch_action_values
+      operationId: device_api.patch_action_values
       parameters:
         - $ref: '#/parameters/deviceid'
         - $ref: '#/parameters/actionid'
@@ -88,6 +88,18 @@ parameters:
     in: path
     type: string
     required: true
+  sensorid:
+    name: sensorid
+    description: a sensor id
+    in: path
+    type: string
+    required: true
+  actionid:
+    name: actionid
+    description: a action id
+    in: path
+    type: string
+    required: true
   device:
     in: body
     name: device
@@ -102,7 +114,7 @@ parameters:
           type: string
         token:
           type: string
-  patchdevice:
+  patchDevice:
     in: body
     name: deviceInfo
     description: device info to be patched

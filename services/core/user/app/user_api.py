@@ -73,7 +73,7 @@ def authorize_user(id):
     #hvis 200, send 200 #ellers hvis 404, send 401 tilbage
     if response.status_code == 404:
         return make_response(json.dumps({"error": "not authorized from db"}), 401)
-    elif user["_id"] != userid:
+    elif user["_id"] != id:
         return make_response(json.dumps({"error": "not authorized id"}), 401)
     else:
         return make_response(response.content, 200)

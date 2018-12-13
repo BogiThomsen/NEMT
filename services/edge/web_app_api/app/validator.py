@@ -88,8 +88,6 @@ def validate_users_request(request):
         return ""
 
     elif request.method == "POST":
-        if validate_body_result != "":
-            return validate_body_result
 
         result = data_is_any_of(request.json, ["username", "password"])
         if result != "":

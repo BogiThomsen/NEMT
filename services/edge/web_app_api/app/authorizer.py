@@ -6,4 +6,4 @@ def authorize(access_token, userid):
     if response.status_code == 200:
         return ""
     else:
-        return response.content
+        return "Not authorized."

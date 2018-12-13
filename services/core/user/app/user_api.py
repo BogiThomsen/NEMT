@@ -13,7 +13,7 @@ users.append(user1)
 
 def add_user():
     random = uuid.uuid4().hex
-    access_token = hashlib.sha224(random.encode())
+    access_token = hashlib.sha224(random.encode()).hexdigest()
     user = {
         "username" : request.json["username"],
         "password" : hash_password(request.json["password"]),

@@ -4,8 +4,8 @@ from authorizer import authorize
 import requests
 import json
 
-user_url = 'user-service:5000/v1'
-device_url = 'device-service:5100/v1'
+user_url = 'user-service:5100/v1'
+device_url = 'device-service:5200/v1'
 action_url = 'action-service:5800/v1'
 sensor_url = 'sensor-service:5900/v1'
 

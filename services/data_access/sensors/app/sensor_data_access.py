@@ -1,4 +1,5 @@
 import pymongo
+import json
 from bson.objectid import ObjectId
 from bson.json_util import dumps
 from flask import request, jsonify, make_response
@@ -21,50 +22,54 @@ def post_sensor():
     _id = sensor_db.insert_one(new_sensor).inserted_id
     sensor = sensor_db.find_one({"_id": _id})
     sensor["_id"] = str(sensor["_id"])
-    return sensor
+    return make_response(json.dumps(sensor), 201)
 
 
 def delete_sensor(id):
     sensor_db = connect_to_db()
     query = {"_id": ObjectId(id)}
     if (sensor_db.count_documents(query)) < 1 :
-        return make_response("sensor doesnt exist", 400)
+        return make_response("sensor with id: " + id + " doesnt exist", 404)
     else:
         sensor_db.delete_one(query)
-        return "sensor: {}, was deleted.".format(id)
+        return make_response("", 200)
 
 def get_sensor(id):
     sensor_db = connect_to_db()
     query = {"_id": ObjectId(id)}
     if (sensor_db.count_documents(query)) < 1 :
-        return make_response("sensor doesnt exists", 400)
+        return make_response("sensor with id: " + id + " doesnt exist", 404)
     else:
         x = sensor_db.find_one(query)
         x["_id"] = str(x["_id"])
-        return dumps(x)
+        return make_response(json.dumps(x), 200)
 
 def patch_sensor(id):
     strings = {"pretty_name", "value", "timestamp", "public"}
     strings_dict = string_dict()
     lists = {"access_token"}
-    lists_dict = list_dict()
     sensor_db = connect_to_db()
     for val in lists:
         if val in request.json:
-            if request.json["operation"] == "remove":
-                for item in request.json[val]:
-                    sensor_db.update_one({"_id": ObjectId(id)},
-                                       {"$pull": {lists_dict[val]: item}})
-            if request.json["operation"] == "add":
-                for item in request.json[val]:
-                    sensor_db.update_one({"_id": ObjectId(id)},
-                                       {"$addToSet": {lists_dict[val]: item}})
+            patch_lists(sensor_db, id, request.json, val)
     if request.json["operation"] == "add":
         for val in strings:
             if val in request.json:
                 sensor_db.update_one({"_id": ObjectId(id)},
                                        {"$set": {strings_dict[val]: request.json[val]}})
+    patched_sensor = sensor_db.find_one({"_id": ObjectId(id)})
+    return make_response(json.dumps(patched_sensor), 200)
 
+def patch_lists(db, id, json_object, current_val):
+    lists_dict = list_dict()
+    if json_object["operation"] == "remove":
+        for item in json_object[current_val]:
+            db.update_one({"_id": ObjectId(id)},
+                               {"$pull": {lists_dict[current_val]: item}})
+    if json_object["operation"] == "add":
+        for item in json_object[current_val]:
+            db.update_one({"_id": ObjectId(id)},
+                               {"$addToSet": {lists_dict[current_val]: item}})
 
 def string_dict():
     dict = {

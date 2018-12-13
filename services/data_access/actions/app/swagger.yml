@@ -77,6 +77,7 @@ parameters:
       type: object
       required:
         - operation
+        - name
       properties:
         name:
           type: string

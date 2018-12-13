@@ -74,14 +74,31 @@ def validate_users_request(request):
         if validate_body_result != "":
             return validate_body_result
 
-        result = is_only_expected_data(request.json["data"], ["username", "password"])
+        result = is_only_expected_data(request.json, ["username", "password"])
         if result != "":
             return result
 
         expected_fields = ["username", "password"]
 
         for field in expected_fields:
-            result = is_alphanumeric(request.json["data"][field])
+            result = is_alphanumeric(request.json[field])
+            if result != "":
+                return result
+
+        return ""
+
+    elif request.method == "POST":
+        if validate_body_result != "":
+            return validate_body_result
+
+        result = data_is_any_of(request.json, ["username", "password"])
+        if result != "":
+            return result
+
+        expected_fields = ["username", "password"]
+
+        for field in expected_fields:
+            result = is_alphanumeric(request.json[field])
             if result != "":
                 return result
 

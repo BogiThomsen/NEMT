@@ -85,7 +85,6 @@ paths:
         401:    #status code
           description: Authorization failed
       parameters:
-        - $ref: '#/parameters/authenticationBody'
         - $ref: '#/parameters/id'
 
 parameters:

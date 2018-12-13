@@ -56,7 +56,17 @@ paths:
       responses:
         200:    # status code
           description: A string
-  
+  /devices/{deviceid}/action/{actionid}:
+    patch:
+      summary: patches action info
+      operationId: action_api.patch_action
+      parameters:
+        - $ref: '#/parameters/deviceid'
+        - $ref: '#/parameters/actionid'
+        - $ref: '#/parameters/patchAction'
+      responses:
+        200:    #status code
+          description: action was patched successfully
 
 parameters:
   userid:

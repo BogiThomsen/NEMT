@@ -5,41 +5,186 @@ info:
   description: description of api
   version: "1.0"
 
-basePath: /api
+basePath: /v1
 
 paths:
-  /getDevice:
-    get:
-      summary: Returns a string.
-      description: Optional extended description in CommonMark or HTML.
-      operationId: device_api.getDevice
-      produces:
-        - application/json
-      responses:
-        200:    # status code
-          description: A string
-  /addDevice:
+  /users/{userid}/devices:
     post:
       summary: Returns a string.
       description: Optional extended description in CommonMark or HTML.
-      operationId: device_api.addDevice
+      operationId: device_api.add_device
       consumes:
         - application/json
       parameters:
-        - in: body
-          name: device
-          description: The device to create.
-          schema:
-            type: object
-            required:
-              - name
-              - description
-            properties:
-              name:
-                type: string
-              description:
-                type: string
+        - $ref: '#/parameters/userid'
+        - $ref: '#/parameters/device'
       responses:
         200:    # status code
-          description: A user
+          description: A device
+  /users/{userid}/devices/{deviceid}:
+    get:
+      summary: Returns a device.
+      description: Optional extended description in CommonMark or HTML.
+      operationId: device_api.get_device
+      responses:
+        200:    # status code
+          description: device was returned successfuly
+      parameters:
+        - $ref: '#/parameters/userid'
+        - $ref: '#/parameters/deviceid'
+    patch:
+      summary: patches device info
+      operationId: device_api.patch_device
+      parameters:
+        - $ref: '#/parameters/userid'
+        - $ref: '#/parameters/deviceid'
+        - $ref: '#/parameters/patchDevice'
+      responses:
+        200:    #status code
+          description: device was patched successfully
+    delete:
+      summary: Deletes a device.
+      description: Optional extended description in CommonMark or HTML.
+      operationId: device_api.delete_device
+      parameters:
+        - $ref: '#/parameters/userid'
+        - $ref: '#/parameters/deviceid'
+      responses:
+        200:    # status code
+          description: A string
+  /device/{deviceid}/sensors/{sensorid}:
+    patch:
+      summary: patches device info
+      operationId: device_api.patch_sensor_values
+      parameters:
+        - $ref: '#/parameters/sensorid'
+        - $ref: '#/parameters/deviceid'
+        - $ref: '#/parameters/patchSensor'
+      responses:
+        200:    #status code
+          description: device was patched successfully
+  /devices/{deviceid}/action/{actionid}:
+    patch:
+      summary: patches action info
+      operationId: device_api.patch_action_values
+      parameters:
+        - $ref: '#/parameters/deviceid'
+        - $ref: '#/parameters/actionid'
+        - $ref: '#/parameters/patchAction'
+      responses:
+        200:    #status code
+          description: action was patched successfully
 
+parameters:
+  userid:
+    name: userid
+    description: a user id
+    in: path
+    type: string
+    required: true
+  deviceid:
+    name: deviceid
+    description: a device id
+    in: path
+    type: string
+    required: true
+  sensorid:
+    name: sensorid
+    description: a sensor id
+    in: path
+    type: string
+    required: true
+  actionid:
+    name: actionid
+    description: a action id
+    in: path
+    type: string
+    required: true
+  device:
+    in: body
+    name: device
+    description: A device.
+    schema:
+      type: object
+      required:
+        - name
+        - token
+      properties:
+        name:
+          type: string
+        token:
+          type: string
+  patchDevice:
+    in: body
+    name: deviceInfo
+    description: device info to be patched
+    schema:
+      type: object
+      required:
+        - operation
+      properties:
+        pretty_name:
+          type: string
+        operation:
+          type: string
+          enum: [add, remove]
+        sensor:
+          type: array
+          items:
+            type: string
+        action:
+          type: array
+          items:
+            type: string
+        rule:
+          type: array
+          items:
+            type: string
+  patchSensor:
+    in: body
+    name: sensorInfo
+    description: sensor info to be patched
+    schema:
+      type: object
+      required:
+        - operation
+      properties:
+        name:
+          type: string
+        operation:
+          type: string
+          enum: [add, remove]
+        pretty_name:
+          type: string
+        value:
+          type: string
+        timestamp:
+          type: string
+        public:
+          type: boolean
+        access_token:
+          type: array
+          items:
+            type: string
+  patchAction:
+    in: body
+    name: actionInfo
+    description: Action info to be patched
+    schema:
+      type: object
+      required:
+        - operation
+      properties:
+        name:
+          type: string
+        operation:
+          type: string
+          enum: [add, remove]
+        pretty_name:
+          type: string
+        public:
+          type: boolean
+        access_token:
+          type: array
+          items:
+            type: string

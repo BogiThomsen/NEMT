@@ -1,17 +1,17 @@
 version: '3.6'
 services:
-    device-service:
+    sensor-service:
         build: .
         ports:
-            - "5400:5400"
+            - "5900:5900"
         expose:
-            - "5400"
+            - "5900"
         volumes:
             - .:/code
         networks:
-            - device-core-net
-        container_name: device-service
+            - sensor-core-net
+        container_name: sensor-service
 networks:
-  device-core-net:
+  sensor-core-net:
     external:
       name: platform

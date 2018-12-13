@@ -8,13 +8,14 @@
         <h2>
             Test EdgeApiService
         </h2>
-        <p>{{ text }}</p>
-        <form action="/action_page.php">
-            Username:<br>
-            <input type="text" name="username" value=""><br>
-            E-mail:<br>
-            <input type="text" name="email" value=""><br><br>
-            <input type="submit" value="Add User">
-        </form> 
+        <p>
+            Get id by username: <br />
+            {{ id }} <br />
+            Get user by ID: <br />
+            {{ user }}  <br />
+            User was deleted?
+            {{ deleted }}
+
+        </p>
     </body>
 </html>

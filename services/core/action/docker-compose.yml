@@ -1,17 +1,17 @@
 version: '3.6'
 services:
-    device-service:
+    action-service:
         build: .
         ports:
-            - "5400:5400"
+            - "5800:5800"
         expose:
-            - "5400"
+            - "5800"
         volumes:
             - .:/code
         networks:
-            - device-core-net
-        container_name: device-service
+            - action-core-net
+        container_name: action-service
 networks:
-  device-core-net:
+  action-core-net:
     external:
       name: platform

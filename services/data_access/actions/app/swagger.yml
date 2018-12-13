@@ -1,0 +1,95 @@
+swagger: "2.0"
+
+info:
+  title: "API"
+  description: description of api
+  version: "1.0"
+
+basePath: /v1
+
+paths:
+  /actions:
+    post:
+      summary: Adds a actions to the database.
+      operationId: action_data_access.post_action
+      consumes:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/actions'
+      responses:
+        200:    # status code
+          description: Action was added Sucessfully.
+  /actions/{id}:
+    get:
+      summary: Returns an action in the form of a json array.
+      operationId: action_data_access.get_action
+      produces:
+        - application/json
+      responses:
+        200:    # status code
+          description: action was returned sucessfully.
+      parameters:
+        - $ref: '#/parameters/id'
+    delete:
+      summary: deletes an action.
+      operationId: action_data_access.delete_action
+      parameters:
+        - $ref: '#/parameters/id'
+      responses:
+        200:    # status code
+          description: Action was deleted sucessfully.
+    patch:
+      summary: patches action info
+      operationId: action_data_access.patch_action
+      parameters:
+        - $ref: '#/parameters/id'
+        - $ref: '#/parameters/patchAction'
+      responses:
+        200:    #status code
+          description: sensor was patched successfully
+
+parameters:
+  id:
+    name: id
+    description: an action id
+    in: path
+    type: string
+    required: true
+
+  actions:
+    in: body
+    name: action
+    description: An action.
+    schema:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+        pretty_name:
+          type: string
+  patchAction:
+    in: body
+    name: actionInfo
+    description: Action info to be patched
+    schema:
+      type: object
+      required:
+        - operation
+        - name
+      properties:
+        name:
+          type: string
+        operation:
+          type: string
+          enum: [add, remove]
+        pretty_name:
+          type: string
+        public:
+          type: boolean
+        access_token:
+          type: array
+          items:
+            type: string
+

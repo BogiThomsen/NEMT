@@ -9,6 +9,24 @@ cd ..
 cd core/user
 docker-compose up -d
 cd ..
+cd device
+docker-compose up -d
+cd ..
+cd sensor
+docker-compose up -d
+cd ..
+cd action
+docker-compose up -d
+cd ..
 cd ..
 cd data_access/user
+docker-compose up -d
+cd ..
+cd device
+docker-compose up -d
+cd ..
+cd sensors
+docker-compose up -d
+cd ..
+cd actions
 docker-compose up -d

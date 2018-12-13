@@ -5,34 +5,226 @@ info:
   description: description of api
   version: "1.0"
 
-basePath: /api
+basePath: /v1
 
 paths:
-  /addUser:
+  /users:
     post:
-      summary: Returns a string.
-      description: Optional extended description in CommonMark or HTML.
-      operationId: user_data_access.add_user
+      summary: Adds a user to the database.
+      operationId: user_data_access.post_user
       consumes:
         - application/json
       parameters:
-        - in: body
-          name: user
-          description: The user to create.
-          schema:
-            type: object
-            required:
-              - username
-              - password
-              - access_token
-            properties:
-              username:
-                type: string
-              password:
-                type: string
-              access_token:
-                type: string
+        - $ref: '#/parameters/user'
       responses:
         200:    # status code
-          description: A user
+          description: User was added Sucessfully.
+        400:
+          description: User already exists
+  /users/{id}:  
+    get:
+      summary: Returns a user in the form of a json array.
+      operationId: user_data_access.get_user
+      produces:
+        - application/json
+      responses:
+        200:    # status code
+          description: User was returned sucessfully.
+      parameters:
+        - $ref: '#/parameters/id'
+    delete:
+      summary: deletes a user.
+      operationId: user_data_access.delete_user
+      parameters:
+        - $ref: '#/parameters/id'
+      responses:
+        200:    # status code
+          description: User was deleted sucessfully.
+    patch:
+      summary: patches user info
+      operationId: user_data_access.patch_user
+      parameters:
+        - $ref: '#/parameters/id'
+        - $ref: '#/parameters/patchUser'
+      responses:
+        200:    #status code
+          description: user was patched successfully
+
+  /users/getId/{username}:
+    get:
+      summary: Returns a userId.
+      operationId: user_data_access.get_user_id_by_username
+      produces:
+        - text/plain
+      parameters:
+        - $ref: '#/parameters/username'
+      responses:
+        200:    # status code
+          description: UserId was returned sucessfully.
+  # /update/username:
+  #   patch:
+  #     summary: Updates the username of a user.
+  #     operationId: user_data_access.patch_username
+  #     consumes:
+  #       - application/json
+  #     parameters:
+  #       - in: body
+  #         name: user
+  #         description: The user who needs to update username.
+  #         schema:
+  #           type: object
+  #           required:
+  #             - username
+  #             - userId
+  #           properties:
+  #             username:
+  #               type: string
+  #             userId:
+  #               type: string
+  #     responses:
+  #       200:    # status code
+  #         description: Username was updated sucessfully.
+  # /update/password:
+  #   patch:
+  #     summary: Updates the password of a user.
+  #     operationId: user_data_access.patch_password
+  #     consumes:
+  #       - application/json
+  #     parameters:
+  #       - in: body
+  #         name: user
+  #         description: The user who needs to update a password.
+  #         schema:
+  #           type: object
+  #           required:
+  #             - password
+  #             - userId
+  #           properties:
+  #             password:
+  #               type: string
+  #             userId:
+  #               type: string
+  #     responses:
+  #       200:    # status code
+  #         description: Password was updated sucessfully.
+
+  # /list/add:
+  #   patch:
+  #     summary: Adds an ID to specified list.
+  #     operationId: user_data_access.add_to_user
+  #     consumes:
+  #       - application/json
+  #     parameters:
+  #       - in: body
+  #         name: userUpdate
+  #         description: The user update data.
+  #         schema:
+  #           type: object
+  #           required:
+  #             - userId
+  #             - updateId
+  #             - updateList
+  #           properties:
+  #             userId:
+  #               type: string
+  #             updateId:
+  #               type: string
+  #             updateList:
+  #               type: string
+  #     responses:
+  #       200:    # status code
+  #         description: User was updated sucessfully.
+  # /list/remove:
+  #   patch:
+  #     summary: Removes an ID to specified list.
+  #     operationId: user_data_access.delete_from_user
+  #     consumes:
+  #       - application/json
+  #     parameters:
+  #       - in: body
+  #         name: userUpdate
+  #         description: The user update data.
+  #         schema:
+  #           type: object
+  #           required:
+  #             - userId
+  #             - updateId
+  #             - updateList
+  #           properties:
+  #             userId:
+  #               type: string
+  #             updateId:
+  #               type: string
+  #             updateList:
+  #               type: string
+  #     responses:
+  #       200:    # status code
+  #         description: User was updated sucessfully.
+  
+
+  
+parameters:
+  id:
+    name: id
+    description: a user id
+    in: path
+    type: string
+    required: true
+  username:
+    name: username
+    description: a username
+    in: path
+    type: string
+    required: true
+
+  user:
+    in: body
+    name: user
+    description: A user.
+    schema:
+      type: object
+      required:
+        - username
+        - password
+        - access_token
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+        access_token:
+          type: string
+  patchUser:
+    in: body
+    name: userInfo
+    description: User info to be patched
+    schema:
+      type: object
+      required:
+        - operation
+      properties:
+        username:
+          type: string
+        operation:
+          type: string
+          enum: [add, remove]
+        password:
+          type: string
+        device:
+          type: array
+          items:
+            type: string
+        rule:
+          type: array
+          items:
+            type: string
+        grouping:
+          type: array
+          items:
+            type: string
+        other_devices:
+          type: array
+          items:
+            type: string
+
 

@@ -21,7 +21,7 @@ def post_action():
     _id = action_db.insert_one(new_action).inserted_id
     action = action_db.find_one({"_id": _id})
     action["_id"] = str(action["_id"])
-    return make_response(make_response(json.dumps(action), 201))
+    return make_response(json.dumps(action), 201)
 
 
 def delete_action(id):

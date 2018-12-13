@@ -13,19 +13,19 @@ def add_sensor(userid, devicetoken):
         "operation":"add",
         "sensor":created_sensor["name"]+":"+created_sensor["_id"]
     }
-    device_response = requests.patch("http://device-service:5400/v1/users/{0}/devices/{1}".format(userid, devicetoken), json=json)
-    return make_response(json.dumps(created_sensor), sensor_request.status_code)
+    requests.patch("http://device-service:5400/v1/users/{0}/devices/{1}".format(userid, devicetoken), json=json)
+    return make_response(sensor_response.content, sensor_response.status_code)
 
 def delete_sensor(userid, devicetoken, sensorid):
-    sensor_request = requests.get("http://sensor-access:5600/v1/sensors/{}".format(sensorid))
-    sensor = sensor_request.json()
+    sensor_response = requests.get("http://sensor-access:5600/v1/sensors/{}".format(sensorid))
+    sensor = sensor_response.json()
     json = {
         "operation":"remove",
         "sensor":sensor["name"]+":"+sensor["_id"]
     }
     sensor_response = requests.delete("http://sensor-access:5600/v1/sensors/{}".format(sensorid))
-    device_response = requests.patch("http://device-service:5400/v1/users/{0}/devices/{1}".format(userid, devicetoken), json=json)
-    return make_response(json.dumps(sensor), sensor_request.status_code)
+    requests.patch("http://device-service:5400/v1/users/{0}/devices/{1}".format(userid, devicetoken), json=json)
+    return make_response(sensor_response.content, sensor_response.status_code)
 
 def get_sensor(userid, devicetoken, sensorid):
     sensor_response = requests.get("http://sensor-access:5600/v1/sensors/{}".format(sensorid))

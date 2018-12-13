@@ -13,7 +13,9 @@ def add_action(userid, deviceid):
         "action":created_action["name"]+":"+created_action["_id"]
     }
     device_response = requests.patch("http://device-service:5400/v1/users/{0}/devices/{1}".format(userid, deviceid), json=json)
-    return make_response(json.dumps(created_action), 200)
+    action = created_action.json()
+
+    return make_response(json.dumps(action), created_action.status_code)
 
 def delete_action(userid, deviceid, actionid):
     action = requests.get("http://action-access:5700/v1/actions/{}".format(actionid)).json()
@@ -23,16 +25,17 @@ def delete_action(userid, deviceid, actionid):
     }
     action_response = requests.delete("http://action-access:5700/v1/actions/{}".format(actionid))
     device_response = requests.patch("http://device-service:5400/v1/users/{0}/devices/{1}".format(userid, deviceid), json=json)
-    return make_response("?????????", 200)
+    return make_response(json.dumps(action_response.json()), action_response.status_code)
 
 def get_action(userid, deviceid, actionid):
-    action = requests.get("http://action-access:5700/v1/actions/{}".format(actionid)).json()
-    return make_response(json.dumps(action), 200)
+    action_response = requests.get("http://action-access:5700/v1/actions/{}".format(actionid))
+    return make_response(json.dumps(action_response.json()), action_response.status_code)
 
 def patch_action(userid, deviceid, actionid):
-    r = requests.patch("http://action-access:5700/v1/actions/{}".format(actionid), json=request.json)
-    return make_response("?????????", 200)
+    patch_response = requests.patch("http://action-access:5700/v1/actions/{}".format(actionid), json=request.json)
+    return make_response(json.dumps(patch_response.json()), patch_response.status_code)
 
 def activate_action(userid, deviceid, actionid):
-    r = requests.get("http://action-access:5700/v1/actions/{}".format(actionid), json=request.json)
-    return make_response("?????????????", 200)
+    activation_response = requests.get("http://action-access:5700/v1/actions/{}".format(actionid), json=request.json)
+
+    return make_response(json.dumps(activation_response.json()), activation_response.status_code)

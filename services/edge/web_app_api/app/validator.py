@@ -1,6 +1,3 @@
-import re
-
-
 # This function is used when an input is required to be alphanumeric, such as with usernames and passwords. This
 # Ensures that code cannot be injected into queries.
 import re
@@ -9,7 +6,7 @@ from pip._internal import req
 
 
 def is_alphanumeric(string):
-    r = re.compile('([A-Z]|[a-z]|[1-9])\w+')
+    r = re.compile('([A-Z]|[a-z]|[0-9])\w+')
 
     if r.match(string) is None:
         return string + " is not alphanumeric."

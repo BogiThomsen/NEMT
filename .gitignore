@@ -7,3 +7,6 @@
 __pycache__/*
 *.pyc
 .idea/*
+*.xml
+services/edge/web_app_api/\.idea/web_app_api\.iml
+services/edge/device_api/\.idea/

@@ -16,11 +16,12 @@ def add_action(userid, deviceid):
     return created_action
 
 def delete_action(userid, deviceid, actionid):
-    action_response = requests.delete("http://action-access:5700/v1/actions/{}".format(actionid))
+    action = requests.get("http://action-access:5700/v1/actions/{}".format(actionid))
     json = {
         "operation":"remove",
-        "action":actionid
+        "action":action["name"]+":"+action["_id"]
     }
+    action_response = requests.delete("http://action-access:5700/v1/actions/{}".format(actionid))
     device_response = requests.patch("http://device-service:5400/v1/users/{0}/devices/{1}".format(userid, deviceid), json=json)
     return action_response.text
 

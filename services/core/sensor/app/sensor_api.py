@@ -1,4 +1,4 @@
-from flask import jsonify, request, json
+from flask import jsonify, request, json, make_response
 import requests
 
 ### Data Access Endpoints
@@ -13,22 +13,22 @@ def add_sensor(userid, devicetoken):
         "sensor":created_sensor["name"]+":"+created_sensor["_id"]
     }
     device_response = requests.patch("http://device-service:5400/v1/users/{0}/devices/{1}".format(userid, devicetoken), json=json)
-    return created_sensor
+    return make_response(json.dumps(created_sensor), 200)
 
 def delete_sensor(userid, devicetoken, sensorid):
-    sensor = requests.get("http://sensor-access:5600/v1/sensors/{}".format(sensorid))
+    sensor = requests.get("http://sensor-access:5600/v1/sensors/{}".format(sensorid)).json()
     json = {
         "operation":"remove",
         "sensor":sensor["name"]+":"+sensor["_id"]
     }
     sensor_response = requests.delete("http://sensor-access:5600/v1/sensors/{}".format(sensorid))
     device_response = requests.patch("http://device-service:5400/v1/users/{0}/devices/{1}".format(userid, devicetoken), json=json)
-    return sensor_response.text
+    return make_response("??????????", 200)
 
 def get_sensor(userid, devicetoken, sensorid):
     sensor = requests.get("http://sensor-access:5600/v1/sensors/{}".format(sensorid)).json()
-    return sensor
+    return make_response(json.dumps(sensor), 200)
 
 def patch_sensor(userid, devicetoken, sensorid):
     r = requests.patch("http://sensor-access:5600/v1/sensors/{}".format(sensorid), json=request.json)
-    return r.text
+    return make_response("??????????", 200)

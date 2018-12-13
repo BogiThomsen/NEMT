@@ -8,7 +8,7 @@ info:
 basePath: /v1
 
 paths:
-  /users/{userid}/devices/{deviceid}/sensors:
+  /users/{userid}/devices/{devicetoken}/sensors:
     post:
       summary: Adds an sensor.
       description: Optional extended description in CommonMark or HTML.
@@ -17,12 +17,12 @@ paths:
         - application/json
       parameters:
         - $ref: '#/parameters/userid'
-        - $ref: '#/parameters/deviceid'
+        - $ref: '#/parameters/devicetoken'
         - $ref: '#/parameters/sensor'
       responses:
         200:    # status code
           description: An sensor was added
-  /users/{userid}/devices/{deviceid}/sensors/{sensorid}:
+  /users/{userid}/devices/{devicetoken}/sensors/{sensorid}:
     get:
       summary: Returns a sensor.
       description: Optional extended description in CommonMark or HTML.
@@ -32,14 +32,14 @@ paths:
           description: sensor was returned successfuly
       parameters:
         - $ref: '#/parameters/userid'
-        - $ref: '#/parameters/deviceid'
+        - $ref: '#/parameters/devicetoken'
         - $ref: '#/parameters/sensorid'
     patch:
       summary: patches sensor info
       operationId: sensor_api.patch_sensor
       parameters:
         - $ref: '#/parameters/userid'
-        - $ref: '#/parameters/deviceid'
+        - $ref: '#/parameters/devicetoken'
         - $ref: '#/parameters/sensorid'
         - $ref: '#/parameters/patchSensor'
       responses:
@@ -51,7 +51,7 @@ paths:
       operationId: sensor_api.delete_sensor
       parameters:
         - $ref: '#/parameters/userid'
-        - $ref: '#/parameters/deviceid'
+        - $ref: '#/parameters/devicetoken'
         - $ref: '#/parameters/sensorid'
       responses:
         200:    # status code
@@ -65,8 +65,8 @@ parameters:
     in: path
     type: string
     required: true
-  deviceid:
-    name: deviceid
+  devicetoken:
+    name: devicetoken
     description: a device id
     in: path
     type: string

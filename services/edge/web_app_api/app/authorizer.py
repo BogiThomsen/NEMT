@@ -6,4 +6,6 @@ def authorize(access_token, userid):
     if r.status_code == 200:
         return ''
     elif r.status_code == 401:
-        return r.get_json().error
+        return r.content
+    else:
+        return r.content

@@ -11,12 +11,12 @@
                 <!-- List Group -->
                 <div class="list-group dashboard-list" role="tablist">
                     {% for dev in userDevices %}
-                        <button type="button"
+                        <a type="button"
                                 class="list-group-item list-group-item-action dashitem"
                                 data-toggle="list"
                                 href="#{{ dev["name"] }}"
                                 role="tab">{{ dev["prettyname"] }}
-                        </button>
+                        </a>
                     {% endfor %}
                 </div>
             </div>

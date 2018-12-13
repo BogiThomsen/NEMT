@@ -14,7 +14,7 @@ headers = {'User-Agent': 'web-app-api', 'Content-Type': 'application/json'}
 def post_users_authenticate():
     validation = validate_users_request(request)
     if validation == '':
-        user_response = requests.post(user_url + '/users/authenticate', headers=headers, data=request.json)
+        user_response = requests.post(user_url + '/users/authenticate', headers=headers, json=request.json)
         return make_response(user_response.content, user_response.status_code)
     else:
         return make_response(json.dumps({"error": validation, "body": request.json}), 400, headers)

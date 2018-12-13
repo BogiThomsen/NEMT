@@ -51,7 +51,7 @@ def authenticate_user():
     userId = userId.replace('\"', '').rstrip()
     user_response = requests.get("http://user-access:5200/v1/users/{}".format(userId))
     user = user_response.json()
-    if checkPassword(login["password"], user["password"]):
+    if check_password(login["password"], user["password"]):
         user["password"] = ""
         return make_response(json.dumps(user), user_response.status_code)
     else:

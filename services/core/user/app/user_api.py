@@ -76,7 +76,7 @@ def authorize_user(userid):
     elif user["_id"] != userid:
         return make_response(json.dumps({"error": "not authorized"}), 401)
     else:
-        return make_response(response.content, response.status_code)
+        return make_response(response.content, 200)
 
 
 #Tag et device id og et device liste og et user id

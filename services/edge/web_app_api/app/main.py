@@ -10,7 +10,7 @@ session.trust_env = False
 
 @app.route('/', methods=['GET', 'DELETE'])
 def index():
-    username = "patchvirkerstadig"
+    username = "drunar"
     user_id = session.get("http://user-service:5100/v1/users/getId/{}".format(username), headers=headers).text
     # Please find en bedre måde at fjerne quotes og html encodet newline(%0A)
     user_id = user_id.replace('\"', '').rstrip()
@@ -21,15 +21,15 @@ def index():
 @app.route('/addUser', methods=['GET', 'POST'])
 def addUser():
     json = {}
-    json["username"] = "bogiergud"
-    json["password"] = "bogi@er.nice"
-    json["access_token"] = "sudo giv mig adgang"
+    json["username"] = "SubscribeToPewdiepie"
+    json["password"] = "bro@fi.st"
+    json["access_token"] = "i only hacked 50k printers"
     r = session.post("http://user-service:5100/v1/users", json=json, headers=headers)
     return render_template('index.html', text=r.json())
 
 @app.route('/patchUser', methods=['GET', 'POST', 'PATCH'])
 def patchUser():
-    username = "meyer"
+    username = "SubscribeToPewdiepie"
     user_id = session.get("http://user-service:5100/v1/users/getId/{}".format(username), headers=headers).text
     # Please find en bedre måde at fjerne quotes og html encodet newline(%0A)
     user_id = user_id.replace('\"', '').rstrip()

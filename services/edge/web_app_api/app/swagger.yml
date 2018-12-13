@@ -304,7 +304,6 @@ paths:
           description: Not Found
     delete:
       summary: summary here
-
       operationId: web_app_api.delete_users_user_id_devices_device_id_sensors_sensor_id
       consumes:
         - application/json

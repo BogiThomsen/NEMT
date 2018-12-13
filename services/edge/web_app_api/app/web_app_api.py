@@ -69,127 +69,127 @@ def post_users_id_devices(id):
     else:
         return make_response(json.dumps({"error": validation, "body": request.json}), 400, headers)
 
-def get_users_user_id_devices_device_id(user_id, device_id):
+def get_users_user_id_devices_device_id(userid, deviceid):
     validation = validate_devices_request(request)
     if validation == '':
         authorization = authorize(request.json['accessToken'])
         if authorization == '':
-            return requests.get(device_url + '/users/' + user_id + '/devices/' + device_id, headers=headers)
+            return requests.get(device_url + '/users/' + userid + '/devices/' + deviceid, headers=headers)
         else:
             return make_response(json.dumps({"error": authorization, "body": request.json}), 401, headers)
     else:
         return make_response(json.dumps({"error": validation, "body": request.json}), 400, headers)
 
-def patch_users_user_id_devices_device_id(user_id, device_id):
+def patch_users_user_id_devices_device_id(userid, deviceid):
     validation = validate_devices_request(request)
     if validation == '':
         authorization = authorize(request.json['accessToken'])
         if authorization == '':
-            return requests.patch(device_url + '/users/' + user_id + '/devices/' + device_id, headers=headers,
+            return requests.patch(device_url + '/users/' + userid + '/devices/' + deviceid, headers=headers,
                                   data=request.json.data)
         else:
             return make_response(json.dumps({"error": authorization, "body": request.json}), 401, headers)
     else:
         return make_response(json.dumps({"error": validation, "body": request.json}), 400, headers)
 
-def delete_users_user_id_devices_device_id(user_id, device_id):
+def delete_users_user_id_devices_device_id(userid, deviceid):
     validation = validate_devices_request(request)
     if validation == '':
         authorization = authorize(request.json['accessToken'])
         if authorization == '':
-            return requests.delete(device_url + '/users/' + user_id + '/devices/' + device_id, headers=headers)
+            return requests.delete(device_url + '/users/' + userid + '/devices/' + deviceid, headers=headers)
         else:
             return make_response(json.dumps({"error": authorization, "body": request.json}), 401, headers)
     else:
         return make_response(json.dumps({"error": validation, "body": request.json}), 400, headers)
 
-def post_users_user_id_devices_device_id_actions(user_id, device_id):
+def post_users_user_id_devices_device_id_actions(userid, deviceid):
     validation = validate_actions_request(request)
     if validation == '':
         authorization = authorize(request.json['accessToken'])
         if authorization == '':
-            return requests.post(action_url + '/users/' + user_id + '/devices/' + device_id + '/actions', headers=headers, data=request.json.data)
+            return requests.post(action_url + '/users/' + userid + '/devices/' + deviceid + '/actions', headers=headers, data=request.json.data)
         else:
             return make_response(json.dumps({"error": authorization, "body": request.json}), 401, headers)
     else:
         return make_response(json.dumps({"error": validation, "body": request.json}), 400, headers)
 
-def get_users_user_id_devices_device_id_actions_action_id(user_id, device_id, action_id):
+def get_users_user_id_devices_device_id_actions_action_id(userid, deviceid, actionid):
     validation = validate_actions_request(request)
     if validation == '':
         authorization = authorize(request.json['accessToken'])
         if authorization == '':
-            return requests.get(action_url + '/users/' + user_id + '/devices/' + device_id + '/actions/' + action_id, headers=headers)
+            return requests.get(action_url + '/users/' + userid + '/devices/' + deviceid + '/actions/' + actionid, headers=headers)
         else:
             return make_response(json.dumps({"error": authorization, "body": request.json}), 401, headers)
     else:
         return make_response(json.dumps({"error": validation, "body": request.json}), 400, headers)
 
-def patch_users_user_id_devices_device_id_actions_action_id(user_id, device_id, action_id):
+def patch_users_user_id_devices_device_id_actions_action_id(userid, deviceid, actionid):
     validation = validate_actions_request(request)
     if validation == '':
         authorization = authorize(request.json['accessToken'])
         if authorization == '':
-            return requests.patch(action_url + '/users/' + user_id + '/devices/' + device_id + '/actions/' + action_id,
+            return requests.patch(action_url + '/users/' + userid + '/devices/' + deviceid + '/actions/' + actionid,
                                   headers=headers, data=request.json.data)
         else:
             return make_response(json.dumps({"error": authorization, "body": request.json}), 401, headers)
     else:
         return make_response(json.dumps({"error": validation, "body": request.json}), 400, headers)
 
-def delete_users_user_id_devices_device_id_actions_action_id(user_id, device_id, action_id):
+def delete_users_user_id_devices_device_id_actions_action_id(userid, deviceid, actionid):
     validation = validate_actions_request(request)
     if validation == '':
         authorization = authorize(request.json['accessToken'])
         if authorization == '':
-            return requests.delete(action_url + '/users/' + user_id + '/devices/' + device_id + '/actions/' + action_id,
+            return requests.delete(action_url + '/users/' + userid + '/devices/' + deviceid + '/actions/' + actionid,
                                    headers=headers)
         else:
             return make_response(json.dumps({"error": authorization, "body": request.json}), 401, headers)
     else:
         return make_response(json.dumps({"error": validation, "body": request.json}), 400, headers)
 
-def post_users_user_id_devices_device_id_sensors(user_id, device_id):
+def post_users_user_id_devices_device_id_sensors(userid, deviceid):
     validation = validate_sensors_request(request)
     if validation == '':
         authorization = authorize(request.json['accessToken'])
         if authorization == '':
-            return requests.post(sensor_url + '/users/' + user_id + '/devices/' + device_id + '/sensors', headers=headers,
+            return requests.post(sensor_url + '/users/' + userid + '/devices/' + deviceid + '/sensors', headers=headers,
                               data=request.json.data)
         else:
             return make_response(json.dumps({"error": authorization, "body": request.json}), 401, headers)
     else:
         return make_response(json.dumps({"error": validation, "body": request.json}), 400, headers)
 
-def get_users_user_id_devices_device_id_sensors_sensor_id(user_id, device_id, sensor_id):
+def get_users_user_id_devices_device_id_sensors_sensor_id(userid, deviceid, sensorid):
     validation = validate_sensors_request(request)
     if validation == '':
         authorization = authorize(request.json['accessToken'])
         if authorization == '':
-            return requests.get(sensor_url + '/users/' + user_id + '/devices/' + device_id + '/sensors/' + sensor_id, headers=headers)
+            return requests.get(sensor_url + '/users/' + userid + '/devices/' + deviceid + '/sensors/' + sensorid, headers=headers)
         else:
             return make_response(json.dumps({"error": authorization, "body": request.json}), 401, headers)
     else:
         return make_response(json.dumps({"error": validation, "body": request.json}), 400, headers)
 
-def patch_users_user_id_devices_device_id_sensors_sensor_id(user_id, device_id, sensor_id):
+def patch_users_user_id_devices_device_id_sensors_sensor_id(userid, deviceid, sensorid):
     validation = validate_sensors_request(request)
     if validation == '':
         authorization = authorize(request.json['accessToken'])
         if authorization == '':
-            return requests.patch(sensor_url + '/users/' + user_id + '/devices/' + device_id + '/sensors/' + sensor_id,
+            return requests.patch(sensor_url + '/users/' + userid + '/devices/' + deviceid + '/sensors/' + sensorid,
                                   headers=headers, data=request.json.data)
         else:
             return make_response(json.dumps({"error": authorization, "body": request.json}), 401, headers)
     else:
         return make_response(json.dumps({"error": validation, "body": request.json}), 400, headers)
 
-def delete_users_user_id_devices_device_id_sensors_sensor_id(user_id, device_id, sensor_id):
+def delete_users_user_id_devices_device_id_sensors_sensor_id(userid, deviceid, sensorid):
     validation = validate_sensors_request(request)
     if validation == '':
         authorization = authorize(request.json['accessToken'])
         if authorization == '':
-            return requests.delete(sensor_url + '/users/' + user_id + '/devices/' + device_id + '/sensors/' + sensor_id,
+            return requests.delete(sensor_url + '/users/' + userid + '/devices/' + deviceid + '/sensors/' + sensorid,
                                    headers=headers)
         else:
             return make_response(json.dumps({"error": authorization, "body": request.json}), 401, headers)

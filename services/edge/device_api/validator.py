@@ -14,7 +14,8 @@ def is_alphanumeric_or_point(string):
         return "Not allowed: \"" + string.replace(r.match(string).group(), "") + "\" in " + "\"" + string + "\""
 
 def is_device_token(string):
-    r = re.compile('^[\w\:]+$')
+    #r = re.compile('^[\w\:]+$')
+    r = re.compile('^(?:[0-9]{1,3}\.){3}[0-9]{1,3}:[0-9]{4}$')
 
     if r.match(string) is None:
         return string + " is not alphanumeric."

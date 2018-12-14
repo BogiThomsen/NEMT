@@ -39,16 +39,18 @@ def delete_device(userid, deviceid):
         for x in device["actions"]:
             actiondata = x.split(':')
             action_id = actiondata[1]
-            requests.delete("http://action-service:5800/v1/users/{0}/devices/{1}/actions/{2}".format(user, deviceid, action_id))
+            requests.delete("http://action-service:5800/v1/users/{0}/devices/{1}/actions/{2}".format(userid, deviceid, action_id))
 
-    json = {
+    device_list = []
+    device_list.append(deviceid)
+    patch_device = {
         "operation":"remove",
-        "device":deviceid
+        "device":device_list
     }
 
-    device_response = requests.delete("http://device-access:5500/v1/devices/{}".format(deviceid), json=json)
+    device_response = requests.delete("http://device-access:5500/v1/devices/{}".format(deviceid))
 
-    requests.patch("http://user-service:5100/v1/users/{}".format(userid), json=json)
+    requests.patch("http://user-service:5100/v1/users/{}".format(userid), json=patch_device)
     return make_response(device_response.content, device_response.status_code)
 
 def get_device(userid, deviceid):

@@ -5,26 +5,31 @@ import requests
 
 def add_sensor(userid, deviceid):
     sensor = {
-        "name" : request.json["name"]
+        "name" : request.json["name"],
+        "public" : request.json["public"]
     }
     sensor_response = requests.post("http://sensor-access:5600/v1/sensors", json=sensor)
     created_sensor = sensor_response.json()
-    json = {
+    sensor_list = []
+    sensor_list.append(created_sensor["name"]+":"+created_sensor["_id"])
+    patch_sensor = {
         "operation":"add",
-        "sensor":created_sensor["name"]+":"+created_sensor["_id"]
+        "sensor":sensor_list
     }
-    requests.patch("http://device-service:5400/v1/users/{0}/devices/{1}".format(userid, deviceid), json=json)
+    requests.patch("http://device-service:5400/v1/users/{0}/devices/{1}".format(userid, deviceid), json=patch_sensor)
     return make_response(sensor_response.content, sensor_response.status_code)
 
 def delete_sensor(userid, deviceid, sensorid):
     sensor_response = requests.get("http://sensor-access:5600/v1/sensors/{}".format(sensorid))
     sensor = sensor_response.json()
-    json = {
+    sensor_list = []
+    sensor_list.append(sensor["name"]+":"+sensor["_id"])
+    patch_sensor = {
         "operation":"remove",
-        "sensor":sensor["name"]+":"+sensor["_id"]
+        "sensor":sensor_list
     }
     sensor_response = requests.delete("http://sensor-access:5600/v1/sensors/{}".format(sensorid))
-    requests.patch("http://device-service:5400/v1/users/{0}/devices/{1}".format(userid, deviceid), json=json)
+    requests.patch("http://device-service:5400/v1/users/{0}/devices/{1}".format(userid, deviceid), json=patch_sensor)
     return make_response(sensor_response.content, sensor_response.status_code)
 
 def get_sensor(userid, deviceid, sensorid):

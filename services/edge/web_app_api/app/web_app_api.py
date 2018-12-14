@@ -44,7 +44,7 @@ def patch_users_id(userid):
     if validation == '':
         authorization = authorize(request.json['accessToken'], userid)
         if authorization == '':
-            user_response = requests.patch(user_url + '/users/' + userid, headers=headers, data=request.json.data)
+            user_response = requests.patch(user_url + '/users/' + userid, headers=headers, data=request.json["data"])
             return make_response(user_response.content, user_response.status_code)
         else:
             return make_response(json.dumps({"error": authorization, "body": request.json}), 401, headers)

@@ -22,7 +22,7 @@ def delete_user(id):
     user = requests.get("http://user-access:5200/v1/users/{}".format(id)).json()
     if "devices" in user:
         for deviceid in user["devices"]:
-            device_response = requests.delete("http://device-service:5400/v1/users/{0}/devices/{1}/".format(id, deviceid))
+            device_response = requests.delete("http://device-service:5400/v1/users/{0}/devices/{1}".format(id, deviceid))
     user_response = requests.delete("http://user-access:5200/v1/users/{}".format(id))
     return make_response(device_response.content, device_response.status_code)
 

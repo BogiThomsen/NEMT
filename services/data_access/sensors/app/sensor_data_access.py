@@ -13,11 +13,11 @@ def post_sensor():
     if 'prettyName' not in request.json:
         new_sensor = {"name": name,
                       "prettyName": name,
-                      "public": False}
+                      "public": request.json["public"]}
     else:
         new_sensor = {"name": name,
                       "prettyName": request.json["prettyName"],
-                      "public": False}
+                      "public": request.json["public"]}
     _id = sensor_db.insert_one(new_sensor).inserted_id
     sensor = sensor_db.find_one({"_id": _id})
     sensor["_id"] = str(sensor["_id"])

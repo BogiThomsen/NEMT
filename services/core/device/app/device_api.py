@@ -52,7 +52,7 @@ def delete_device(userid, deviceid):
     return make_response(device_response.content, device_response.status_code)
 
 def get_device(userid, deviceid):
-    device_response = requests.get("http://device-access:5500/v1/devices/{}".format(deviceid)).json()
+    device_response = requests.get("http://device-access:5500/v1/devices/{}".format(deviceid))
     return make_response(device_response.content, device_response.status_code)
 
 def patch_device(userid, deviceid):

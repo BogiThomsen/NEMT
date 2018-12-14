@@ -110,18 +110,21 @@ def validate_devices_request(request):
         if validate_body_result != "":
             return validate_body_result
 
-        result = is_only_expected_data(request.json["data"], ["prettyName", "name", "deviceToken"])
+        result = is_only_expected_data(request.json["data"], ["name", "deviceToken"])
         if result != "":
             return result
 
-        expected_fields = ["prettyName"]
+        if request.json["data"]["prettyName"] is not None:
+            expected_fields = ["prettyName"]
 
-        for field in expected_fields:
-            result = is_alphanumeric_or_whitespace(request.json["data"][field])
-            if result != "":
-                return result
+            for field in expected_fields:
+                result = is_alphanumeric_or_whitespace(request.json["data"][field])
+                if result != "":
+                    return result
 
         return ""
+
+    
     else:
         if validate_body_result != "":
             return validate_body_result

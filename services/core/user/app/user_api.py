@@ -1,4 +1,6 @@
 from flask import jsonify, request, json, make_response
+from coapthon.server.coap import CoAP
+from coapthon.client.helperclient import HelperClient
 import requests, hashlib, uuid
 
 users = []
@@ -82,11 +84,7 @@ def authorize_user(id):
         return make_response(response.content, 200)
 
 
-#Tag et device id og et device liste og et user id
-#Check device id not in list
-#if true call user/id med patch request. Den skal have en operation, og en entry i otherdevice.
-#Operation og device skal i en json body.
-
-#MEYER: LAV ALT TIL 200 OG SEND OBJEKTET MED
-
+def activate_action(host, port, value):
+    client = HelperClient(server=(host, port))
+    response = client.put("action", value.__str__())
 

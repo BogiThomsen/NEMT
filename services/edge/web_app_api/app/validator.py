@@ -124,7 +124,7 @@ def validate_devices_request(request):
 
         return ""
 
-    
+
     else:
         if validate_body_result != "":
             return validate_body_result
@@ -133,12 +133,13 @@ def validate_devices_request(request):
         if result != "":
             return result
 
-        expected_fields = ["prettyName"]
+        if request.json["data"]["prettyName"] is not None:
+            expected_fields = ["prettyName"]
 
-        for field in expected_fields:
-            result = is_alphanumeric_or_whitespace(request.json["data"][field])
-            if result != "":
-                return result
+            for field in expected_fields:
+                result = is_alphanumeric_or_whitespace(request.json["data"][field])
+                if result != "":
+                    return result
 
         return ""
 
@@ -168,12 +169,13 @@ def validate_sensors_request(request):
         if isinstance(public, bool) == False:
             return "\"public\" must be of type bool"
 
-        expected_fields = ["prettyName"]
+        if request.json["data"]["prettyName"] is not None:
+            expected_fields = ["prettyName"]
 
-        for field in expected_fields:
-            result = is_alphanumeric_or_whitespace(request.json["data"][field])
-            if result != "":
-                return result
+            for field in expected_fields:
+                result = is_alphanumeric_or_whitespace(request.json["data"][field])
+                if result != "":
+                    return result
 
         return ""
 
@@ -198,12 +200,13 @@ def validate_sensors_request(request):
         if isinstance(public, bool) == False:
             return "\"public\" must be of type bool"
 
-        expected_fields = ["prettyName"]
+        if request.json["data"]["prettyName"] is not None:
+            expected_fields = ["prettyName"]
 
-        for field in expected_fields:
-            result = is_alphanumeric_or_whitespace(request.json["data"][field])
-            if result != "":
-                return result
+            for field in expected_fields:
+                result = is_alphanumeric_or_whitespace(request.json["data"][field])
+                if result != "":
+                    return result
 
         return ""
 
@@ -229,12 +232,13 @@ def validate_actions_request(request):
         if isinstance(public, bool) == False:
             return "\"public\" must be of type bool"
 
-        expected_fields = ["prettyName"]
+        if request.json["data"]["prettyName"] is not None:
+            expected_fields = ["prettyName"]
 
-        for field in expected_fields:
-            result = is_alphanumeric_or_whitespace(request.json["data"][field])
-            if result != "":
-                return result
+            for field in expected_fields:
+                result = is_alphanumeric_or_whitespace(request.json["data"][field])
+                if result != "":
+                    return result
 
         return ""
 
@@ -256,11 +260,12 @@ def validate_actions_request(request):
         if isinstance(public, bool) == False:
             return "\"public\" must be of type bool"
 
-        expected_fields = ["prettyName"]
+        if request.json["data"]["prettyName"] is not None:
+            expected_fields = ["prettyName"]
 
-        for field in expected_fields:
-            result = is_alphanumeric_or_whitespace(request.json["data"][field])
-            if result != "":
-                return result
+            for field in expected_fields:
+                result = is_alphanumeric_or_whitespace(request.json["data"][field])
+                if result != "":
+                    return result
 
         return ""

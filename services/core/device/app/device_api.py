@@ -19,7 +19,7 @@ def add_device(userid):
         created_device = device_response.json()
         patch_device = {
             "operation":"add",
-            "device":created_device["deviceToken"]
+            "device":[created_device["deviceToken"]]
         }
         requests.patch("http://user-service:5100/v1/users/{}".format(userid), json=patch_device)
         return make_response(json.dumps(created_device), device_response.status_code)

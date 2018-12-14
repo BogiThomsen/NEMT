@@ -122,8 +122,6 @@ def rules_id(id):
     rule = rule_parser.parse_rule(rule)
     rule = rule_parser.prettify_rule(rule, testDevices, testSensors, testActions)
 
-    print(rule)
-
     return render_template('pages/rule.html', rule=rule)
 
 @app.route('/rules/new')

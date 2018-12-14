@@ -75,6 +75,7 @@ def patch_user(id):
                     user_db.update_one({"_id": ObjectId(id)},
                                        {"$set": {strings_dict[val]: request.json[val]}})
     patched_user = user_db.find_one({"_id": ObjectId(id)})
+    patched_user["_id"] = str(patched_user["_id"])
     return make_response(json.dumps(patched_user), 200)
 
 def patch_lists(db, id, json_object, current_val):

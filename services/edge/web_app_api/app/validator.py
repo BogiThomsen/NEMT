@@ -185,8 +185,10 @@ def validate_sensors_request(request):
         if result != "":
             return result
 
-        if request.json["data"]["operation"] not in ["add", "remove"]:
-            return "operation should be either add or remove. it is " + request.json["data"]
+        if 'operation' in request.json["data"]:
+
+            if request.json["data"]["operation"] not in ["add", "remove"]:
+                return "operation should be either add or remove. it is " + request.json["data"]
 
         public = request.json["data"]["public"]
         accesstokens = request.json["data"]["accessTokens"]
@@ -240,8 +242,10 @@ def validate_actions_request(request):
         if result != "":
             return result
 
-        if request.json["data"]["operation"] not in ["add", "remove"]:
-            return "operation should be either add or remove. it is " + request.json["data"]
+        if 'operation' in request.json["data"]:
+
+            if request.json["data"]["operation"] not in ["add", "remove"]:
+                return "operation should be either add or remove. it is " + request.json["data"]
 
         public = request.json["data"]["public"]
         accesstokens = request.json["dataaccessTokens"]

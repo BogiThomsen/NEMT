@@ -5,7 +5,8 @@ import requests
 
 def add_action(userid, deviceid):
     action = {
-        "name" : request.json["name"]
+        "name" : request.json["name"],
+        "public" : request.json["public"]
     }
     action_response = requests.post("http://action-access:5700/v1/actions", json=action)
     created_action = action_response.json()

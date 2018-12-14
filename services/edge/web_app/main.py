@@ -74,8 +74,10 @@ def devices():
 def devices_id(id):
 
     device = testDevice
-    userSensors = testSensors
+
     # Expected: all actions to a given user
+    # Should be changed to only relevant sensors and actions
+    userSensors = testSensors
     userActions = testActions
 
     return render_template('pages/device.html', device=testDevice, userSensors=userSensors, userActions=userActions)
@@ -83,10 +85,21 @@ def devices_id(id):
 @app.route('/rules')
 @flask_login.login_required
 def rules():
-    return render_template('pages/rules.html')
+
+    userRules = testRules
+
+    return render_template('pages/rules.html', userRules=userRules)
+
+@app.route('/rules/<string:id>')
+@flask_login.login_required
+def rules_id(id):
+
+    rule = testRule
+
+    return render_template('pages/rule.html', rule=rule)
 
 @app.route('/rules/new')
-def createrule():
+def rules_new():
     userSensors = testSensors
     userActions = testActions
     return render_template('pages/createrule.html', userSensors=userSensors, userActions=userActions)
@@ -98,7 +111,7 @@ def index():
     else:
         return redirect(url_for('dashboard'))
 
-# "/devices" testing variables. May be deleted when "/devices" has been correctly implemented
+# "/devices" testing variables. May be deleted when web_app has been correctly integrated
 testDevices = [
     {"id": "001", "device_token": "001", "name": "Controller001", "prettyname": "Living Room", "sensors": ["001", "002"], "actions":["001", "002", "005"], "rules":[]},
     {"id": "002", "device_token": "002", "name": "Controller002", "prettyname": "Bed Room", "sensors": ["003", "004"], "actions": ["003", "004", "006"], "rules": []},
@@ -123,7 +136,16 @@ testActions = [
     {"id": "006", "name": "CoolBed", "prettyname": "cool off bedroom", "public": False, "access_tokens": ["1", "2"]}
 ]
 
+testRules = [
+    {"id": "001", "name": "Sunset rule", "condition": "Controller002.Light002 < val.15", "invocations": ["Controller002.CoolBed", "Controller001.LightOnLiv"]},
+    {"id": "002", "name": "Sunrise rule", "condition": "Controller001.Light003 > val.30", "invocations": ["Controller001.HeatUpLiv", "Controller002.LightOnBed"]},
+
+]
+
 testDevice = {"id": "001", "device_token": "001", "name": "Controller001", "prettyname": "Living Room", "sensors": ["001", "002"], "actions":["001", "002", "005"], "rules":[]}
+
+testRule = {"id": "001", "name": "Sunset rule", "condition": "Controller002.Light002 < val.15", "invocations": ["Controller002.CoolBed", "Controller001.LightOnLiv"]}
+
 
 
 if __name__ == "__main__":

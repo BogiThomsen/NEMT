@@ -12,7 +12,7 @@
                 <nav>
                 {% for dev in userDevices %}
                     <ul>
-                        <a href="{{ url_for('devices_id', id=dev.id) }}">{{ dev["prettyname"] }}</a>
+                        <a href="{{ url_for('devices_id', id=dev["id"]) }}">{{ dev["prettyname"] }}</a>
                     </ul>
                 {% endfor %}
                 </nav>

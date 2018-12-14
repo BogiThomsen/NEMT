@@ -87,7 +87,7 @@ def validate_users_request(request):
         if validate_body_result != "":
             return validate_body_result
 
-        result = data_is_any_of(request.json["data"], ["username", "password"])
+        result = data_is_any_of(request.json["data"], ["operation", "username", "password"])
         if result != "":
             return result
 

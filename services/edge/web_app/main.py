@@ -3,7 +3,7 @@ import flask_login
 import login_manager
 import datetime
 from urllib.parse import urlparse
-from forms import SignInForm
+from forms import RegisterForm, SignInForm
 import requests
 import rule_parser
 
@@ -41,20 +41,37 @@ def signin():
                 next = url_for('dashboard')
             return redirect(next)
         elif status_code == 400:
-            pass
+            flash('An error occurred when trying to sign in.', 'danger')
+            return render_template('auth/signin.html', form=form)
 
     return render_template('auth/signin.html', form=form)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    #register a user
+    if not flask_login.current_user.is_anonymous:
+        return redirect(url_for('index'))
 
-    return render_template('auth/register.html')
+    form = RegisterForm(request.form)
+    if form.validate_on_submit():
+        username = form.username.data
+        password = form.password.data
+        r = requests.post('http://web-app-api:5000/v1/users', data={'username': username, 'password': password})
+        status_code = 200
+
+        if r.status_code == 200:
+            flash('Your user was successfully created.', 'success')
+            return redirect(url_for('signin'))
+        elif r.status_code == 400:
+            flash('An error occurred when trying to register.', 'danger')
+            return render_template('auth/register.html', form=form)
+
+    return render_template('auth/register.html', form=form)
 
 @app.route('/signout')
 @flask_login.login_required
 def logout():
     flask_login.logout_user()
+    flash('You have been logged out.', 'success')
     return render_template('auth/logout.html')
 
 @app.route('/dashboard')
@@ -94,7 +111,7 @@ def devices_id(id):
         #r = requests.patch("http://web-app:5000/users/" + flask_login.current_user.id + "/devices/" + id, data={'accessToken': flask_login.current_user.access_token, 'data': {'prettyname': request.data.prettyName}})
 
 #      if r.status_code == 200:
-        flash('Your device has been updated.')
+        flash('Your device has been updated.', 'success')
         return redirect(url_for('devices_id', id=id))
 
 @app.route('/devices/<string:id>/delete', methods=["POST"])
@@ -103,7 +120,7 @@ def devices_id_delete(id):
     #r = requests.delete("http://web-app:5000/users/" + flask_login.current_user.id + "/devices/" + id, data={'accessToken': flask_login.current_user.access_token, 'data': {'userid':flask_login.current_user.id, 'deviceid':id}})
 
     #if r.status_code == 200:
-    flash('Your device has been deleted.')
+    flash('Your device has been deleted.', 'success')
     return redirect(url_for('devices'))
 
 @app.route('/rules')

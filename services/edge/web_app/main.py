@@ -66,10 +66,19 @@ def devices():
     # Expected: all devices to a given user
     userDevices = testDevices
     # Expected: all sensors to a given user
+
+    return render_template('pages/devices.html', userDevices=userDevices)
+
+@app.route('/devices/<string:id>')
+@flask_login.login_required
+def devices_id(id):
+
+    device = testDevice
     userSensors = testSensors
     # Expected: all actions to a given user
     userActions = testActions
-    return render_template('pages/devices.html', userDevices=userDevices, userSensors=userSensors, userActions=userActions)
+
+    return render_template('pages/device.html', device=testDevice, userSensors=userSensors, userActions=userActions)
 
 @app.route('/rules')
 @flask_login.login_required
@@ -113,6 +122,8 @@ testActions = [
     {"id": "005", "name": "HeatUpLiv", "prettyname": "increase livingroom temperature", "public": False, "access_tokens": ["1", "2"]},
     {"id": "006", "name": "CoolBed", "prettyname": "cool off bedroom", "public": False, "access_tokens": ["1", "2"]}
 ]
+
+testDevice = {"id": "001", "device_token": "001", "name": "Controller001", "prettyname": "Living Room", "sensors": ["001", "002"], "actions":["001", "002", "005"], "rules":[]}
 
 
 if __name__ == "__main__":

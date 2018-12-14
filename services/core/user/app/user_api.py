@@ -38,7 +38,7 @@ def get_user_id(username):
 
 def patch_user(id):
     user_response = requests.patch("http://user-access:5200/v1/users/{}".format(id), json=request.json)
-    return make_response(user_response.content, user_response,status_code)
+    return make_response(user_response.content, user_response.status_code)
 
 def authenticate_user():
     login = {

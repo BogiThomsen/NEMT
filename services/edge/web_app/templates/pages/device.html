@@ -83,7 +83,12 @@
                 <tr>
                     <td scope="row">{{ act["prettyname"] }}</td>
                     <td scope="row">Public</td>
-                    <td scope="row"><button type="button" class="btn btn-primary btn-sm">Activate</button></td>
+                    <td scope="row">
+                        <form method="POST" class="form-inline ml-auto mr-4" style="width: min-content">
+                            <input hidden name="{{ act["id"] }}">
+                            <button type="submit" class="btn btn-primary btn-sm">Activate</button>
+                        </form>
+                    </td>
                 </tr>
             {% endif %}
             {% endfor %}

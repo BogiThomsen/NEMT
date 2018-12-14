@@ -11,8 +11,8 @@
                 <!-- List Group -->
                 <nav>
                 {% for rul in userRules %}
-                    <ul>
-                        <a href="{{ url_for('rules_id', id=rul["id"]) }}">{{ rul["name"] }}</a>
+                    <ul class="fixed-ul">
+                        <a class="h5 ml-3 text-dark" href="{{ url_for('rules_id', id=rul["id"]) }}">{{ rul["name"] }}</a>
                     </ul>
                 {% endfor %}
                 </nav>

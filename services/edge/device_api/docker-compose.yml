@@ -1,0 +1,17 @@
+version: '3.6'
+services:
+    device-api:
+        build: .
+        ports:
+            - "5683:5683"
+        expose:
+            - "5683"
+        volumes:
+            - .:/code
+        networks:
+            - coap-net
+        container_name: device-api
+networks:
+  coap-net:
+    external:
+      name: platform

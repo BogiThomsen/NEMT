@@ -51,30 +51,43 @@ def get_user(id):
 
 def get_user_id_by_username(username):
     user_db = connect_to_db()
-    x = user_db.find_one({"username": username})
+    query = {"username": username}
+    if (user_db.count_documents(query)) < 1 :
+        return make_response(json.dumps({"error": "user with username: "+ username +" does not exist"}), 404)
+    x = user_db.find_one(query)
     return make_response(str(x["_id"]), 200)
 
 def patch_user(id):
-    strings = {"password", "username"}
-    strings_dict = string_dict()
     lists = {"device", "rule", "grouping", "otherDevices"}
+    strings = {"password", "username"}
+    ignore_vals = {"_id", "operation"}
+    strings_dict = string_dict()
     user_db = connect_to_db()
     user = user_db.find_one({"_id": ObjectId(id)})
-    for val in lists:
-        if val in request.json:
-            patch_lists(user_db, id, request.json, val)
-    if request.json["operation"] == "add":
-        for val in strings:
-            if val in request.json:
-                if ((val == "username") and (user_db.count_documents({"username": request.json[val]})) > 0):
-                    if request.json[val] == user["username"]:
-                        continue
-                    else:
-                        return make_response("username: " + request.json[val] + " already exists", 400)
+    for val in request.json:
+        if val not in strings and val not in lists and val not in ignore_vals:
+            return make_response(val + "is not a patcheable field", 400)
+    for val in request.json:
+        if val in ignore_vals:
+            continue
+        elif val in lists:
+            if 'operation' in request.json:
+                patch_lists(user_db, id, request.json, val)
+            else:
+                make_response("operation field is required for list patching", 400)
+        elif val in strings:
+            if ((val == "username") and (user_db.count_documents({"username": request.json[val]})) > 0):
+                if request.json[val] == user["username"]:
+                    continue
                 else:
-                    user_db.update_one({"_id": ObjectId(id)},
-                                       {"$set": {strings_dict[val]: request.json[val]}})
+                    return make_response("username: " + request.json[val] + " already exists", 400)
+            else:
+                user_db.update_one({"_id": ObjectId(id)},
+                                   {"$set": {strings_dict[val]: request.json[val]}})
+        else:
+            return make_response(val + "is not a patcheable field", 400)
     patched_user = user_db.find_one({"_id": ObjectId(id)})
+    patched_user["_id"] = str(patched_user["_id"])
     return make_response(json.dumps(patched_user), 200)
 
 def patch_lists(db, id, json_object, current_val):

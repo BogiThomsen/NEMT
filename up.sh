@@ -8,6 +8,9 @@ cd ..
 cd services/edge/web_app
 docker-compose up -d
 cd ..
+cd device_api
+docker-compose up -d
+cd ..
 cd ..
 cd core/user
 docker-compose up -d

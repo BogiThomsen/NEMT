@@ -200,8 +200,6 @@ parameters:
     description: User info to be patched
     schema:
       type: object
-      required:
-        - operation
       properties:
         username:
           type: string

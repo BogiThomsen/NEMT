@@ -4,23 +4,26 @@
 
 <div class="card mx-auto" style="width: 50vw; min-width: 500px">
     <div class="card-header bg-light input-group-lg">
-        <form class="form-inline" method="POST">
-            <div class="form-group">
-                <input type="text"
-                       name="prettyName"
-                       data-enable-on-input="{{ device["name"] }}_changePrettyName"
-                       class="form-control form-control-lg searchInput"
-                       placeholder="{{ device["prettyname"] }}" >
-            </div>
-            <button type="submit"
-                    id="{{ device["name"] }}_changePrettyName"
-                    class="btn btn-primary btn-lg ml-1"
-                    disabled="disabled">Edit</button>
+        <div class="row">
+            <form class="form-inline" method="POST">
+                <div class="form-group">
+                    <input type="text"
+                           name="prettyName"
+                           data-enable-on-input="{{ device["name"] }}_changePrettyName"
+                           class="form-control form-control-lg searchInput"
+                           placeholder="{{ device["prettyname"] }}" >
+                </div>
+                <button type="submit"
+                        id="{{ device["name"] }}_changePrettyName"
+                        class="btn btn-primary btn-lg ml-1"
+                        disabled="disabled">Edit</button>
+            </form>
             <a class="btn btn-primary btn-lg ml-auto" href="{{ url_for('devices') }}">Back</a>
-        </form>
-        <form class="form-inline" method="POST" action="/devices/{{ device["id"] }}/delete">
-            <button type="submit" class="btn btn-danger btn-lg ml-1">Delete</button>
-        </form>
+            <form class="form-inline" method="POST" action="/devices/{{ device["id"] }}/delete">
+                <button type="submit" class="btn btn-danger btn-lg ml-1">Delete</button>
+            </form>
+        </div>
+
     </div>
     <div class="card-body">
         <h5>Sensors</h5>

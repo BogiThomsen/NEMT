@@ -55,13 +55,13 @@ def register():
     if form.validate_on_submit():
         username = form.username.data
         password = form.password.data
-        #r = requests.post('127.0.0.1:5000/v1/users', data={'username': username, 'password': password})
+        r = requests.post('http://web-app-api:5000/v1/users', data={'username': username, 'password': password})
         status_code = 200
 
-        if status_code == 200:
+        if r.status_code == 200:
             flash('Your user was successfully created.', 'success')
             return redirect(url_for('signin'))
-        elif status_code == 400:
+        elif r.status_code == 400:
             flash('An error occurred when trying to register.', 'danger')
             return render_template('auth/register.html', form=form)
 

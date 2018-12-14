@@ -75,8 +75,6 @@ parameters:
     description: Action info to be patched
     schema:
       type: object
-      required:
-        - operation
         - name
       properties:
         name:

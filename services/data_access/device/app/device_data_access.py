@@ -58,15 +58,21 @@ def patch_device(id):
     strings = {"prettyName"}
     strings_dict = string_dict()
     lists = {"sensor", "rule", "action"}
+    ignore_vals = {"_id", "operation"}
     device_db = connect_to_db()
-    for val in lists:
-        if val in request.json:
-            patch_lists(device_db, id, request.json, val)
-    if request.json["operation"] == "add":
-        for val in strings:
-            if val in request.json:
-                device_db.update_one({"_id": ObjectId(id)},
-                                    {"$set": {strings_dict[val]: request.json[val]}})
+    for val in request.json:
+        if val in ignore_vals:
+            continue
+        elif val in lists:
+            if 'operation' in request.json:
+                patch_lists(device_db, id, request.json, val)
+            else:
+                make_response("operation field is required for list patching", 400)
+        elif val in strings:
+            device_db.update_one({"_id": ObjectId(id)},
+                                {"$set": {strings_dict[val]: request.json[val]}})
+        else:
+            return make_response(val + "is not a patcheable field", 400)
     patched_device = device_db.find_one({"_id": ObjectId(id)})
     return make_response(json.dumps(patched_device), 200)
 

@@ -83,8 +83,6 @@ parameters:
     description: device info to be patched
     schema:
       type: object
-      required:
-        - operation
       properties:
         name:
           type: string

@@ -33,15 +33,15 @@ def data_is_any_of(recieved_dictionary, expected_dictionary):
     return ""
 
 
-def is_only_expected_data(recieved_dictionary, expected_dictionary):
+def is_only_expected_data(recieved_dictionary, expected_dictionary, optional_dictionary = []):
 
     for key in expected_dictionary:
         if key not in recieved_dictionary.keys():
             return "Expected: {" + ', '.join(expected_dictionary) + "}\nGot: {" + ', '.join(recieved_dictionary.keys()) + "}\nDidnt find: " + key
 
     for key in list(recieved_dictionary.keys()):
-        if key not in expected_dictionary:
-            return "Expected: {" + ', '.join(expected_dictionary) + "}\nGot: {" + ', '.join(recieved_dictionary.keys()) + "}\nDidnt expect: " + key
+        if key not in expected_dictionary and key not in optional_dictionary:
+            return "Expected: {" + ', '.join(expected_dictionary) + "}\nOptional: {" + ', '.join(optional_dictionary) + "}\nGot: {" + ', '.join(recieved_dictionary.keys()) + "}\nDidnt expect: " + key
     return ""
 
 
@@ -106,11 +106,13 @@ def validate_devices_request(request):
 
     if request.method == "GET" or request.method == "DELETE":
         return validate_body_result
+
+
     elif request.method == "POST":
         if validate_body_result != "":
             return validate_body_result
 
-        result = is_only_expected_data(request.json["data"], ["name", "deviceToken"])
+        result = is_only_expected_data(request.json["data"], ["name", "deviceToken"], ["prettyName"])
         if result != "":
             return result
 
@@ -223,7 +225,7 @@ def validate_actions_request(request):
             return result
 
         public = request.json["data"]["public"]
-        accesstokens = request.json["dataaccessTokens"]
+        accesstokens = request.json["accessTokens"]
 
         for token in accesstokens:
             if(is_alphanumeric(token) == False):

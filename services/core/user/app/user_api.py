@@ -1,16 +1,7 @@
 from flask import jsonify, request, json, make_response
-
 from coapthon.client.helperclient import HelperClient
-
 import requests, hashlib, uuid
 
-users = []
-user1 = {
-    "username" : "testuser",
-    "password" : "testpass",
-    "access_token" : "cooltoken"
-}
-users.append(user1)
 
 ### Data Access Endpoints
 

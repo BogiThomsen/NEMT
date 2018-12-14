@@ -98,26 +98,42 @@ def devices():
 @app.route('/devices/<string:id>', methods=["GET", "POST"])
 @flask_login.login_required
 def devices_id(id):
-    if request.method == "GET":
-        device = testDevice
-        userSensors = testSensors
-        # Expected: all actions to a given user
-        userActions = testActions
+    if request.method == 'POST':
+        split_id_access_token = flask_login.current_user.id.split(';')
+        user_id = split_id_access_token[0]
+        access_token = split_id_access_token[1]
+        form = request.form
+        if 'prettyName' in form:
+            pretty_name = request.form.prettyName
+            # r = requests.patch("http://web-app:5000/users/" + user_id + "/devices/" + id, data={'accessToken': access_token, 'data': {'prettyname': pretty_name}})
 
-        return render_template('pages/device.html', device=testDevice, userSensors=userSensors, userActions=userActions)
+            # if r.status_code == 200:
+            flash('Your device has been updated.', 'success')
+            return redirect(url_for('devices_id', id=id))
+        elif 'actionId' in form:
+            action_id = request.form.actionId
+            #r = requests.get('http://web-app-api:5000/v1/users/' + user_id + '/devices/' + id + '/actions/' + action_id + '/activate', data={'accessToken': access_token})
+            status_code = 200
 
-    else:
+            if status_code == 200:
+                flash('The action was succesfully triggered.', 'success')
+            elif status_code == 400:
+                flash('An error occurred when trying to trigger the action.', 'danger')
 
-        #r = requests.patch("http://web-app:5000/users/" + flask_login.current_user.id + "/devices/" + id, data={'accessToken': flask_login.current_user.access_token, 'data': {'prettyname': request.data.prettyName}})
+    device = testDevice
+    userSensors = testSensors
+    # Expected: all actions to a given user
+    userActions = testActions
 
-#      if r.status_code == 200:
-        flash('Your device has been updated.', 'success')
-        return redirect(url_for('devices_id', id=id))
+    return render_template('pages/device.html', device=testDevice, userSensors=userSensors, userActions=userActions)
 
 @app.route('/devices/<string:id>/delete', methods=["POST"])
 @flask_login.login_required
 def devices_id_delete(id):
-    #r = requests.delete("http://web-app:5000/users/" + flask_login.current_user.id + "/devices/" + id, data={'accessToken': flask_login.current_user.access_token, 'data': {'userid':flask_login.current_user.id, 'deviceid':id}})
+    split_id_access_token = flask_login.current_user.id.split(';')
+    user_id = split_id_access_token[0]
+    access_token = split_id_access_token[1]
+    #r = requests.delete("http://web-app-api:5000/v1/users/" + user_id + "/devices/" + id, data={'accessToken': access_token})
 
     #if r.status_code == 200:
     flash('Your device has been deleted.', 'success')

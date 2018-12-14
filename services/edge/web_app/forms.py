@@ -21,3 +21,9 @@ class SignInForm(FlaskForm):
 
     # Check if user exists with the username and if the password is correct
 
+class EditProfile(FlaskForm):
+    username = StringField('Username', validators=[DataRequired()])
+    current_password = PasswordField('Current Password', validators=[DataRequired()])
+    new_password = PasswordField('New Password', validators=[DataRequired()])
+    new_password2 = PasswordField('New Password Again', validators=[DataRequired(), EqualTo(new_password)])
+    submit = SubmitField('Submit')

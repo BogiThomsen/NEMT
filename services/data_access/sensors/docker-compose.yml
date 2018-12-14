@@ -1,0 +1,17 @@
+version: '3.6'
+services:
+    sensor-access:
+        build: .
+        ports:
+            - "5600:5600"
+        expose:
+            - "5600"
+        volumes:
+            - .:/code
+        networks:
+            - sensor-access-net
+        container_name: sensor-access
+networks:
+  sensor-access-net:
+    external:
+      name: platform

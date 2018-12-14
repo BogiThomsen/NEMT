@@ -223,7 +223,7 @@ def validate_actions_request(request):
             return result
 
         public = request.json["data"]["public"]
-        accesstokens = request.json["dataaccessTokens"]
+        accesstokens = request.json["accessTokens"]
 
         for token in accesstokens:
             if(is_alphanumeric(token) == False):

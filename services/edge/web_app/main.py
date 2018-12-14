@@ -1,17 +1,16 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 import flask_login
 import login_manager
 import datetime
 from urllib.parse import urlparse
 from forms import SignInForm
+import requests
 
 app = Flask(__name__)
 app.secret_key = '&0n2%~pq0B=j8TS('
 
 login_manager.login_manager.init_app(app)
 login_manager.login_manager.login_view = 'signin'
-
-users = {'burla': {'password': '1234'}}
 
 @app.context_processor
 def inject_now():
@@ -25,14 +24,23 @@ def signin():
     form = SignInForm(request.form)
     if form.validate_on_submit():
         username = form.username.data
-        if form.password.data == users[username]['password']:
+        password = form.password.data
+        #r = requests.post('127.0.0.1:5000/v1/users/authenticate', data={'username': username, 'password': password})
+        status_code = 200
+        json = {'id': '3', 'accessToken': 'ABC123'}
+
+        if status_code == 200:
+            id = json['id']
+            access_token = json['accessToken']
             user = login_manager.User()
-            user.id = username
+            user.id = id + ';' + access_token
             flask_login.login_user(user)
             next = request.args.get('next')
             if not next or urlparse(next).netloc != '':
                 next = url_for('dashboard')
             return redirect(next)
+        elif status_code == 400:
+            pass
 
     return render_template('auth/signin.html', form=form)
 

@@ -1,35 +1,27 @@
 import flask_login
+import requests
 
 login_manager = flask_login.LoginManager()
-
-users = {'burla': {'password': '1234'}}
 
 class User(flask_login.UserMixin):
     pass
 
 @login_manager.user_loader
-def user_loader(email):
-    if email not in users:
-        return
+def user_loader(id_access_token):
+    split_id_access_token = id_access_token.split(';')
+    id = split_id_access_token[0]
+    access_token = split_id_access_token[1]
 
-    user = User()
-    user.id = email
-    return user
+    #r = requests.get('127.0.0.1:5000/v1/users/' + id, data={'accessToken': access_token})
 
-@login_manager.request_loader
-def request_loader(request):
-    email = request.form.get('email')
-    if email not in users:
-        return
+    status_code = 200
 
-    user = User()
-    user.id = email
-
-    # DO NOT ever store passwords in plaintext and always compare password
-    # hashes using constant-time comparison!
-    user.is_authenticated = request.form['password'] == users[email]['password']
-
-    return user
+    if status_code == 200:
+        user = User()
+        user.id = id + ';' + access_token
+        return user
+    elif status_code == 404:
+        return None
 
 '''
 @login_manager.unauthorized_handler

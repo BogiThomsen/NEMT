@@ -465,7 +465,6 @@ parameters:
           type: object
           required:
             - name
-            - prettyName
             - public
           properties:
             name:
@@ -524,7 +523,6 @@ parameters:
           type: object
           required:
             - name
-            - prettyName
             - public
           properties:
             name:

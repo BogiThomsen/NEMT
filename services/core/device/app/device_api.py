@@ -21,12 +21,12 @@ def add_device(userid):
 
 def delete_device(userid, deviceid):
     device = requests.get("http://device-access:5500/v1/devices/{}".format(deviceid)).json()
-    if len(device["sensors"]) > 0:
+    if 'sensors' in device:
         for x in device["sensors"]:
             sensordata=x.split(':')
             sensor_id = sensordata[1]
             requests.delete("http://sensor-service:5900/v1/devices/{0}/sensors/{1}".format(deviceid, sensor_id))
-    if len(device["actions"]) > 0:
+    if 'actions' in device:
         for x in device["actions"]:
             actiondata = x.split(':')
             action_id = actiondata[1]

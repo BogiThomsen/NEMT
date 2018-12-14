@@ -144,8 +144,6 @@ parameters:
     description: sensor info to be patched
     schema:
       type: object
-      required:
-        - operation
       properties:
         name:
           type: string
@@ -170,8 +168,6 @@ parameters:
     description: Action info to be patched
     schema:
       type: object
-      required:
-        - operation
       properties:
         name:
           type: string

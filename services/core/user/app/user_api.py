@@ -77,7 +77,7 @@ def authorize_user(id):
     user = response.json()
     #hvis 200, send 200 #ellers hvis 404, send 401 tilbage
     if response.status_code == 404:
-        return make_response(json.dumps({"error": "user not found."}), 404)
+        return make_response(json.dumps({"error": "cannot authorize, user not found."}), 404)
     elif user["_id"] != id:
         return make_response(json.dumps({"error": "not authorized"}), 401)
     else:

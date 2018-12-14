@@ -67,7 +67,7 @@ parameters:
       properties:
         name:
           type: string
-        pretty_name:
+        prettyName:
           type: string
   patchSensor:
     in: body
@@ -75,15 +75,13 @@ parameters:
     description: sensor info to be patched
     schema:
       type: object
-      required:
-        - name
       properties:
         name:
           type: string
         operation:
           type: string
           enum: [add, remove]
-        pretty_name:
+        prettyName:
           type: string
         value:
           type: string

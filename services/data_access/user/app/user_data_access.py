@@ -79,7 +79,7 @@ def patch_user(id):
                 user_db.update_one({"_id": ObjectId(id)},
                                    {"$set": {strings_dict[val]: request.json[val]}})
         else:
-            return make_response(val + "is not an allowed field", 400)
+            return make_response(val + "is not a patcheable field", 400)
     patched_user = user_db.find_one({"_id": ObjectId(id)})
     patched_user["_id"] = str(patched_user["_id"])
     return make_response(json.dumps(patched_user), 200)

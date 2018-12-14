@@ -47,23 +47,31 @@ def patch_action(id):
     strings = {"prettyName", "public"}
     strings_dict = string_dict()
     lists = {"accessToken"}
+    ignore_vals = {"_id", "operation"}
     lists_dict = list_dict()
     action_db = connect_to_db()
-    for val in lists:
-        if val in request.json:
-            if request.json["operation"] == "remove":
-                for item in request.json[val]:
-                    action_db.update_one({"_id": ObjectId(id)},
-                                       {"$pull": {lists_dict[val]: item}})
-            if request.json["operation"] == "add":
-                for item in request.json[val]:
-                    action_db.update_one({"_id": ObjectId(id)},
-                                       {"$addToSet": {lists_dict[val]: item}})
-    if request.json["operation"] == "add":
-        for val in strings:
-            if val in request.json:
+    for val in request.json:
+        if val in ignore_vals:
+            continue
+        elif val in lists:
+            if 'operation' in request.json:
+                if request.json["operation"] == "remove":
+                    for item in request.json[val]:
+                        action_db.update_one({"_id": ObjectId(id)},
+                                           {"$pull": {lists_dict[val]: item}})
+                if request.json["operation"] == "add":
+                    for item in request.json[val]:
+                        action_db.update_one({"_id": ObjectId(id)},
+                                           {"$addToSet": {lists_dict[val]: item}})
+            else:
+                make_response("operation field is required for list patching", 400)
+        elif val in strings:
                 action_db.update_one({"_id": ObjectId(id)},
                                        {"$set": {strings_dict[val]: request.json[val]}})
+        else:
+            return make_response(val + "is not a patcheable field", 400)
+    patched_action = action_db.find_one({"_id": ObjectId(id)})
+    return make_response(json.dumps(patched_action), 200)
 
 
 def string_dict():

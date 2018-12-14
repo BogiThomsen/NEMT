@@ -1,5 +1,8 @@
 flask
+flask_login
 connexion
 configparser
 swagger-ui-bundle
 redis
+login_manager
+forms

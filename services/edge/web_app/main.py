@@ -1,9 +1,10 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 import flask_login
 import login_manager
 import datetime
 from urllib.parse import urlparse
 from forms import SignInForm
+import requests
 
 app = Flask(__name__)
 app.secret_key = '&0n2%~pq0B=j8TS('
@@ -69,16 +70,33 @@ def devices():
 
     return render_template('pages/devices.html', userDevices=userDevices)
 
-@app.route('/devices/<string:id>')
+@app.route('/devices/<string:id>', methods=["GET", "POST"])
 @flask_login.login_required
 def devices_id(id):
+    if request.method == "GET":
+        device = testDevice
+        userSensors = testSensors
+        # Expected: all actions to a given user
+        userActions = testActions
 
-    device = testDevice
-    userSensors = testSensors
-    # Expected: all actions to a given user
-    userActions = testActions
+        return render_template('pages/device.html', device=testDevice, userSensors=userSensors, userActions=userActions)
 
-    return render_template('pages/device.html', device=testDevice, userSensors=userSensors, userActions=userActions)
+    else:
+
+        #r = requests.patch("http://web-app:5000/users/" + flask_login.current_user.id + "/devices/" + id, data={'accessToken': flask_login.current_user.access_token, 'data': {'prettyname': request.data.prettyName}})
+
+#      if r.status_code == 200:
+        flash('Your device has been updated.')
+        return redirect(url_for('devices_id', id=id))
+
+@app.route('/devices/<string:id>/delete', methods=["POST"])
+@flask_login.login_required
+def device_delete(id):
+    #r = requests.delete("http://web-app:5000/users/" + flask_login.current_user.id + "/devices/" + id, data={'accessToken': flask_login.current_user.access_token, 'data': {'userid':flask_login.current_user.id, 'deviceid':id}})
+
+    #if r.status_code == 200:
+    flash('Your device has been deleted.')
+    return redirect(url_for('devices'))
 
 @app.route('/rules')
 @flask_login.login_required

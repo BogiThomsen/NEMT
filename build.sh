@@ -29,6 +29,9 @@ cd ..
 cd edge/web_app_api
 docker-compose build
 cd ..
+cd edge/web_app
+docker-compose build
+cd ..
 cd ..
 cd ..
 

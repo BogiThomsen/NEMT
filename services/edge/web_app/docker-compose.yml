@@ -1,0 +1,17 @@
+version: '3.6'
+services:
+    web-app:
+        build: .
+        ports:
+            - "80:5000"
+        volumes:
+            - .:/code
+        networks:
+            - web-app-net
+        container_name: web-app
+
+
+networks:
+  web-app-net:
+    external:
+      name: platform

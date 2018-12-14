@@ -1,6 +1,7 @@
 from flask import jsonify, request, json, make_response
-from coapthon.server.coap import CoAP
+
 from coapthon.client.helperclient import HelperClient
+
 import requests, hashlib, uuid
 
 users = []
@@ -83,8 +84,4 @@ def authorize_user(id):
     else:
         return make_response(response.content, 200)
 
-
-def activate_action(host, port, value):
-    client = HelperClient(server=(host, port))
-    response = client.put("action", value.__str__())
 

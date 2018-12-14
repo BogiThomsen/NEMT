@@ -39,7 +39,7 @@ def delete_device(userid, deviceid):
         for x in device["actions"]:
             actiondata = x.split(':')
             action_id = actiondata[1]
-            requests.delete("http://action-service:5800/v1/users/{0}/devices/{1}/actions/{2}".format(user, deviceid, action_id))
+            requests.delete("http://action-service:5800/v1/users/{0}/devices/{1}/actions/{2}".format(userid, deviceid, action_id))
 
     json = {
         "operation":"remove",

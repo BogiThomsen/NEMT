@@ -18,7 +18,7 @@ def add_device(userid):
     if device_response.status_code == 201:
         created_device = device_response.json()
         device_list = []
-        device_list.append(created_device["deviceToken"])
+        device_list.append(created_device["_id"])
         patch_device = {
             "operation":"add",
             "device":device_list

@@ -13,11 +13,11 @@ def post_action():
     if 'prettyName' not in request.json:
         new_action = {"name": name,
                       "prettyName": name,
-                      "public": False}
+                      "public": request.json["public"]}
     else:
         new_action = {"name": name,
                       "prettyName": request.json["prettyName"],
-                      "public": False}
+                      "public": request.json["public"]}
     _id = action_db.insert_one(new_action).inserted_id
     action = action_db.find_one({"_id": _id})
     action["_id"] = str(action["_id"])

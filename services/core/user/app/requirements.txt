@@ -3,3 +3,4 @@ connexion
 configparser
 swagger-ui-bundle
 redis
+coapthon3

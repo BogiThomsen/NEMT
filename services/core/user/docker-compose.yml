@@ -1,15 +1,17 @@
-version: '3.7'
+version: '3.6'
 services:
     user-service:
         build: .
         ports:
-            - 5100
+            - "5100:5100"
+        expose:
+            - "5100"
         volumes:
             - .:/code
-
-    nginx:
-        image: nginx:1.15.7
-        ports:
-            - "8085:80"
-        volumes:
-            - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+        networks:
+            - user-core-net
+        container_name: user-service
+networks:
+  user-core-net:
+    external:
+      name: platform

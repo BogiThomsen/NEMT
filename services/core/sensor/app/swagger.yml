@@ -1,0 +1,129 @@
+swagger: "2.0"
+
+info:
+  title: "API"
+  description: description of api
+  version: "1.0"
+
+basePath: /v1
+
+paths:
+  /users/{userid}/devices/{deviceid}/sensors:
+    post:
+      summary: Adds an sensor.
+      description: Optional extended description in CommonMark or HTML.
+      operationId: sensor_api.add_sensor
+      consumes:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/userid'
+        - $ref: '#/parameters/deviceid'
+        - $ref: '#/parameters/sensor'
+      responses:
+        200:    # status code
+          description: An sensor was added
+  /users/{userid}/devices/{deviceid}/sensors/{sensorid}:
+    get:
+      summary: Returns a sensor.
+      description: Optional extended description in CommonMark or HTML.
+      operationId: sensor_api.get_sensor
+      responses:
+        200:    # status code
+          description: sensor was returned successfuly
+      parameters:
+        - $ref: '#/parameters/userid'
+        - $ref: '#/parameters/deviceid'
+        - $ref: '#/parameters/sensorid'
+    patch:
+      summary: patches sensor info
+      operationId: sensor_api.patch_sensor
+      parameters:
+        - $ref: '#/parameters/userid'
+        - $ref: '#/parameters/deviceid'
+        - $ref: '#/parameters/sensorid'
+        - $ref: '#/parameters/patchSensor'
+      responses:
+        200:    #status code
+          description: sensor was patched successfully
+    delete:
+      summary: Deletes a sensor.
+      description: Optional extended description in CommonMark or HTML.
+      operationId: sensor_api.delete_sensor
+      parameters:
+        - $ref: '#/parameters/userid'
+        - $ref: '#/parameters/deviceid'
+        - $ref: '#/parameters/sensorid'
+      responses:
+        200:    # status code
+          description: A string
+  /devices/{deviceid}/sensors/{sensorid}:
+    patch:
+      summary: patches sensor info
+      operationId: sensor_api.device_patch_sensor
+      parameters:
+        - $ref: '#/parameters/deviceid'
+        - $ref: '#/parameters/sensorid'
+        - $ref: '#/parameters/patchSensor'
+      responses:
+        200:    #status code
+          description: sensor was patched successfully
+  
+
+parameters:
+  userid:
+    name: userid
+    description: a user id
+    in: path
+    type: string
+    required: true
+  deviceid:
+    name: deviceid
+    description: a device id
+    in: path
+    type: string
+    required: true
+  sensorid:
+    name: sensorid
+    description: a sensor id
+    in: path
+    type: string
+    required: true
+  sensor:
+    in: body
+    name: sensor
+    description: A sensor.
+    schema:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+        pretty_name:
+          type: string
+  patchSensor:
+    in: body
+    name: sensorInfo
+    description: sensor info to be patched
+    schema:
+      type: object
+      required:
+        - operation
+      properties:
+        name:
+          type: string
+        operation:
+          type: string
+          enum: [add, remove]
+        pretty_name:
+          type: string
+        value:
+          type: string
+        timestamp:
+          type: string
+        public:
+          type: boolean
+        access_token:
+          type: array
+          items:
+            type: string

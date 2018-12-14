@@ -1,5 +1,5 @@
 
-def parserule(rule):
+def parse_rule(rule):
     condition = rule["condition"].split()
     device_name = condition[0].split('.')[0]
     sensor_name = condition[0].split('.')[1]
@@ -14,7 +14,7 @@ def parserule(rule):
         act_name = action.split('.')[1]
         act_result.append({"device_name": dev_name, "action_name": act_name})
 
-    return {"name": rule["name"], "condition_device": device_name, "sensor_name": sensor_name, "operator": operator, "val": val, "actions": act_result}
+    return {"id": rule["id"], "name": rule["name"], "condition_device": device_name, "sensor_name": sensor_name, "operator": operator, "value": val, "actions": act_result}
 
 
 def prettify_rule(parsed_rule, devices, sensors, actions):

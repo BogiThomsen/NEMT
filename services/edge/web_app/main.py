@@ -5,6 +5,7 @@ import datetime
 from urllib.parse import urlparse
 from forms import RegisterForm, SignInForm
 import requests
+import rule_parser
 
 app = Flask(__name__)
 app.secret_key = '&0n2%~pq0B=j8TS('
@@ -135,6 +136,8 @@ def rules():
 def rules_id(id):
 
     rule = testRule
+    rule = rule_parser.parse_rule(rule)
+    rule = rule_parser.prettify_rule(rule, testDevices, testSensors, testActions)
 
     return render_template('pages/rule.html', rule=rule)
 
@@ -153,8 +156,8 @@ def index():
 
 # "/devices" testing variables. May be deleted when web_app has been correctly integrated
 testDevices = [
-    {"id": "001", "device_token": "001", "name": "Controller001", "prettyname": "Living Room", "sensors": ["001", "002"], "actions":["001", "002", "005"], "rules":[]},
-    {"id": "002", "device_token": "002", "name": "Controller002", "prettyname": "Bed Room", "sensors": ["003", "004"], "actions": ["003", "004", "006"], "rules": []},
+    {"id": "001", "device_token": "001", "name": "Controller001", "prettyname": "Livingroom controller", "sensors": ["001", "002"], "actions":["001", "002", "005"], "rules":[]},
+    {"id": "002", "device_token": "002", "name": "Controller002", "prettyname": "Bedroom device", "sensors": ["003", "004"], "actions": ["003", "004", "006"], "rules": []},
     {"id": "001", "device_token": "003", "name": "Controller003", "prettyname": "Weather Station", "sensors": ["999"], "actions": [], "rules": []},
 
 ]

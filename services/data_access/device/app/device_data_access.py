@@ -9,17 +9,17 @@ def connect_to_db():
 
 def post_device():
     device_db = connect_to_db()
-    mac_address = request.json["device_token"]
-    if (device_db.count_documents({"device_token": mac_address})) > 0 :
+    mac_address = request.json["deviceToken"]
+    if (device_db.count_documents({"deviceToken": mac_address})) > 0 :
         return make_response(json.dumps({"error": "device with Mac Address: "+ mac_address + "already exists"}), 400)
-    if 'pretty_name' not in request.json:
+    if 'prettyName' not in request.json:
         pretty_name = request.json["name"]
     else:
-        pretty_name = request.json['pretty_name']
+        pretty_name = request.json['prettyName']
     new_device = {
         "name": request.json["name"],
-        "pretty_name": pretty_name,
-        "device_token": request.json["device_token"]
+        "prettyName": pretty_name,
+        "deviceToken": request.json["deviceToken"]
     }
     _id = device_db.insert_one(new_device).inserted_id
     device = device_db.find_one({"_id": _id})
@@ -42,7 +42,7 @@ def get_device(id):
         query = {"_id": ObjectId(id)}
         type = "id"
     elif r.match(id).group() == id:
-        query = {"device_token": id}
+        query = {"deviceToken": id}
         type = "token"
     else:
         return make_response(json.dumps({"error": "value: " + id + " is not a valid id or token"}), 400)
@@ -55,7 +55,7 @@ def get_device(id):
 
 
 def patch_device(id):
-    strings = {"pretty_name"}
+    strings = {"prettyName"}
     strings_dict = string_dict()
     lists = {"sensor", "rule", "action"}
     device_db = connect_to_db()
@@ -82,7 +82,7 @@ def patch_lists(db, id, json_object, current_val):
                                {"$addToSet": {lists_dict[current_val]: item}})
 def string_dict():
     dict = {
-        "pretty_name": "pretty_name",
+        "prettyName": "prettyName",
     }
     return dict
 

@@ -20,7 +20,7 @@ def add_user():
     user = {
         "username" : request.json["username"],
         "password" : hash_password(request.json["password"]),
-        "access_token" : access_token
+        "accessToken" : access_token
     }
     user_response = requests.post("http://user-access:5200/v1/users", json=user)
     user = user_response.json()

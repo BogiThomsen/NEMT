@@ -10,13 +10,13 @@ def connect_to_db():
 def post_action():
     action_db = connect_to_db()
     name = request.json["name"]
-    if 'pretty_name' not in request.json:
+    if 'prettyName' not in request.json:
         new_action = {"name": name,
-                      "pretty_name": name,
+                      "prettyName": name,
                       "public": False}
     else:
         new_action = {"name": name,
-                      "pretty_name": request.json["pretty_name"],
+                      "prettyName": request.json["prettyName"],
                       "public": False}
     _id = action_db.insert_one(new_action).inserted_id
     action = action_db.find_one({"_id": _id})
@@ -44,9 +44,9 @@ def get_action(id):
         return make_response(json.dumps(x), 200)
 
 def patch_action(id):
-    strings = {"pretty_name", "public"}
+    strings = {"prettyName", "public"}
     strings_dict = string_dict()
-    lists = {"access_token"}
+    lists = {"accessToken"}
     lists_dict = list_dict()
     action_db = connect_to_db()
     for val in lists:
@@ -68,14 +68,14 @@ def patch_action(id):
 
 def string_dict():
     dict = {
-        "pretty_name": "pretty_name",
+        "prettyName": "prettyName",
         "public": "public"
     }
     return dict
 
 def list_dict():
     dict = {
-        "access_token": "access_tokens"
+        "accessToken": "accessTokens"
     }
     return dict
 

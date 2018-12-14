@@ -18,7 +18,7 @@ def post_user():
         new_user = {
             "username": username,
             "password": request.json["password"],
-            "access_token": request.json["access_token"]
+            "accessToken": request.json["accessToken"]
         }
         user_db.insert_one(new_user)
         user = user_db.find_one({"username": username})
@@ -40,7 +40,7 @@ def get_user(id):
     if ObjectId.is_valid(id):
         query = {"_id": ObjectId(id)}
     else:
-        query = {"access_token": id}
+        query = {"accessToken": id}
     if (user_db.count_documents(query)) < 1 :
         return make_response(json.dumps({"error": "user with id: "+ id +" does not exist"}), 404)
     else:
@@ -57,7 +57,7 @@ def get_user_id_by_username(username):
 def patch_user(id):
     strings = {"password", "username"}
     strings_dict = string_dict()
-    lists = {"device", "rule", "grouping", "other_devices"}
+    lists = {"device", "rule", "grouping", "otherDevices"}
     user_db = connect_to_db()
     user = user_db.find_one({"_id": ObjectId(id)})
     for val in lists:
@@ -100,7 +100,7 @@ def list_dict():
         "device": "devices",
         "rule": "rules",
         "grouping": "groupings",
-        "other_devices": "other_devices"
+        "otherDevices": "otherDevices"
     }
     return dict
 

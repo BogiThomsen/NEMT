@@ -10,13 +10,13 @@ def connect_to_db():
 def post_sensor():
     sensor_db = connect_to_db()
     name = request.json["name"]
-    if 'prettyname' not in request.json:
+    if 'prettyName' not in request.json:
         new_sensor = {"name": name,
-                      "pretty_name": name,
+                      "prettyName": name,
                       "public": False}
     else:
         new_sensor = {"name": name,
-                      "pretty_name": request.json["pretty_name"],
+                      "prettyName": request.json["prettyName"],
                       "public": False}
     _id = sensor_db.insert_one(new_sensor).inserted_id
     sensor = sensor_db.find_one({"_id": _id})
@@ -44,9 +44,9 @@ def get_sensor(id):
         return make_response(json.dumps(x), 200)
 
 def patch_sensor(id):
-    strings = {"pretty_name", "value", "timestamp", "public"}
+    strings = {"prettyName", "value", "timestamp", "public"}
     strings_dict = string_dict()
-    lists = {"access_token"}
+    lists = {"accessToken"}
     sensor_db = connect_to_db()
     for val in lists:
         if val in request.json:
@@ -72,7 +72,7 @@ def patch_lists(db, id, json_object, current_val):
 
 def string_dict():
     dict = {
-        "pretty_name": "pretty_name",
+        "prettyName": "prettyName",
         "value": "value",
         "timestamp": "timestamp",
         "public": "public"
@@ -81,7 +81,7 @@ def string_dict():
 
 def list_dict():
     dict = {
-        "access_token": "access_tokens"
+        "accessToken": "accessTokens"
     }
     return dict
 

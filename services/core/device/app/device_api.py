@@ -1,4 +1,5 @@
-from flask import jsonify, request, json
+from flask import jsonify, request, make_response
+import json
 import requests
 
 ### Data Access Endpoints
@@ -6,15 +7,16 @@ import requests
 def add_device(userid):
     device = {
         "name" : request.json["name"],
+        "prettyName" : request.json["prettyName"],
         "deviceToken" : request.json["deviceToken"]
     }
-    device_response = requests.post("http://device-access:5500/v1/devices", json=device).json()
+    device_response = requests.post("http://device-access:5500/v1/devices", json=device)
     created_device = device_response.json()
-    json = {
+    patch_device = {
         "operation":"add",
         "device":created_device["deviceToken"]
     }
-    requests.patch("http://user-service:5100/v1/users/{}".format(userid), json=json)
+    requests.patch("http://user-service:5100/v1/users/{}".format(userid), json=patch_device)
     return make_response(json.dumps(created_device), device_response.status_code)
 
 def delete_device(userid, deviceid):

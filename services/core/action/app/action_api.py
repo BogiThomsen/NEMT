@@ -43,7 +43,7 @@ def activate_action(userid, deviceid, actionid):
         if actionid == actiondata[1]:
             action = actiondata[0]
             break
-    token = device["device_token"].split(':')
+    token = device["deviceToken"].split(':')
     host = token[0]
     port = int(token[1])    
     client = HelperClient(server=(host, port))

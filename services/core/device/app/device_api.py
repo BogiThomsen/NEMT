@@ -68,7 +68,7 @@ def patch_sensor_values(deviceid, sensorid):
     #Iterate thorugh the list of sensors and match sensorid
     for x in device["sensors"]:
         sensordata=x.split(':')
-        if sensordata[0] == sensorid
+        if sensordata[0] == sensorid:
             sensor_id = sensordata[1]
             break
     sensor_response = requests.patch("http://sensor-service:5900/v1/devices/{0}/sensors/{1}".format(deviceid, sensor_id), json=sensor_patch)

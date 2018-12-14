@@ -9,9 +9,11 @@ def add_sensor(userid, deviceid):
     }
     sensor_response = requests.post("http://sensor-access:5600/v1/sensors", json=sensor)
     created_sensor = sensor_response.json()
+    sensor_list = []
+    sensor_list.append(created_sensor["name"]+":"+created_sensor["_id"])
     json = {
         "operation":"add",
-        "sensor":created_sensor["name"]+":"+created_sensor["_id"]
+        "sensor":sensor_list
     }
     requests.patch("http://device-service:5400/v1/users/{0}/devices/{1}".format(userid, deviceid), json=json)
     return make_response(sensor_response.content, sensor_response.status_code)

@@ -51,7 +51,10 @@ def get_user(id):
 
 def get_user_id_by_username(username):
     user_db = connect_to_db()
-    x = user_db.find_one({"username": username})
+    query = {"username": username}
+    if (user_db.count_documents(query)) < 1 :
+        return make_response(json.dumps({"error": "user with id: "+ id +" does not exist"}), 404)
+    x = user_db.find_one(query)
     return make_response(str(x["_id"]), 200)
 
 def patch_user(id):

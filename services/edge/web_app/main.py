@@ -82,14 +82,12 @@ def createrule():
     userActions = testActions
     return render_template('pages/createrule.html', userSensors=userSensors, userActions=userActions)
 
-@app.route('/protected')
-@flask_login.login_required
-def protected():
-    return 'Logged in as: ' + flask_login.current_user.id
-
 @app.route('/')
 def index():
-    return render_template('index.html')
+    if flask_login.current_user.is_anonymous:
+        return redirect(url_for('signin'))
+    else:
+        return redirect(url_for('dashboard'))
 
 # "/devices" testing variables. May be deleted when "/devices" has been correctly implemented
 testDevices = [

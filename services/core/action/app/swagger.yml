@@ -1,0 +1,142 @@
+swagger: "2.0"
+
+info:
+  title: "API"
+  description: description of api
+  version: "1.0"
+
+basePath: /v1
+
+paths:
+  /users/{userid}/devices/{deviceid}/actions:
+    post:
+      summary: Adds an action.
+      description: Optional extended description in CommonMark or HTML.
+      operationId: action_api.add_action
+      consumes:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/userid'
+        - $ref: '#/parameters/deviceid'
+        - $ref: '#/parameters/action'
+      responses:
+        200:    # status code
+          description: An action was added
+  /users/{userid}/devices/{deviceid}/actions/{actionid}:
+    get:
+      summary: Returns a action.
+      description: Optional extended description in CommonMark or HTML.
+      operationId: action_api.get_action
+      responses:
+        200:    # status code
+          description: action was returned successfuly
+      parameters:
+        - $ref: '#/parameters/userid'
+        - $ref: '#/parameters/deviceid'
+        - $ref: '#/parameters/actionid'
+    patch:
+      summary: patches action info
+      operationId: action_api.patch_action
+      parameters:
+        - $ref: '#/parameters/userid'
+        - $ref: '#/parameters/deviceid'
+        - $ref: '#/parameters/actionid'
+        - $ref: '#/parameters/patchAction'
+      responses:
+        200:    #status code
+          description: action was patched successfully
+    delete:
+      summary: Deletes a action.
+      description: Optional extended description in CommonMark or HTML.
+      operationId: action_api.delete_action
+      parameters:
+        - $ref: '#/parameters/userid'
+        - $ref: '#/parameters/deviceid'
+        - $ref: '#/parameters/actionid'
+      responses:
+        200:    # status code
+          description: A string
+  /users/{userid}/devices/{deviceid}/actions/{actionid}/activate:
+    get:
+      summary: Returns a action.
+      description: Optional extended description in CommonMark or HTML.
+      operationId: action_api.activate_action
+      responses:
+        200:    # status code
+          description: action was returned successfuly
+      parameters:
+        - $ref: '#/parameters/userid'
+        - $ref: '#/parameters/deviceid'
+        - $ref: '#/parameters/actionid'
+
+parameters:
+  userid:
+    name: userid
+    description: a device id
+    in: path
+    type: string
+    required: true
+  deviceid:
+    name: deviceid
+    description: a device id
+    in: path
+    type: string
+    required: true
+  actionid:
+    name: actionid
+    description: a device id
+    in: path
+    type: string
+    required: true
+  action:
+    in: body
+    name: action
+    description: An action.
+    schema:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+        pretty_name:
+          type: string
+  activationBody:
+    in: body
+    name: activationBody
+    description: A body containing the username and password of a user  to authenticate
+    schema:
+      type: object
+      required:
+        - host
+        - port
+        - value
+      properties:
+        host:
+          type: string
+        port:
+          type: string
+        value:
+          type: string
+  patchAction:
+    in: body
+    name: actionInfo
+    description: Action info to be patched
+    schema:
+      type: object
+      required:
+        - operation
+      properties:
+        name:
+          type: string
+        operation:
+          type: string
+          enum: [add, remove]
+        pretty_name:
+          type: string
+        public:
+          type: boolean
+        access_token:
+          type: array
+          items:
+            type: string

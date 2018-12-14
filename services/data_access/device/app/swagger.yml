@@ -1,0 +1,109 @@
+swagger: "2.0"
+
+info:
+  title: "API"
+  description: description of api
+  version: "1.0"
+
+basePath: /v1
+
+paths:
+  /devices:
+    post:
+      summary: Adds a device to the database.
+      operationId: device_data_access.post_device
+      consumes:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/device'
+      responses:
+        200:    # status code
+          description: device was added Sucessfully.
+        400:
+          description: device already exists
+  /devices/{id}:  
+    get:
+      summary: Returns a device in the form of a json array.
+      operationId: device_data_access.get_device
+      produces:
+        - application/json
+      responses:
+        200:    # status code
+          description: device was returned sucessfully.
+      parameters:
+        - $ref: '#/parameters/id'
+    delete:
+      summary: deletes a device.
+      operationId: device_data_access.delete_device
+      parameters:
+        - $ref: '#/parameters/id'
+      responses:
+        200:    # status code
+          description: device was deleted sucessfully.
+    patch:
+      summary: patches device info
+      operationId: device_data_access.patch_device
+      parameters:
+        - $ref: '#/parameters/id'
+        - $ref: '#/parameters/patchdevice'
+      responses:
+        200:    #status code
+          description: device was patched successfully
+
+parameters:
+  id:
+    name: id
+    description: a device id
+    in: path
+    type: string
+    required: true
+  device_token:
+    name: device_token
+    description: a device token
+    in: path
+    type: string
+    required: true
+  device:
+    in: body
+    name: device
+    description: A device.
+    schema:
+      type: object
+      required:
+        - name
+        - device_token
+      properties:
+        name:
+          type: string
+        device_token:
+          type: string
+  patchdevice:
+    in: body
+    name: deviceInfo
+    description: device info to be patched
+    schema:
+      type: object
+      required:
+        - operation
+      properties:
+        name:
+          type: string
+        pretty_name:
+          type: string
+        operation:
+          type: string
+          enum: [add, remove]
+        sensor:
+          type: array
+          items:
+            type: string
+        action:
+          type: array
+          items:
+            type: string
+        rule:
+          type: array
+          items:
+            type: string
+
+

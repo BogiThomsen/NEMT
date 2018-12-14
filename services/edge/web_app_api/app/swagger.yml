@@ -1,0 +1,574 @@
+swagger: "2.0"
+
+info:
+  title: "web_app_api"
+  description: description of api
+  version: "1.0"
+
+basePath: /v1
+
+paths:
+  /users/authenticate:
+    post:
+      summary: summary here
+      operationId: web_app_api.post_users_authenticate
+      consumes:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/postUsersAuthenticateRequestBody'
+      responses:
+        200:
+          description: A user
+        400:
+          description: Bad Request
+        401:
+          description: Unauthorized
+        404:
+          description: Not Found
+  /users:
+    post:
+      summary: summary here
+      operationId: web_app_api.post_users
+      consumes:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/postUsersRequestBody'
+      responses:
+        200:
+          description: A user
+        400:
+          description: Bad Request
+        401:
+          description: Unauthorized
+        404:
+          description: Not Found
+  /users/{userid}:
+    get:
+      summary: summary here
+      operationId: web_app_api.get_users_id
+      consumes:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/userid'
+        - $ref: '#/parameters/getDeleteUsersRequestBody'
+      responses:
+        200:
+          description: A user
+        400:
+          description: Bad Request
+        401:
+          description: Unauthorized
+        404:
+          description: Not Found
+    patch:
+      summary: summary here
+      operationId: web_app_api.patch_users_id
+      consumes:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/userid'
+        - $ref: '#/parameters/patchUsersRequestBody'
+      responses:
+        200:
+          description: A user
+        400:
+          description: Bad Request
+        401:
+          description: Unauthorized
+        404:
+          description: Not Found
+    delete:
+      summary: summary here
+      operationId: web_app_api.delete_users_id
+      consumes:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/userid'
+        - $ref: '#/parameters/getDeleteUsersRequestBody'
+      responses:
+        200:
+          description: A user
+        400:
+          description: Bad Request
+        401:
+          description: Unauthorized
+        404:
+          description: Not Found
+  /users/{userid}/devices:
+    post:
+      summary: summary here
+      operationId: web_app_api.post_users_id_devices
+      consumes:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/userid'
+        - $ref: '#/parameters/postDevicesRequestBody'
+      responses:
+        200:
+          description: A device
+        400:
+          description: Bad Request
+        401:
+          description: Unauthorized
+        404:
+          description: Not Found
+  /users/{userid}/devices/{deviceid}:
+    get:
+      summary: summary here
+      operationId: web_app_api.get_users_user_id_devices_device_id
+      consumes:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/userid'
+        - $ref: '#/parameters/deviceid'
+        - $ref: '#/parameters/getDeleteDevicesRequestBody'
+      responses:
+        200:
+          description: A user
+        400:
+          description: Bad Request
+        401:
+          description: Unauthorized
+        404:
+          description: Not Found
+    patch:
+      summary: summary here
+      operationId: web_app_api.patch_users_user_id_devices_device_id
+      consumes:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/userid'
+        - $ref: '#/parameters/deviceid'
+        - $ref: '#/parameters/patchDevicesRequestBody'
+      responses:
+        200:
+          description: A user
+        400:
+          description: Bad Request
+        401:
+          description: Unauthorized
+        404:
+          description: Not Found
+    delete:
+      summary: summary here
+      operationId: web_app_api.delete_users_user_id_devices_device_id
+      consumes:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/userid'
+        - $ref: '#/parameters/deviceid'
+        - $ref: '#/parameters/getDeleteDevicesRequestBody'
+      responses:
+        200:
+          description: A user
+        400:
+          description: Bad Request
+        401:
+          description: Unauthorized
+        404:
+          description: Not Found
+  /users/{userid}/devices/{deviceid}/actions:
+    post:
+      summary: summary here
+      operationId: web_app_api.post_users_user_id_devices_device_id_actions
+      consumes:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/userid'
+        - $ref: '#/parameters/deviceid'
+        - $ref: '#/parameters/postActionsRequestBody'
+      responses:
+        200:
+          description: An action
+        400:
+          description: Bad Request
+        401:
+          description: Unauthorized
+        404:
+          description: Not Found
+  /users/{userid}/devices/{deviceid}/actions/{actionid}:
+    get:
+      summary: summary here
+      operationId: web_app_api.get_users_user_id_devices_device_id_actions_action_id
+      consumes:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/userid'
+        - $ref: '#/parameters/deviceid'
+        - $ref: '#/parameters/actionid'
+        - $ref: '#/parameters/getDeleteActionsRequestBody'
+      responses:
+        200:
+          description: An action
+        400:
+          description: Bad Request
+        401:
+          description: Unauthorized
+        404:
+          description: Not Found
+    patch:
+      summary: summary here
+      operationId: web_app_api.patch_users_user_id_devices_device_id_actions_action_id
+      consumes:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/userid'
+        - $ref: '#/parameters/deviceid'
+        - $ref: '#/parameters/actionid'
+        - $ref: '#/parameters/patchActionsRequestBody'
+      responses:
+        200:
+          description: An action
+        400:
+          description: Bad Request
+        401:
+          description: Unauthorized
+        404:
+          description: Not Found
+    delete:
+      summary: summary here
+      operationId: web_app_api.delete_users_user_id_devices_device_id_actions_action_id
+      consumes:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/userid'
+        - $ref: '#/parameters/deviceid'
+        - $ref: '#/parameters/actionid'
+        - $ref: '#/parameters/getDeleteActionsRequestBody'
+      responses:
+        200:
+          description: An action
+        400:
+          description: Bad Request
+        401:
+          description: Unauthorized
+        404:
+          description: Not Found
+  /users/{userid}/devices/{deviceid}/sensors:
+    post:
+      summary: summary here
+      operationId: web_app_api.post_users_user_id_devices_device_id_sensors
+      consumes:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/userid'
+        - $ref: '#/parameters/deviceid'
+        - $ref: '#/parameters/postSensorsRequestBody'
+      responses:
+        200:
+          description: A sensor
+        400:
+          description: Bad Request
+        401:
+          description: Unauthorized
+        404:
+          description: Not Found
+  /users/{userid}/devices/{deviceid}/sensors/{sensorid}:
+    get:
+      summary: summary here
+      operationId: web_app_api.get_users_user_id_devices_device_id_sensors_sensor_id
+      consumes:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/userid'
+        - $ref: '#/parameters/deviceid'
+        - $ref: '#/parameters/sensorid'
+        - $ref: '#/parameters/getDeleteSensorsRequestBody'
+      responses:
+        200:
+          description: A sensor
+        400:
+          description: Bad Request
+        401:
+          description: Unauthorized
+        404:
+          description: Not Found
+    patch:
+      summary: summary here
+      operationId: web_app_api.patch_users_user_id_devices_device_id_sensors_sensor_id
+      consumes:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/userid'
+        - $ref: '#/parameters/deviceid'
+        - $ref: '#/parameters/sensorid'
+        - $ref: '#/parameters/patchSensorsRequestBody'
+      responses:
+        200:
+          description: A sensor
+        400:
+          description: Bad Request
+        401:
+          description: Unauthorized
+        404:
+          description: Not Found
+    delete:
+      summary: summary here
+      operationId: web_app_api.delete_users_user_id_devices_device_id_sensors_sensor_id
+      consumes:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/userid'
+        - $ref: '#/parameters/deviceid'
+        - $ref: '#/parameters/sensorid'
+        - $ref: '#/parameters/getDeleteSensorsRequestBody'
+      responses:
+        200:
+          description: A sensor
+        400:
+          description: Bad Request
+        401:
+          description: Unauthorized
+        404:
+          description: Not Found
+
+parameters:
+  postUsersAuthenticateRequestBody:
+    in: body
+    name: postUsersAuthenticateRequestBody
+    schema:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+  userid:
+    in: path
+    name: userid
+    description: an id for the resource
+    type: string
+    required: true
+  deviceid:
+    in: path
+    name: deviceid
+    description: an id for the resource
+    type: string
+    required: true
+  actionid:
+    in: path
+    name: actionid
+    description: an id for the resource
+    type: string
+    required: true
+  sensorid:
+    in: path
+    name: sensorid
+    description: an id for the resource
+    type: string
+    required: true
+  postUsersRequestBody:
+    in: body
+    name: postUsersRequestBody
+    schema:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+  patchUsersRequestBody:
+    in: body
+    name: patchUsersRequestBody
+    schema:
+      type: object
+      required:
+        - accessToken
+        - data
+      properties:
+        accessToken:
+          type: string
+        data:
+          type: object
+          properties:
+            username:
+              type: string
+            password:
+              type: string
+  getDeleteUsersRequestBody:
+    in: body
+    name: getDeleteUsersRequestBody
+    schema:
+      type: object
+      required:
+        - accessToken
+      properties:
+        accessToken:
+          type: string
+  postDevicesRequestBody:
+    in: body
+    name: postDevicesRequestBody
+    schema:
+      type: object
+      required:
+        - accessToken
+        - data
+      properties:
+        accessToken:
+          type: string
+        data:
+          type: object
+          required:
+            - deviceToken
+            - name
+          properties:
+            deviceToken:
+              type: string
+            name:
+              type: string
+  patchDevicesRequestBody:
+    in: body
+    name: patchDevicesRequestBody
+    schema:
+      type: object
+      required:
+        - accessToken
+        - data
+      properties:
+        accessToken:
+          type: string
+        data:
+          type: object
+          properties:
+            deviceToken:
+              type: string
+            name:
+              type: string
+  getDeleteDevicesRequestBody:
+    in: body
+    name: getDeleteDevicesRequestBody
+    schema:
+      type: object
+      required:
+        - accessToken
+      properties:
+        accessToken:
+          type: string
+  postActionsRequestBody:
+    in: body
+    name: postActionsRequestBody
+    schema:
+      type: object
+      required:
+        - accessToken
+        - data
+      properties:
+        accessToken:
+          type: string
+        data:
+          type: object
+          required:
+            - name
+            - prettyName
+            - public
+          properties:
+            name:
+              type: string
+            prettyName:
+              type: string
+            public:
+              type: boolean
+  patchActionsRequestBody:
+    in: body
+    name: patchActionsRequestBody
+    schema:
+      type: object
+      required:
+        - accessToken
+        - data
+      properties:
+        accessToken:
+          type: string
+        data:
+          type: object
+          required:
+            - operation
+          properties:
+            operation:
+              type: string
+              enum: [add, remove]
+            name:
+              type: string
+            prettyName:
+              type: string
+            public:
+              type: boolean
+            accessTokens:
+              type: string
+  getDeleteActionsRequestBody:
+    in: body
+    name: getDeleteActionsRequestBody
+    schema:
+      type: object
+      required:
+        - accessToken
+      properties:
+        accessToken:
+          type: string
+  postSensorsRequestBody:
+    in: body
+    name: postSensorsRequestBody
+    schema:
+      type: object
+      required:
+        - accessToken
+        - data
+      properties:
+        accessToken:
+          type: string
+        data:
+          type: object
+          required:
+            - name
+            - prettyName
+            - public
+          properties:
+            name:
+              type: string
+            prettyName:
+              type: string
+            public:
+              type: boolean
+  patchSensorsRequestBody:
+    in: body
+    name: patchSensorsRequestBody
+    schema:
+      type: object
+      required:
+        - accessToken
+        - data
+      properties:
+        accessToken:
+          type: string
+        data:
+          type: object
+          required:
+            - operation
+          properties:
+            operation:
+              type: string
+              enum: [add, remove]
+            name:
+              type: string
+            prettyName:
+              type: string
+            public:
+              type: boolean
+            accessTokens:
+              type: string
+  getDeleteSensorsRequestBody:
+    in: body
+    name: getDeleteSensorsRequestBody
+    schema:
+      type: object
+      required:
+        - accessToken
+      properties:
+        accessToken:
+          type: string

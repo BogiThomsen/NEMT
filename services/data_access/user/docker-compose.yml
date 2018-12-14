@@ -1,15 +1,17 @@
-version: '3.7'
+version: '3.6'
 services:
-    user-data-access-service:
+    user-access:
         build: .
         ports:
-            - 5300
+            - "5200:5200"
+        expose:
+            - "5200"
         volumes:
             - .:/code
-
-    nginx:
-        image: nginx:1.15.7
-        ports:
-            - "8085:80"
-        volumes:
-            - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+        networks:
+            - user-access-net
+        container_name: user-access
+networks:
+  user-access-net:
+    external:
+      name: platform

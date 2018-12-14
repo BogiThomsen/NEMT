@@ -5,41 +5,161 @@ info:
   description: description of api
   version: "1.0"
 
-basePath: /api
+basePath: /v1
 
 paths:
-  /getUser:
-    get:
-      summary: Returns a string.
-      description: Optional extended description in CommonMark or HTML.
-      operationId: user_api.getUser
-      produces:
-        - application/json
-      responses:
-        200:    # status code
-          description: A string
-  /addUser:
+  /users:
     post:
       summary: Returns a string.
       description: Optional extended description in CommonMark or HTML.
-      operationId: user_api.addUser
+      operationId: user_api.add_user
       consumes:
         - application/json
       parameters:
-        - in: body
-          name: user
-          description: The user to create.
-          schema:
-            type: object
-            required:
-              - username
-              - email
-            properties:
-              username:
-                type: string
-              email:
-                type: string
+        - $ref: '#/parameters/user'
       responses:
         200:    # status code
           description: A user
+  /users/{id}:
+    get:
+      summary: Returns a user.
+      description: Optional extended description in CommonMark or HTML.
+      operationId: user_api.get_user
+      responses:
+        200:    # status code
+          description: User was returned successfully
+      parameters:
+        - $ref: '#/parameters/id'
+    patch:
+      summary: patches user info
+      operationId: user_api.patch_user
+      parameters:
+        - $ref: '#/parameters/id'
+        - $ref: '#/parameters/patchUser'
+      responses:
+        200:    #status code
+          description: user was patched successfully
+    delete:
+      summary: Deletes a user.
+      description: Optional extended description in CommonMark or HTML.
+      operationId: user_api.delete_user
+      parameters:
+        - $ref: '#/parameters/id'
+      responses:
+        200:    # status code
+          description: A string
+  /users/getId/{username}:
+    get:
+      summary: Returns a user_id.
+      description: Optional extended description in CommonMark or HTML.
+      operationId: user_api.get_user_id
+      responses:
+        200:    # status code
+          description: User was returned successfully
+      parameters:
+        - $ref: '#/parameters/username'
+  /users/authenticate:
+    post:
+      summary: Authenticates a user login
+      description: blank for now
+      operationId: user_api.authenticate_user
+      consumes: 
+        - application/json
+      responses:
+        200:    #status code
+          description: User was authenticated successfully
+        401:    #status code
+          description: Authorization failed
+      parameters:
+        - $ref: '#/parameters/authenticationBody'
+  /users/authorize/{id}:
+    post:
+      summary: Authorizes a users access token
+      description: blank for now
+      operationId: user_api.authorize_user
+      consumes:
+        - application/json
+      responses:
+        200:    #status code
+          description: User was authorized successfully
+        401:    #status code
+          description: Authorization failed
+      parameters:
+        - $ref: '#/parameters/id'
 
+parameters:
+  id:
+    name: id
+    description: a user id
+    in: path
+    type: string
+    required: true
+  username:
+    name: username
+    description: a username
+    in: path
+    type: string
+    required: true
+  patchUser:
+    in: body
+    name: userInfo
+    description: User info to be patched
+    schema:
+      type: object
+      required:
+        - operation
+      properties:
+        username:
+          type: string
+        operation:
+          type: string
+          enum: [add, remove]
+        password:
+          type: string
+        device:
+          type: string
+        rule:
+          type: string
+        grouping:
+          type: string
+        other_device:
+          type: string
+  authorizationBody:
+    in: body
+    name: authorizationBody
+    description: A body containing the username and password of a user  to authenticate
+    schema:
+      type: object
+      required:
+        - accessToken
+      properties:
+        accessToken:
+          type: string
+  user:
+    in: body
+    name: user
+    description: A user.
+    schema:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+  authenticationBody:
+    in: body
+    name: authenticationBody
+    description: A body containing the username and password of a user  to authenticate
+    schema:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+        password:
+          type: string

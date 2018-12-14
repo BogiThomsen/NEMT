@@ -9,7 +9,10 @@ import sys
 
 app = Flask(__name__)
 app.secret_key = '&0n2%~pq0B=j8TS('
+import connexion
 
+app = connexion.App(__name__, specification_dir = './')
+app.add_api('swagger.yml')
 login_manager.login_manager.init_app(app)
 login_manager.login_manager.login_view = 'signin'
 
@@ -92,6 +95,9 @@ def protected():
 @app.route('/')
 def index():
     return render_template('index.html')
+
+if __name__ == "__main__":
+    app.run(debug=True,host='0.0.0.0', port='5000')
 
 if __name__ == "__main__":
   app.run(debug=True)

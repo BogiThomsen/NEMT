@@ -9,7 +9,7 @@ from pip._internal import req
 
 
 def is_alphanumeric(string):
-    r = re.compile('([A-Z]|[a-z]|[1-9])\w+')
+    r = re.compile('^[\w]+$')
 
     if r.match(string) is None:
         return string + " is not alphanumeric."
@@ -94,9 +94,7 @@ def validate_users_request(request):
         if result != "":
             return result
 
-        expected_fields = ["username", "password"]
-
-        for field in expected_fields:
+        for field in list(request.json.keys()):
             result = is_alphanumeric(request.json["data"][field])
             if result != "":
                 return result

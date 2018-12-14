@@ -29,7 +29,7 @@ def is_alphanumeric_or_whitespace(string):
 def data_is_any_of(recieved_dictionary, expected_dictionary):
     for key in list(recieved_dictionary.keys()):
         if key not in expected_dictionary:
-            return "Expected: {" + ', '.join(expected_dictionary) + "}\nGot: {" + ', '.join(recieved_dictionary.keys()) + "}\nDidnt expect: " + key
+            return "Expected any of: {" + ', '.join(expected_dictionary) + "}\nGot: {" + ', '.join(recieved_dictionary.keys()) + "}\nDidnt expect: " + key
     return ""
 
 

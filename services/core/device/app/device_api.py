@@ -26,7 +26,7 @@ def add_device(userid):
         user_response = requests.patch("http://user-service:5100/v1/users/{}".format(userid), json=patch_device)
         return make_response(user_response.content, user_response.status_code)
     else:
-        return make_response(user_response.content, user_response.status_code)
+        return make_response(device_response.content, device_response.status_code)
 
 def delete_device(userid, deviceid):
     device = requests.get("http://device-access:5500/v1/devices/{}".format(deviceid)).json()

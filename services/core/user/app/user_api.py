@@ -41,7 +41,9 @@ def patch_user(id):
     if 'password' in user_patch:
         user_patch["password"] = hash_password(user_patch["password"])
     user_response = requests.patch("http://user-access:5200/v1/users/{}".format(id), json=user_patch)
-    return make_response(user_response.content, user_response.status_code)
+    user = user_response.json()
+    user["password"] = ""
+    return make_response(json.dumps(user), user_response.status_code)
 
 def authenticate_user():
     login = {

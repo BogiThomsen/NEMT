@@ -116,7 +116,7 @@ def validate_devices_request(request):
         if result != "":
             return result
 
-        if request.json["data"]["prettyName"] is not None:
+        if 'prettyName' in request.json["data"]:
             expected_fields = ["prettyName"]
 
             for field in expected_fields:
@@ -135,7 +135,7 @@ def validate_devices_request(request):
         if result != "":
             return result
 
-        if request.json["data"]["prettyName"] is not None:
+        if 'prettyName' in request.json["data"]:
             expected_fields = ["prettyName"]
 
             for field in expected_fields:
@@ -171,7 +171,7 @@ def validate_sensors_request(request):
         if isinstance(public, bool) == False:
             return "\"public\" must be of type bool"
 
-        if request.json["data"]["prettyName"] is not None:
+        if 'prettyName' in request.json["data"]:
             expected_fields = ["prettyName"]
 
             for field in expected_fields:
@@ -202,7 +202,7 @@ def validate_sensors_request(request):
         if isinstance(public, bool) == False:
             return "\"public\" must be of type bool"
 
-        if request.json["data"]["prettyName"] is not None:
+        if 'prettyName' in request.json["data"]:
             expected_fields = ["prettyName"]
 
             for field in expected_fields:
@@ -234,7 +234,7 @@ def validate_actions_request(request):
         if isinstance(public, bool) == False:
             return "\"public\" must be of type bool"
 
-        if request.json["data"]["prettyName"] is not None:
+        if 'prettyName' in request.json["data"]:
             expected_fields = ["prettyName"]
 
             for field in expected_fields:
@@ -262,7 +262,7 @@ def validate_actions_request(request):
         if isinstance(public, bool) == False:
             return "\"public\" must be of type bool"
 
-        if request.json["data"]["prettyName"] is not None:
+        if 'prettyName' in request.json["data"]:
             expected_fields = ["prettyName"]
 
             for field in expected_fields:

@@ -110,7 +110,7 @@ def validate_devices_request(request):
         if validate_body_result != "":
             return validate_body_result
 
-        result = is_only_expected_data(request.json["data"], ["prettyName"])
+        result = is_only_expected_data(request.json["data"], ["prettyName", "name"])
         if result != "":
             return result
 

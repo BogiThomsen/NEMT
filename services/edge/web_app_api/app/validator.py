@@ -91,7 +91,7 @@ def validate_users_request(request):
         if result != "":
             return result
 
-        for field in list(request.json.keys()):
+        for field in list(request.json["data"].keys()):
             result = is_alphanumeric(request.json["data"][field])
             if result != "":
                 return result

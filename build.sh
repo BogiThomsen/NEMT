@@ -29,6 +29,9 @@ cd ..
 cd edge/web_app_api
 docker-compose build --no-cache
 cd ..
+cd device_api
+docker-compose build --no-cache
+cd ..
 cd ..
 cd ..
 

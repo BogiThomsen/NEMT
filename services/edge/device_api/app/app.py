@@ -7,7 +7,7 @@ import datetime
 
 from coapthon.resources.resource import Resource
 
-core_url = '127.0.0.1:3333/v1'
+core_url = 'http://sensor-service:5900/v1'
 headers = {'User-Agent': 'web-app-api', 'Content-Type': 'application/json'}
 api_version = 'v1'
 
@@ -119,24 +119,14 @@ class CoAPServer(CoAP):
 
 def outbound(host, port, value):
     client = HelperClient(server=(host, port))
-    response = client.put("action", value.__str__())
+    response = client.put("action", valuev)
     print(response)
 
-def main():
-    server = CoAPServer("172.31.91.180", 5683)
-
-    outbound("172.31.91.128", 5683, "blink")
-
-
-    try:
-        server.listen(10)
-    except KeyboardInterrupt:
-        print("Server Shutdown")
-        server.close()
-        print("Exiting...")
 
 if __name__ == '__main__':
-    main()
+    server = CoAPServer("172.29.0.1", 5683)
+    outbound("172.31.91.128", 5683, "blink")
+    server.listen(10)
 
 
 

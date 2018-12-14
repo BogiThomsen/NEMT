@@ -66,6 +66,7 @@ def patch_sensor(id):
         else:
             return make_response(val + "is not a patcheable field", 400)
     patched_sensor = sensor_db.find_one({"_id": ObjectId(id)})
+    patched_sensor["_id"] = str(patched_sensor["_id"])
     return make_response(json.dumps(patched_sensor), 200)
 
 def patch_lists(db, id, json_object, current_val):

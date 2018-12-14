@@ -15,16 +15,18 @@ def add_device(userid):
 
     device_response = requests.post("http://device-access:5500/v1/devices", json=device)
     
-    if device_response.status_code == requests.codes.ok:
+    if device_response.status_code == 201:
         created_device = device_response.json()
+        device_list = []
+        device_list.append(created_device["deviceToken"])
         patch_device = {
             "operation":"add",
-            "device":[created_device["deviceToken"]]
+            "device":device_list
         }
-        requests.patch("http://user-service:5100/v1/users/{}".format(userid), json=patch_device)
-        return make_response(json.dumps(created_device), device_response.status_code)
+        user_response = requests.patch("http://user-service:5100/v1/users/{}".format(userid), json=patch_device)
+        return make_response(user_response.content, user_response.status_code)
     else:
-        return make_response(device_response.content, device_response.status_code)
+        return make_response(user_response.content, user_response.status_code)
 
 def delete_device(userid, deviceid):
     device = requests.get("http://device-access:5500/v1/devices/{}".format(deviceid)).json()

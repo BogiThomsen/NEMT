@@ -22,7 +22,7 @@ def post_device():
         "deviceToken": request.json["deviceToken"]
     }
     _id = device_db.insert_one(new_device).inserted_id
-    device = device_db.find_one({"_id": _id})
+    device = device_db.find_one({"deviceToken": request.json["deviceToken"]})
     device["_id"] = str(device["_id"])
     return make_response(json.dumps(device), 201)
 

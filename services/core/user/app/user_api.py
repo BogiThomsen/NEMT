@@ -1,16 +1,7 @@
 from flask import jsonify, request, json, make_response
-
 from coapthon.client.helperclient import HelperClient
-
 import requests, hashlib, uuid
 
-users = []
-user1 = {
-    "username" : "testuser",
-    "password" : "testpass",
-    "access_token" : "cooltoken"
-}
-users.append(user1)
 
 ### Data Access Endpoints
 
@@ -28,9 +19,10 @@ def add_user():
     return make_response(json.dumps(user), user_response.status_code)
     
 def delete_user(id):
-    user = requests.delete("http://user-access:5200/v1/users/{}".format(id)).json()
-    for deviceid in user["devices"]:
-        requests.delete("http://action-service:5800/v1/devices/{}/".format(deviceid))
+    user = requests.get("http://user-access:5200/v1/users/{}".format(id)).json()
+    if "devices" in user:
+        for deviceid in user["devices"]:
+            requests.delete("http://device-service:5400/v1/users/{0}/devices/{1}".format(id, deviceid))
     user_response = requests.delete("http://user-access:5200/v1/users/{}".format(id))
     return make_response(user_response.content, user_response.status_code)
 
@@ -45,23 +37,30 @@ def get_user_id(username):
     return make_response(user_response.content, user_response.status_code)
 
 def patch_user(id):
-    user_response = requests.patch("http://user-access:5200/v1/users/{}".format(id), json=request.json)
-    return make_response(user_response.content, user_response,status_code)
+    user_patch = request.json
+    if 'password' in user_patch:
+        user_patch["password"] = hash_password(user_patch["password"])
+    user_response = requests.patch("http://user-access:5200/v1/users/{}".format(id), json=user_patch)
+    user = user_response.json()
+    user["password"] = ""
+    return make_response(json.dumps(user), user_response.status_code)
 
 def authenticate_user():
     login = {
         "username" : request.json["username"],
         "password" : request.json["password"]
     }
-    userId = requests.get("http://user-access:5200/v1/users/getId/{}".format(login["username"])).text
-    userId = userId.replace('\"', '').rstrip()
-    user_response = requests.get("http://user-access:5200/v1/users/{}".format(userId))
-    user = user_response.json()
-    if check_password(login["password"], user["password"]):
-        user["password"] = ""
-        return make_response(json.dumps(user), user_response.status_code)
+    user_response = requests.get("http://user-access:5200/v1/users/getId/{}".format(login["username"]))
+    if user_response.status_code == 404:
+        return make_response(user_response.content, user_response.status_code)
     else:
-        return make_response(401)
+        user_id = user_response.text.replace('\"', '').rstrip()
+        user = requests.get("http://user-access:5200/v1/users/{}".format(user_id)).json()
+        if check_password(login["password"], user["password"]):
+            user["password"] = ""
+            return make_response(json.dumps(user), user_response.status_code)
+        else:
+            return make_response(401)
 
 def hash_password(password):
     foo = uuid.uuid4().hex
@@ -78,7 +77,7 @@ def authorize_user(id):
     user = response.json()
     #hvis 200, send 200 #ellers hvis 404, send 401 tilbage
     if response.status_code == 404:
-        return make_response(json.dumps({"error": "user not found."}), 404)
+        return make_response(json.dumps({"error": "cannot authorize, user not found."}), 404)
     elif user["_id"] != id:
         return make_response(json.dumps({"error": "not authorized"}), 401)
     else:

@@ -57,8 +57,8 @@ parameters:
     in: path
     type: string
     required: true
-  device_token:
-    name: device_token
+  deviceToken:
+    name: deviceToken
     description: a device token
     in: path
     type: string
@@ -71,11 +71,11 @@ parameters:
       type: object
       required:
         - name
-        - device_token
+        - deviceToken
       properties:
         name:
           type: string
-        device_token:
+        deviceToken:
           type: string
   patchdevice:
     in: body
@@ -83,12 +83,10 @@ parameters:
     description: device info to be patched
     schema:
       type: object
-      required:
-        - operation
       properties:
         name:
           type: string
-        pretty_name:
+        prettyName:
           type: string
         operation:
           type: string

@@ -50,10 +50,11 @@ def authenticate_user():
         "username" : request.json["username"],
         "password" : request.json["password"]
     }
-    userId = requests.get("http://user-access:5200/v1/users/getId/{}".format(login["username"])).text
-    userId = userId.replace('\"', '').rstrip()
-    user_response = requests.get("http://user-access:5200/v1/users/{}".format(userId))
-    user = user_response.json()
+    user_response = requests.get("http://user-access:5200/v1/users/getId/{}".format(login["username"]))
+    if user_response.status_code == 404:
+        return make_response(user_response.content, user_response.status_code)
+    userId = user_response.text.replace('\"', '').rstrip()
+    user = requests.get("http://user-access:5200/v1/users/{}".format(userId)).json()
     if check_password(login["password"], user["password"]):
         user["password"] = ""
         return make_response(json.dumps(user), user_response.status_code)

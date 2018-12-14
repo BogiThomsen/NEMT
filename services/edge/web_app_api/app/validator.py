@@ -156,7 +156,8 @@ def validate_sensors_request(request):
         if validate_body_result != "":
             return validate_body_result
 
-        result = is_only_expected_data(request.json["data"], ["prettyName", "public", "accessTokens"])
+        result = is_only_expected_data(request.json["data"], ["public", "name"], ["prettyName"])
+
         if result != "":
             return result
 
@@ -220,7 +221,7 @@ def validate_actions_request(request):
         return validate_body_result
     elif request.method == "POST":
 
-        result = is_only_expected_data(request.json["data"], ["public"], ["prettyName", "accessTokens"])
+        result = is_only_expected_data(request.json["data"], ["public", "name"], ["prettyName"])
         if result != "":
             return result
 
@@ -245,7 +246,7 @@ def validate_actions_request(request):
         return ""
 
     else:
-        result = data_is_any_of(request.json["data"], ["operation", "prettyName", "public", "accessTokens"])
+        result = data_is_any_of(request.json["data"], ["operation", "prettyName", "public"])
         if result != "":
             return result
 

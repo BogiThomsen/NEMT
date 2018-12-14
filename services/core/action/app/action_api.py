@@ -38,7 +38,7 @@ def get_action(userid, deviceid, actionid):
 
 def patch_action(userid, deviceid, actionid):
     patch_response = requests.patch("http://action-access:5700/v1/actions/{}".format(actionid), json=request.json)
-    return make_response(json.patch_response.content, patch_response.status_code)
+    return make_response(patch_response.content, patch_response.status_code)
 
 def activate_action(userid, deviceid, actionid):
     device = requests.get("http://device-service:5400/v1/users/{0}/devices/{1}".format(userid, deviceid)).json()

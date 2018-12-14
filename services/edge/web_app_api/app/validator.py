@@ -251,7 +251,6 @@ def validate_actions_request(request):
                 return "operation should be either add or remove. it is " + request.json["data"]
 
         public = request.json["data"]["public"]
-        accesstokens = request.json["dataaccessTokens"]
 
         if 'accessTokens' in request.json["data"]:
 

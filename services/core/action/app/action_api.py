@@ -42,14 +42,16 @@ def patch_action(userid, deviceid, actionid):
 
 def activate_action(userid, deviceid, actionid):
     device = requests.get("http://device-service:5400/v1/users/{0}/devices/{1}".format(userid, deviceid)).json()
-
-    for x in device["actions"]:
-        actiondata = x.split(':')
-        if actionid == actiondata[1]:
-            action = actiondata[0]
-            break
-    token = device["deviceToken"].split(':')
-    host = token[0]
-    port = int(token[1])    
-    client = HelperClient(server=(host, port))
-    client.put("action", action)
+    if 'actions' in device:
+        for x in device["actions"]:
+            actiondata = x.split(':')
+            if actionid == actiondata[1]:
+                action = actiondata[0]
+                break
+        token = device["deviceToken"].split(':')
+        host = token[0]
+        port = int(token[1])
+        client = HelperClient(server=(host, port))
+        client.put("action", action)
+    else:
+        make_response("Device has no actions", 400)

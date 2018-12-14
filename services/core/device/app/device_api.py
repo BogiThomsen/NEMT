@@ -7,10 +7,14 @@ import requests
 def add_device(userid):
     device = {
         "name" : request.json["name"],
-        "prettyName" : request.json["prettyName"],
         "deviceToken" : request.json["deviceToken"]
     }
+    
+    if 'prettyName' in request.json:
+        device["prettyName"] = request.json["prettyName"]
+
     device_response = requests.post("http://device-access:5500/v1/devices", json=device)
+    
     if device_response.status_code == requests.codes.ok:
         created_device = device_response.json()
         patch_device = {

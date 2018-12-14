@@ -108,7 +108,7 @@ parameters:
       type: object
       required:
         - name
-        - token
+        - deviceToken
       properties:
         name:
           type: string

@@ -99,7 +99,7 @@ parameters:
       properties:
         name:
           type: string
-        pretty_name:
+        prettyName:
           type: string
   activationBody:
     in: body
@@ -132,11 +132,11 @@ parameters:
         operation:
           type: string
           enum: [add, remove]
-        pretty_name:
+        prettyName:
           type: string
         public:
           type: boolean
-        access_token:
+        accessToken:
           type: array
           items:
             type: string

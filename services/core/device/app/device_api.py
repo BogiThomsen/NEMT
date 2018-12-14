@@ -6,13 +6,13 @@ import requests
 def add_device(userid):
     device = {
         "name" : request.json["name"],
-        "device_token" : request.json["device_token"]
+        "deviceToken" : request.json["deviceToken"]
     }
     device_response = requests.post("http://device-access:5500/v1/devices", json=device).json()
     created_device = device_response.json()
     json = {
         "operation":"add",
-        "device":created_device["device_token"]
+        "device":created_device["deviceToken"]
     }
     requests.patch("http://user-service:5100/v1/users/{}".format(userid), json=json)
     return make_response(json.dumps(created_device), device_response.status_code)

@@ -487,8 +487,6 @@ parameters:
           type: string
         data:
           type: object
-          required:
-            - operation
           properties:
             operation:
               type: string
@@ -548,8 +546,6 @@ parameters:
           type: string
         data:
           type: object
-          required:
-            - operation
           properties:
             operation:
               type: string

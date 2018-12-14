@@ -50,6 +50,9 @@ def patch_sensor(id):
     lists = {"accessToken"}
     sensor_db = connect_to_db()
     for val in request.json:
+        if val not in strings and val not in lists and val not in ignore_vals:
+            return make_response(val + "is not a patcheable field", 400)
+    for val in request.json:
         if val in ignore_vals:
             continue
         elif val in lists:

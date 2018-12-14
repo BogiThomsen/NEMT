@@ -51,6 +51,9 @@ def patch_action(id):
     lists_dict = list_dict()
     action_db = connect_to_db()
     for val in request.json:
+        if val not in strings and val not in lists and val not in ignore_vals:
+            return make_response(val + "is not a patcheable field", 400)
+    for val in request.json:
         if val in ignore_vals:
             continue
         elif val in lists:
@@ -71,6 +74,7 @@ def patch_action(id):
         else:
             return make_response(val + "is not a patcheable field", 400)
     patched_action = action_db.find_one({"_id": ObjectId(id)})
+    patched_action["_id"] = str(patched_action["_id"])
     return make_response(json.dumps(patched_action), 200)
 
 

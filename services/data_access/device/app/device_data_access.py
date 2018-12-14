@@ -61,6 +61,9 @@ def patch_device(id):
     ignore_vals = {"_id", "operation"}
     device_db = connect_to_db()
     for val in request.json:
+        if val not in strings and val not in lists and val not in ignore_vals:
+            return make_response(val + "is not a patcheable field", 400)
+    for val in request.json:
         if val in ignore_vals:
             continue
         elif val in lists:
@@ -74,6 +77,7 @@ def patch_device(id):
         else:
             return make_response(val + "is not a patcheable field", 400)
     patched_device = device_db.find_one({"_id": ObjectId(id)})
+    patched_device["_id"] = str(patched_device["_id"])
     return make_response(json.dumps(patched_device), 200)
 
 def patch_lists(db, id, json_object, current_val):

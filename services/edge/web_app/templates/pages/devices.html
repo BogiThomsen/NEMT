@@ -11,8 +11,8 @@
                 <!-- List Group -->
                 <nav>
                 {% for dev in userDevices %}
-                    <ul>
-                        <a href="{{ url_for('devices_id', id=dev["id"]) }}">{{ dev["prettyname"] }}</a>
+                    <ul class="fixed-ul">
+                        <a class="h5 ml-3 text-dark" href="{{ url_for('devices_id', id=dev["id"]) }}">{{ dev["prettyname"] }}</a>
                     </ul>
                 {% endfor %}
                 </nav>

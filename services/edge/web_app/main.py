@@ -74,10 +74,36 @@ def devices():
     # Expected: all devices to a given user
     userDevices = testDevices
     # Expected: all sensors to a given user
-    userSensors = testSensors
-    # Expected: all actions to a given user
-    userActions = testActions
-    return render_template('pages/devices.html', userDevices=userDevices, userSensors=userSensors, userActions=userActions)
+
+    return render_template('pages/devices.html', userDevices=userDevices)
+
+@app.route('/devices/<string:id>', methods=["GET", "POST"])
+@flask_login.login_required
+def devices_id(id):
+    if request.method == "GET":
+        device = testDevice
+        userSensors = testSensors
+        # Expected: all actions to a given user
+        userActions = testActions
+
+        return render_template('pages/device.html', device=testDevice, userSensors=userSensors, userActions=userActions)
+
+    else:
+
+        #r = requests.patch("http://web-app:5000/users/" + flask_login.current_user.id + "/devices/" + id, data={'accessToken': flask_login.current_user.access_token, 'data': {'prettyname': request.data.prettyName}})
+
+#      if r.status_code == 200:
+        flash('Your device has been updated.')
+        return redirect(url_for('devices_id', id=id))
+
+@app.route('/devices/<string:id>/delete', methods=["POST"])
+@flask_login.login_required
+def device_delete(id):
+    #r = requests.delete("http://web-app:5000/users/" + flask_login.current_user.id + "/devices/" + id, data={'accessToken': flask_login.current_user.access_token, 'data': {'userid':flask_login.current_user.id, 'deviceid':id}})
+
+    #if r.status_code == 200:
+    flash('Your device has been deleted.')
+    return redirect(url_for('devices'))
 
 @app.route('/rules')
 @flask_login.login_required
@@ -121,6 +147,8 @@ testActions = [
     {"id": "005", "name": "HeatUpLiv", "prettyname": "increase livingroom temperature", "public": False, "access_tokens": ["1", "2"]},
     {"id": "006", "name": "CoolBed", "prettyname": "cool off bedroom", "public": False, "access_tokens": ["1", "2"]}
 ]
+
+testDevice = {"id": "001", "device_token": "001", "name": "Controller001", "prettyname": "Living Room", "sensors": ["001", "002"], "actions":["001", "002", "005"], "rules":[]}
 
 
 if __name__ == "__main__":

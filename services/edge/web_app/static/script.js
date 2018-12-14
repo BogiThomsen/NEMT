@@ -18,4 +18,5 @@ $(function () {
     $("#addNewSensor").click(function () {
         $("#chooseSensors").children().first().clone().appendTo("#chooseSensors");
     });
+
 });

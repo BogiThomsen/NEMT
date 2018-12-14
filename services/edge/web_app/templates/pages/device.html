@@ -1,0 +1,81 @@
+{%  extends 'pages/pagelayout.html' %}
+{% block title %}{{ device["name"] }}{% endblock %}
+{% block pagecontent %}
+
+<div class="card mx-auto" style="width: 50vw; min-width: 500px">
+    <div class="card-header bg-light input-group-lg">
+        <form class="form-inline" method="POST">
+            <div class="form-group">
+                <input type="text"
+                       name="prettyName"
+                       data-enable-on-input="{{ device["name"] }}_changePrettyName"
+                       class="form-control form-control-lg searchInput"
+                       placeholder="{{ device["prettyname"] }}" >
+            </div>
+            <button type="submit"
+                    id="{{ device["name"] }}_changePrettyName"
+                    class="btn btn-primary btn-lg ml-1"
+                    disabled="disabled">Edit</button>
+            <a class="btn btn-primary btn-lg ml-auto" href="{{ url_for('devices') }}">Back</a>
+        </form>
+        <form class="form-inline" method="POST" action="/devices/{{ device["id"] }}/delete">
+            <button type="submit" class="btn btn-danger btn-lg ml-1">Delete</button>
+        </form>
+    </div>
+    <div class="card-body">
+        <h5>Sensors</h5>
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul class=flashes>
+            {% for message in messages %}
+              <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+        <table class="table table-striped table-sm">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Value</th>
+                    <th scope="col">Timestamp</th>
+                    <th scope="col">Public</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for sen in userSensors %}
+            {% if sen["id"] in device["sensors"] %}
+                <tr>
+                    <td scope="row">{{ sen["prettyname"] }}</td>
+                    <td scope="row">{{ sen["value"] }}</td>
+                    <td scope="row">{{ sen["timestamp"] }}</td>
+                    <td scope="row">Public</td>
+                </tr>
+            {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+        <h5>Actions</h5>
+        <table class="table table-striped table-sm">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Public</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for act in userActions %}
+            {% if act["id"] in device["actions"] %}
+                <tr>
+                    <td scope="row">{{ act["prettyname"] }}</td>
+                    <td scope="row">Public</td>
+                    <td scope="row"><button type="button" class="btn btn-primary btn-sm">Activate</button></td>
+                </tr>
+            {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

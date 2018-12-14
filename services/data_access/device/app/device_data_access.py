@@ -37,7 +37,7 @@ def delete_device(id):
 
 def get_device(id):
     device_db = connect_to_db()
-    r = re.compile('^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$')
+    r = re.compile('^(?:[0-9]{1,3}\.){3}[0-9]{1,3}:[0-9]{4}$')
     if ObjectId.is_valid(id):
         query = {"_id": ObjectId(id)}
         type = "id"

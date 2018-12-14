@@ -186,13 +186,13 @@ parameters:
       required:
         - username
         - password
-        - access_token
+        - accessToken
       properties:
         username:
           type: string
         password:
           type: string
-        access_token:
+        accessToken:
           type: string
   patchUser:
     in: body

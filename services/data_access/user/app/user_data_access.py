@@ -55,7 +55,7 @@ def get_user_id_by_username(username):
     if (user_db.count_documents(query)) < 1 :
         return make_response(json.dumps({"error": "user with id: "+ id +" does not exist"}), 404)
     x = user_db.find_one(query)
-    return make_response(str(x["_id"]), 200)
+    return make_response(json.dumps(str(x["_id"])), 200)
 
 def patch_user(id):
     lists = {"device", "rule", "grouping", "otherDevices"}

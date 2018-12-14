@@ -68,7 +68,7 @@ def post_users_id_devices(userid):
     if validation == '':
         authorization = authorize(request.json['accessToken'], userid)
         if authorization == '':
-            device_response = requests.post(device_url + '/users/' + userid + '/devices', headers=headers, data=request.json["data"])
+            device_response = requests.post(device_url + '/users/' + userid + '/devices', headers=headers, json=request.json["data"])
             return make_response(device_response.content, device_response.status_code)
         else:
             return make_response(json.dumps({"error": authorization, "body": request.json}), 401, headers)

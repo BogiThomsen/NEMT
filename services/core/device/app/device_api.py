@@ -21,16 +21,16 @@ def add_device(userid):
 
 def delete_device(userid, deviceid):
     device = requests.get("http://device-access:5500/v1/devices/{}".format(deviceid)).json()
-
-    for x in device["sensors"]:
-        sensordata=x.split(':')
-        sensor_id = sensordata[1]
-        requests.delete("http://sensor-service:5900/v1/devices/{0}/sensors/{1}".format(deviceid, sensor_id))
-
-    for x in device["actions"]:
-        actiondata = x.split(':')
-        action_id = actiondata[1]
-        requests.delete("http://action-service:5800/v1/devices/{0}/actions/{1}".format(deviceid, action_id))
+    if len(device["sensors"]) > 0:
+        for x in device["sensors"]:
+            sensordata=x.split(':')
+            sensor_id = sensordata[1]
+            requests.delete("http://sensor-service:5900/v1/devices/{0}/sensors/{1}".format(deviceid, sensor_id))
+    if len(device["actions"]) > 0:
+        for x in device["actions"]:
+            actiondata = x.split(':')
+            action_id = actiondata[1]
+            requests.delete("http://action-service:5800/v1/devices/{0}/actions/{1}".format(deviceid, action_id))
 
     json = {
         "operation":"remove",

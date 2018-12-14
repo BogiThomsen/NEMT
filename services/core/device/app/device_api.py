@@ -34,12 +34,12 @@ def delete_device(userid, deviceid):
         for x in device["sensors"]:
             sensordata=x.split(':')
             sensor_id = sensordata[1]
-            requests.delete("http://sensor-service:5900/v1/devices/{0}/sensors/{1}".format(deviceid, sensor_id))
+            requests.delete("http://sensor-service:5900/v1/users/{0}/devices/{1}/sensors/{2}".format(userid, deviceid, sensor_id))
     if 'actions' in device:
         for x in device["actions"]:
             actiondata = x.split(':')
             action_id = actiondata[1]
-            requests.delete("http://action-service:5800/v1/devices/{0}/actions/{1}".format(deviceid, action_id))
+            requests.delete("http://action-service:5800/v1/users/{0}/devices/{1}/actions/{2}".format(user, deviceid, action_id))
 
     json = {
         "operation":"remove",

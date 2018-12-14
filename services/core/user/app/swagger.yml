@@ -72,7 +72,7 @@ paths:
           description: Authorization failed
       parameters:
         - $ref: '#/parameters/authenticationBody'
-  /users/authorize:
+  /users/authorize/{id}:
     post:
       summary: Authorizes a users access token
       description: blank for now
@@ -85,7 +85,7 @@ paths:
         401:    #status code
           description: Authorization failed
       parameters:
-        - $ref: '#/parameters/authenticationBody'
+        - $ref: '#/parameters/id'
 
 parameters:
   id:
@@ -123,6 +123,17 @@ parameters:
         grouping:
           type: string
         other_device:
+          type: string
+  authorizationBody:
+    in: body
+    name: authorizationBody
+    description: A body containing the username and password of a user  to authenticate
+    schema:
+      type: object
+      required:
+        - accessToken
+      properties:
+        accessToken:
           type: string
   user:
     in: body

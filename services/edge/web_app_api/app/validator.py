@@ -1,6 +1,3 @@
-import re
-
-
 # This function is used when an input is required to be alphanumeric, such as with usernames and passwords. This
 # Ensures that code cannot be injected into queries.
 import re

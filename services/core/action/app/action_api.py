@@ -36,6 +36,15 @@ def patch_action(userid, deviceid, actionid):
     return make_response(json.dumps(patch_response.json()), patch_response.status_code)
 
 def activate_action(userid, deviceid, actionid):
-    activation_response = requests.get("http://action-access:5700/v1/actions/{}".format(actionid), json=request.json)
+    device = requests.get("http://device-service:5400/v1/users/{0}/devices/{1}".format(userid, deviceid)).json()
 
-    return make_response(json.dumps(activation_response.json()), activation_response.status_code)
+    for x in device["actions"]:
+        actiondata = x.split(':')
+        if actionid == actiondata[1]:
+            action = actiondata[0]
+            break
+    token = device["device_token"].split(':')
+    host = token[0]
+    port = int(token[1])    
+    client = HelperClient(server=(host, port))
+    client.put("action", action)

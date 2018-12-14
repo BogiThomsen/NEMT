@@ -1,4 +1,7 @@
 from flask import jsonify, request, json, make_response
+
+from coapthon.client.helperclient import HelperClient
+
 import requests, hashlib, uuid
 
 users = []
@@ -13,10 +16,10 @@ users.append(user1)
 
 def add_user():
     random = uuid.uuid4().hex
-    access_token = hashlib.sha224(random.encode())
+    access_token = hashlib.sha224(random.encode()).hexdigest()
     user = {
         "username" : request.json["username"],
-        "password" : hashPassword(request.json["password"]),
+        "password" : hash_password(request.json["password"]),
         "access_token" : access_token
     }
     user_response = requests.post("http://user-access:5200/v1/users", json=user)
@@ -25,8 +28,11 @@ def add_user():
     return make_response(json.dumps(user), user_response.status_code)
     
 def delete_user(id):
+    user = requests.delete("http://user-access:5200/v1/users/{}".format(id)).json()
+    for deviceid in user["devices"]:
+        requests.delete("http://action-service:5800/v1/devices/{}/".format(deviceid))
     user_response = requests.delete("http://user-access:5200/v1/users/{}".format(id))
-    return make_response(json.dumps(user_response.json()), user_response.status_code)
+    return make_response(user_response.content, user_response.status_code)
 
 def get_user(id):
     user_response = requests.get("http://user-access:5200/v1/users/{}".format(id))
@@ -51,7 +57,7 @@ def authenticate_user():
     userId = userId.replace('\"', '').rstrip()
     user_response = requests.get("http://user-access:5200/v1/users/{}".format(userId))
     user = user_response.json()
-    if checkPassword(login["password"], user["password"]):
+    if check_password(login["password"], user["password"]):
         user["password"] = ""
         return make_response(json.dumps(user), user_response.status_code)
     else:
@@ -65,22 +71,17 @@ def check_password(userPassword, hashedPassword):
     password, foo = hashedPassword.split(':')
     return password == hashlib.sha256(foo.encode() + userPassword.encode()).hexdigest()
 
-def authorize_user():
-    access_token = request.json["access_token"]
+def authorize_user(id):
+    access_token = request.json["accessToken"]
     #Fra data access får jeg enten en 200 for at token eksisterer, eller 404 for at den ikke gør
-    response = requests.get("http://user-acess:5200/v1/users/{}".format(access_token)).json()
+    response = requests.get("http://user-access:5200/v1/users/{}".format(access_token))
+    user = response.json()
     #hvis 200, send 200 #ellers hvis 404, send 401 tilbage
     if response.status_code == 404:
-        return make_response(401)
+        return make_response(json.dumps({"error": "user not found."}), 404)
+    elif user["_id"] != id:
+        return make_response(json.dumps({"error": "not authorized"}), 401)
     else:
-        return make_response(response.content, response.status_code)
-
-
-#Tag et device id og et device liste og et user id
-#Check device id not in list
-#if true call user/id med patch request. Den skal have en operation, og en entry i otherdevice.
-#Operation og device skal i en json body.
-
-#MEYER: LAV ALT TIL 200 OG SEND OBJEKTET MED
+        return make_response(response.content, 200)
 
 

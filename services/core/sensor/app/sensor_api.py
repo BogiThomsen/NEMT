@@ -22,9 +22,11 @@ def add_sensor(userid, deviceid):
 def delete_sensor(userid, deviceid, sensorid):
     sensor_response = requests.get("http://sensor-access:5600/v1/sensors/{}".format(sensorid))
     sensor = sensor_response.json()
+    sensor_list = []
+    sensor_list.append(sensor["name"]+":"+sensor["_id"])
     patch_sensor = {
         "operation":"remove",
-        "sensor":sensor["name"]+":"+sensor["_id"]
+        "sensor":sensor_list
     }
     sensor_response = requests.delete("http://sensor-access:5600/v1/sensors/{}".format(sensorid))
     requests.patch("http://device-service:5400/v1/users/{0}/devices/{1}".format(userid, deviceid), json=patch_sensor)

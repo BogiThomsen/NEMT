@@ -54,8 +54,7 @@ def authenticate_user():
     if user_response.status_code == 404:
         return make_response(user_response.content, user_response.status_code)
     else:
-        _user = user_response.text
-        user_id = _user["_id"].replace('\"', '').rstrip()
+        user_id = user_response.text.replace('\"', '').rstrip()
         user = requests.get("http://user-access:5200/v1/users/{}".format(user_id)).json()
         if check_password(login["password"], user["password"]):
             user["password"] = ""

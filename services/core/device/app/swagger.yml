@@ -154,7 +154,7 @@ parameters:
         operation:
           type: string
           enum: [add, remove]
-        pretty_name:
+        prettyName:
           type: string
         value:
           type: string
@@ -180,7 +180,7 @@ parameters:
         operation:
           type: string
           enum: [add, remove]
-        pretty_name:
+        prettyName:
           type: string
         public:
           type: boolean

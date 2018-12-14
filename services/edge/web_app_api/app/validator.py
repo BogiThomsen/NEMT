@@ -220,7 +220,7 @@ def validate_actions_request(request):
         return validate_body_result
     elif request.method == "POST":
 
-        result = is_only_expected_data(request.json["data"], ["prettyName", "public", "accessTokens"])
+        result = is_only_expected_data(request.json["data"], ["public", "accessTokens"], ["prettyName"])
         if result != "":
             return result
 

@@ -1,5 +1,5 @@
-$(function () {
-    $('.searchInput').keyup(function () {
+$(document).ready(function(){
+   $('.searchInput').keyup(function () {
         var enableOnInput = $(this).data('enable-on-input');
         if ($(this).val() == '') {
             //Check to see if there is any text entered
@@ -19,4 +19,5 @@ $(function () {
         $("#chooseSensors").children().first().clone().appendTo("#chooseSensors");
     });
 
+    $(".alert").slideDown(500).delay(3000).slideUp(1000);
 });

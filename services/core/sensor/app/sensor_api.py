@@ -6,7 +6,7 @@ import requests
 def add_sensor(userid, deviceid):
     sensor = {
         "name" : request.json["name"],
-        "name" : request.json["public"]
+        "public" : request.json["public"]
     }
     sensor_response = requests.post("http://sensor-access:5600/v1/sensors", json=sensor)
     created_sensor = sensor_response.json()

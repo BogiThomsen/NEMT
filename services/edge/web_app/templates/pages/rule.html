@@ -2,4 +2,43 @@
 {% block title %}{{ rule["name"] }}{% endblock %}
 {% block pagecontent %}
 
+<div class="card mx-auto" style="width: 50vw; min-width: 500px">
+    <div class="card-header bg-light input-group-lg">
+        <form class="form-inline" method="POST">
+            <div class="form-group">
+                <input type="text"
+                       name="prettyName"
+                       data-enable-on-input="{{ rule["id"] }}_changePrettyName"
+                       class="form-control form-control-lg searchInput"
+                       placeholder="{{ rule["name"] }}" >
+            </div>
+            <button type="submit"
+                    id="{{ rule["id"] }}_changePrettyName"
+                    class="btn btn-primary btn-lg ml-1"
+                    disabled="disabled">Edit</button>
+            <a class="btn btn-primary btn-lg ml-auto" href="{{ url_for('rules') }}">Back</a>
+        </form>
+        <form class="form-inline" method="POST" action="/rules/{{ rule["id"] }}/delete">
+            <button type="submit" class="btn btn-danger btn-lg ml-1">Delete</button>
+        </form>
+    </div>
+    <div class="card-body">
+        <u class="h5">Rule condition</u>
+        <div class="row bg-light border border-secondary rounded pt-3 pb-1 pl-2 mr-3 ml-3 mt-3 mb-3">
+            <h5 class="mr-3">When..</h5>
+            <h5 class="mr-3 pb-1 px-2 bg-white rounded font-weight-light border border-secondary">{{ rule["sensor_name"] }}</h5>
+            <h5 class="mr-3 px-1 bg-white rounded font-weight-light border border-secondary">{{ rule["operator"] }}</h5>
+            <h5 class="mr-3 px-1 bg-white rounded font-weight-light border border-secondary">{{ rule["value"] }}</h5>
+        </div>
+        <u class="h5">It activates..</u>
+        {% for act in rule["actions"] %}
+        <div class="row bg-light border border-secondary rounded pt-3 pb-1 pl-2 mr-3 ml-3 mt-2">
+            <h5 class="mr-3 bg-white pb-1 px-2 rounded font-weight-light border border-secondary">{{ act["action_name"] }}</h5>
+            <h5 class="mr-3">..on..</h5>
+            <h5 class="px-2 bg-white rounded font-weight-light border border-secondary">{{ act["device_name"] }}</h5>
+        </div>
+        {% endfor %}
+
+    </div>
+</div>
 {% endblock %}

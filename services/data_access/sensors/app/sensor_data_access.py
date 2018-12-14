@@ -13,11 +13,11 @@ def post_sensor():
     if 'prettyName' not in request.json:
         new_sensor = {"name": name,
                       "prettyName": name,
-                      "public": False}
+                      "public": request.json["public"]}
     else:
         new_sensor = {"name": name,
                       "prettyName": request.json["prettyName"],
-                      "public": False}
+                      "public": request.json["public"]}
     _id = sensor_db.insert_one(new_sensor).inserted_id
     sensor = sensor_db.find_one({"_id": _id})
     sensor["_id"] = str(sensor["_id"])
@@ -45,18 +45,28 @@ def get_sensor(id):
 
 def patch_sensor(id):
     strings = {"prettyName", "value", "timestamp", "public"}
+    ignore_vals = {"_id", "operation"}
     strings_dict = string_dict()
     lists = {"accessToken"}
     sensor_db = connect_to_db()
-    for val in lists:
-        if val in request.json:
-            patch_lists(sensor_db, id, request.json, val)
-    if request.json["operation"] == "add":
-        for val in strings:
-            if val in request.json:
-                sensor_db.update_one({"_id": ObjectId(id)},
-                                       {"$set": {strings_dict[val]: request.json[val]}})
+    for val in request.json:
+        if val not in strings and val not in lists and val not in ignore_vals:
+            return make_response(val + "is not a patcheable field", 400)
+    for val in request.json:
+        if val in ignore_vals:
+            continue
+        elif val in lists:
+            if 'operation' in request.json:
+                patch_lists(sensor_db, id, request.json, val)
+            else:
+                make_response("operation field is required for list patching", 400)
+        elif val in strings:
+            sensor_db.update_one({"_id": ObjectId(id)},
+                                   {"$set": {strings_dict[val]: request.json[val]}})
+        else:
+            return make_response(val + "is not a patcheable field", 400)
     patched_sensor = sensor_db.find_one({"_id": ObjectId(id)})
+    patched_sensor["_id"] = str(patched_sensor["_id"])
     return make_response(json.dumps(patched_sensor), 200)
 
 def patch_lists(db, id, json_object, current_val):

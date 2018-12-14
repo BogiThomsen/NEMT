@@ -106,8 +106,6 @@ parameters:
     description: User info to be patched
     schema:
       type: object
-      required:
-        - operation
       properties:
         username:
           type: string
@@ -117,13 +115,21 @@ parameters:
         password:
           type: string
         device:
-          type: string
+          type: array
+          items: 
+            type: string
         rule:
-          type: string
+          type: array
+          items: 
+            type: string
         grouping:
-          type: string
-        other_device:
-          type: string
+          type: array
+          items: 
+            type: string
+        otherDevice:
+          type: array
+          items: 
+            type: string
   authorizationBody:
     in: body
     name: authorizationBody

@@ -120,8 +120,6 @@ parameters:
     description: device info to be patched
     schema:
       type: object
-      required:
-        - operation
       properties:
         prettyName:
           type: string
@@ -146,15 +144,13 @@ parameters:
     description: sensor info to be patched
     schema:
       type: object
-      required:
-        - operation
       properties:
         name:
           type: string
         operation:
           type: string
           enum: [add, remove]
-        pretty_name:
+        prettyName:
           type: string
         value:
           type: string
@@ -172,15 +168,13 @@ parameters:
     description: Action info to be patched
     schema:
       type: object
-      required:
-        - operation
       properties:
         name:
           type: string
         operation:
           type: string
           enum: [add, remove]
-        pretty_name:
+        prettyName:
           type: string
         public:
           type: boolean

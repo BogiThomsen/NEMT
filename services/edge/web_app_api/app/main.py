@@ -22,7 +22,7 @@ def inject_now():
 @app.route('/signin', methods=['GET', 'POST'])
 def signin():
     if not flask_login.current_user.is_anonymous:
-        return redirect(url_for('index'))
+        return redirect(url_for('dashboard'))
 
     form = SignInForm(request.form)
     if form.validate_on_submit():
@@ -57,6 +57,11 @@ def dashboard():
     userActions = testActions
     return render_template('pages/dashboard.html', userSensors=userSensors, userActions=userActions)
 
+@app.route('/profile')
+@flask_login.login_required
+def profile():
+    return render_template('pages/profile.html')
+
 @app.route('/devices')
 @flask_login.login_required
 def devices():
@@ -84,14 +89,12 @@ def createrule():
     userActions = testActions
     return render_template('pages/createrule.html', userSensors=userSensors, userActions=userActions)
 
-@app.route('/protected')
-@flask_login.login_required
-def protected():
-    return 'Logged in as: ' + flask_login.current_user.id
-
 @app.route('/')
 def index():
-    return render_template('index.html')
+    if flask_login.current_user.is_anonymous:
+        return redirect((url_for('signin')))
+    else:
+        return redirect(url_for('dashboard'))
 
 if __name__ == "__main__":
   app.run(debug=True)

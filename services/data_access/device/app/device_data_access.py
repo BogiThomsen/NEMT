@@ -11,7 +11,7 @@ def post_device():
     device_db = connect_to_db()
     mac_address = request.json["deviceToken"]
     if (device_db.count_documents({"deviceToken": mac_address})) > 0 :
-        return make_response(json.dumps({"error": "device with Mac Address: "+ mac_address + "already exists"}), 400)
+        return make_response(json.dumps({"error": "device with Mac Address: "+ mac_address + " already exists"}), 400)
     if 'prettyName' not in request.json:
         pretty_name = request.json["name"]
     else:

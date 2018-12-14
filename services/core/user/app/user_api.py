@@ -20,8 +20,9 @@ def add_user():
     
 def delete_user(id):
     user = requests.get("http://user-access:5200/v1/users/{}".format(id)).json()
-    for deviceid in user["device"]:
-        requests.delete("http://action-service:5800/v1/devices/{}/".format(deviceid))
+    if len(user["device"]) > 0:
+        for deviceid in user["device"]:
+            requests.delete("http://action-service:5800/v1/devices/{}/".format(deviceid))
     user_response = requests.delete("http://user-access:5200/v1/users/{}".format(id))
     return make_response(user_response.content, user_response.status_code)
 

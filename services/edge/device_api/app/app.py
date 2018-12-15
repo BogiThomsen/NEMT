@@ -4,6 +4,7 @@ import requests
 import validator
 import json
 import datetime
+import sys
 
 from coapthon.resources.resource import Resource
 
@@ -37,7 +38,7 @@ class updateValue(Resource):
 
         print(value)
 
-        response = requests.patch(core_url + '/devices/' + deviceToken + "/sensors/" + sensorName, headers=headers, data=json_data)
+        response = requests.patch(core_url + '/devices/' + deviceToken + "/sensors/" + sensorName, headers=headers, json=json_data)
         response_code = response.status_code
 
         if response_code == 400 or response_code == 404:
@@ -111,24 +112,34 @@ class exposeActions(Resource):
 
 
 class CoAPServer(CoAP):
+    print("pre init")
+    
     def __init__(self, host, port):
-        CoAP.__init__(self, (host, port))
-        self.add_resource('updateValue/', updateValue())
-        self.add_resource('exposeSensors/', exposeSensors())
-        self.add_resource('exposeActions/', exposeActions())
+        try:
+            print("first")
+            CoAP.__init__(self, (host, port))
+            print("second")
+            self.add_resource('updateValue/', updateValue())
+            print("third")
+            self.add_resource('exposeSensors/', exposeSensors())
+            print("fourth")
+            self.add_resource('exposeActions/', exposeActions())
+            print("last")
+        except Exception as e:
+            print(e)
 
 def outbound(host, port, value):
+    print("outbound 1")
     client = HelperClient(server=(host, port))
-    response = client.put("action", valuev)
-    print(response)
+    print("outbound 2")
+    response = client.put("action", value)
+    print("response is " + response.__str__)
 
 
 if __name__ == '__main__':
     print("starting....")
-    server = CoAPServer("172.31.91.114", 5683)
+    server = CoAPServer("0.0.0.0", 5683)
     print("coap server started")
-    outbound("172.31.91.128", 5683, "blink")
-    print("outbound sent")
     server.listen(10)
     print("listen is over")
 

@@ -123,12 +123,12 @@ def devices_id(id):
             return redirect(url_for('devices_id', id=id))
         elif 'actionId' in form:
             action_id = request.form['actionId']
-            #r = requests.get('http://web-app-api:5000/v1/users/' + user_id + '/devices/' + id + '/actions/' + action_id + '/activate', data={'accessToken': access_token})
+            r = requests.get('http://web-app-api:5000/v1/users/' + user_id + '/devices/' + id + '/actions/' + action_id + '/activate', data={'accessToken': access_token})
             status_code = 200
 
-            if status_code == 200:
+            if r.status_code == 200:
                 flash('The action was succesfully triggered.', 'success')
-            elif status_code == 400:
+            elif r.status_code == 400:
                 flash('An error occurred when trying to trigger the action.', 'danger')
 
     userDevices = testDevices

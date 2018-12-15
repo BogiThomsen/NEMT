@@ -19,7 +19,7 @@ def add_sensor(userid, deviceid):
     requests.patch("http://device-service:5400/v1/users/{0}/devices/{1}".format(userid, deviceid), json=patch_sensor)
     return make_response(sensor_response.content, sensor_response.status_code)
 
-def get_sensor(userid, deviceid):
+def get_sensors(userid, deviceid):
     sensor_response = requests.get("http://sensor-access:5600/v1/sensors/", json=request.json)
     return make_response(sensor_response.content, sensor_response.status_code)
 

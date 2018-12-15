@@ -75,7 +75,7 @@ def post_users_id_devices(userid):
     else:
         return make_response(json.dumps({"error": validation, "body": request.json}), 400, headers)
 
-def get_users_id_devices(userid):
+def get_users_user_id_devices(userid):
     validation = validate_devices_request(request)
     if validation == '':
         authorization = authorize(request.json['accessToken'], userid)

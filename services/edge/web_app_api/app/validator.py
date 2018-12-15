@@ -26,27 +26,29 @@ def is_alphanumeric_or_whitespace(string):
     else:
         return "Not allowed: \"" + string.replace(r.match(string).group(), "") + "\" in " + "\"" + string + "\""
 
+
 def data_is_any_of(recieved_dictionary, expected_dictionary):
     for key in list(recieved_dictionary.keys()):
         if key not in expected_dictionary:
-            return "Expected any of: {" + ', '.join(expected_dictionary) + "}\nGot: {" + ', '.join(recieved_dictionary.keys()) + "}\nDidnt expect: " + key
+            return "Expected any of: {" + ', '.join(expected_dictionary) + "}\nGot: {" + ', '.join(
+                recieved_dictionary.keys()) + "}\nDidnt expect: " + key
     return ""
 
 
-def is_only_expected_data(recieved_dictionary, expected_dictionary, optional_dictionary = []):
-
+def is_only_expected_data(recieved_dictionary, expected_dictionary, optional_dictionary=[]):
     for key in expected_dictionary:
         if key not in recieved_dictionary.keys():
-            return "Expected: {" + ', '.join(expected_dictionary) + "}\nGot: {" + ', '.join(recieved_dictionary.keys()) + "}\nDidnt find: " + key
+            return "Expected: {" + ', '.join(expected_dictionary) + "}\nGot: {" + ', '.join(
+                recieved_dictionary.keys()) + "}\nDidnt find: " + key
 
     for key in list(recieved_dictionary.keys()):
         if key not in expected_dictionary and key not in optional_dictionary:
-            return "Expected: {" + ', '.join(expected_dictionary) + "}\nOptional: {" + ', '.join(optional_dictionary) + "}\nGot: {" + ', '.join(recieved_dictionary.keys()) + "}\nDidnt expect: " + key
+            return "Expected: {" + ', '.join(expected_dictionary) + "}\nOptional: {" + ', '.join(
+                optional_dictionary) + "}\nGot: {" + ', '.join(recieved_dictionary.keys()) + "}\nDidnt expect: " + key
     return ""
 
 
 def validate_request_body(request):
-
     if request.method == "GET" or request.method == "DELETE":
         result = is_only_expected_data(request.json, ["accessToken"])
         if result != "":
@@ -59,7 +61,6 @@ def validate_request_body(request):
         if result != "":
             return result
         return is_alphanumeric(request.json["accessToken"])
-
 
 
 def validate_users_request(request):
@@ -99,12 +100,16 @@ def validate_users_request(request):
         return ""
 
 
-
-
 def validate_devices_request(request):
     validate_body_result = validate_request_body(request)
 
-    if request.method == "GET" or request.method == "DELETE":
+    if request.method == "GET":
+        if validate_body_result != "":
+            return validate_body_result
+
+        return is_only_expected_data(request.json["data"], ["deviceList"])
+
+    if request.method == "DELETE":
         return validate_body_result
 
 
@@ -147,11 +152,17 @@ def validate_devices_request(request):
 
 
 def validate_sensors_request(request):
-
     validate_body_result = validate_request_body(request)
 
-    if request.method == "GET" or request.method == "DELETE":
+    if request.method == "GET":
+        if validate_body_result != "":
+            return validate_body_result
+
+        return is_only_expected_data(request.json["data"], ["sensorList"])
+
+    if request.method == "DELETE":
         return validate_body_result
+
     elif request.method == "POST":
         if validate_body_result != "":
             return validate_body_result
@@ -160,7 +171,6 @@ def validate_sensors_request(request):
 
         if result != "":
             return result
-
 
         public = request.json["data"]["public"]
 
@@ -217,8 +227,15 @@ def validate_sensors_request(request):
 def validate_actions_request(request):
     validate_body_result = validate_request_body(request)
 
-    if request.method == "GET" or request.method == "DELETE":
+    if request.method == "GET":
+        if validate_body_result != "":
+            return validate_body_result
+
+        return is_only_expected_data(request.json["data"], ["actionList"])
+
+    if request.method == "DELETE":
         return validate_body_result
+
     elif request.method == "POST":
 
         result = is_only_expected_data(request.json["data"], ["public", "name"], ["prettyName"])
@@ -260,7 +277,6 @@ def validate_actions_request(request):
                 if (is_alphanumeric(token) == False):
                     return False
 
-            
         if isinstance(public, bool) == False:
             return "\"public\" must be of type bool"
 

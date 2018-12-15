@@ -104,14 +104,14 @@ def devices_id(id):
         access_token = split_id_access_token[1]
         form = request.form
         if 'prettyName' in form:
-            pretty_name = request.form.prettyName
+            pretty_name = request.form['prettyName']
             # r = requests.patch("http://web-app:5000/users/" + user_id + "/devices/" + id, data={'accessToken': access_token, 'data': {'prettyname': pretty_name}})
 
             # if r.status_code == 200:
             flash('Your device has been updated.', 'success')
             return redirect(url_for('devices_id', id=id))
         elif 'actionId' in form:
-            action_id = request.form.actionId
+            action_id = request.form['actionId']
             #r = requests.get('http://web-app-api:5000/v1/users/' + user_id + '/devices/' + id + '/actions/' + action_id + '/activate', data={'accessToken': access_token})
             status_code = 200
 

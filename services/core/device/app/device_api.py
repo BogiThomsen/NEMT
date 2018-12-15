@@ -15,7 +15,7 @@ def add_device(userid):
 
     device_response = requests.post("http://device-access:5500/v1/devices", json=device)
     
-    if device_response.status_code == 201:
+    if device_response.status_code == 200:
         created_device = device_response.json()
         device_list = []
         device_list.append(created_device["_id"])

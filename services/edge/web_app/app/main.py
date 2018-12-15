@@ -26,12 +26,12 @@ def signin():
     if form.validate_on_submit():
         username = form.username.data
         password = form.password.data
-        #r = requests.post('127.0.0.1:5000/v1/users/authenticate', data={'username': username, 'password': password})
-        status_code = 200
-        json = {'id': '3', 'accessToken': 'ABC123'}
-
-        if status_code == 200:
-            id = json['id']
+        r = requests.post('http://web-app-api:5000/v1/users/authenticate', json={'username': username, 'password': password})
+        #status_code = 200
+        #json = {'id': '3', 'accessToken': 'ABC123'}
+        json = r.json()
+        if r.status_code == 200:
+            id = json["_id"]
             access_token = json['accessToken']
             user = login_manager.User()
             user.id = id + ';' + access_token
@@ -40,7 +40,7 @@ def signin():
             if not next or urlparse(next).netloc != '':
                 next = url_for('dashboard')
             return redirect(next)
-        elif status_code == 400:
+        elif r.status_code == 404 or r.status_code == 400:
             flash('An error occurred when trying to sign in.', 'danger')
             return render_template('auth/signin.html', form=form)
 
@@ -103,14 +103,14 @@ def devices_id(id):
         access_token = split_id_access_token[1]
         form = request.form
         if 'prettyName' in form:
-            pretty_name = request.form.prettyName
+            pretty_name = request.form['prettyName']
             # r = requests.patch("http://web-app:5000/users/" + user_id + "/devices/" + id, data={'accessToken': access_token, 'data': {'prettyname': pretty_name}})
 
             # if r.status_code == 200:
             flash('Your device has been updated.', 'success')
             return redirect(url_for('devices_id', id=id))
         elif 'actionId' in form:
-            action_id = request.form.actionId
+            action_id = request.form['actionId']
             #r = requests.get('http://web-app-api:5000/v1/users/' + user_id + '/devices/' + id + '/actions/' + action_id + '/activate', data={'accessToken': access_token})
             status_code = 200
 

@@ -93,12 +93,7 @@ def devices():
     u = ur.json()
     userDevices = []
     if ur.status_code == 200 and 'devices' in u:
-        for device in u["devices"]:
-            device_resp = requests.get("http://web-app-api:5000/v1/users/{0}/devices/{1}".format(user_id, device), json={"accessToken": access_token})
-            userDevice = device_resp.json()
-            userDevices.append(userDevice)
-
-
+        userDevices = requests.get("http://device-access:5500/v1/devices", json={"deviceList": u['devices']}).json()
 
     # UI links all devices to their sensors and actions
     # Needed fields for Device: ["name"], ["prettyname"], ["sensors"], ["actions"]
@@ -118,27 +113,18 @@ def devices_id(id):
     access_token = split_id_access_token[1]
     ur = requests.get("http://web-app-api:5000/v1/users/{}".format(user_id), json={"accessToken": access_token})
     u = ur.json()
-    userDevices = []
     userActions = []
     userSensors = []
 
     if ur.status_code == 200 and 'devices' in u:
-        for device in u["devices"]:
-            device_resp = requests.get("http://web-app-api:5000/v1/users/{0}/devices/{1}".format(user_id, device),
-                                       json={"accessToken": access_token})
-            userDevice = device_resp.json()
-            userDevices.append(userDevice)
-            if userDevice["_id"] == id and 'actions' in userDevice:
-                for action in userDevice["actions"]:
-                    action = action.split(":")[1]
-                    user_action = requests.get("http://web-app-api:5000/v1/users/{0}/devices/{1}/actions/{2}".format(user_id, id, action), json={"accessToken": access_token}).json()
-
-                    userActions.append(user_action)
-            if userDevice["_id"] == id and 'sensors' in userDevice:
-                for sensor in userDevice["sensors"]:
-                    sensor = sensor.split(":")[1]
-                    user_sensor = requests.get("http://web-app-api:5000/v1/users/{0}/devices/{1}/sensors/{2}".format(user_id, id, sensor), json={"accessToken": access_token}).json()
-                    userSensors.append(user_sensor)
+        userDevices = requests.get("http://device-access:5500/v1/devices", json={"deviceList": u['devices']}).json()
+        for device in userDevices:
+            if device["_id"] == id and 'actions' in device:
+                actions = [action.split(":")[1] for action in device['actions']]
+                userActions = requests.get("http://action-access:5700/v1/actions", json={"actionList": actions}).json()
+            if device["_id"] == id and 'sensors' in device:
+                sensors = [sensor.split(":")[1] for sensor in device['sensors']]
+                userSensors = requests.get("http://sensor-access:5600/v1/sensors", json={"sensorList": sensors}).json()
     if request.method == 'POST':
         split_id_access_token = flask_login.current_user.id.split(';')
         user_id = split_id_access_token[0]

@@ -19,6 +19,16 @@ paths:
       responses:
         200:    # status code
           description: Sensor was added Sucessfully.
+    get:
+      summary: get a sensor list
+      operationId: sensor_data_access.get_sensors
+      consumes:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/getSensors'
+      responses:
+        200:    # status code
+          description: list gotten.
   /sensors/{id}:
     get:
       summary: Returns a sensor in the form of a json array.
@@ -93,4 +103,16 @@ parameters:
           type: array
           items:
             type: string
-
+  getSensors:
+    in: body
+    name: sensorIdList
+    description: a list of sensor ids
+    schema:
+      type: object
+      required:
+        - sensorList
+      properties:
+        sensorList:
+          type: array
+          items:
+            type: string

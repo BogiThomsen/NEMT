@@ -3,9 +3,9 @@ services:
     device-api:
         build: .
         ports:
-            - "5683:5683"
+            - "5683:5683/udp"
         expose:
-            - "5683"
+            - "5683/udp"
         volumes:
             - .:/code
         networks:

@@ -244,6 +244,26 @@ paths:
           description: Unauthorized
         404:
           description: Not Found
+  /users/{userid}/devices/{deviceid}/actions/{actionid}/activate:
+    get:
+      summary: summary here
+      operationId: web_app_api.get_users_user_id_devices_device_id_actions_action_id_activate
+      consumes:
+      - application/json
+      parameters:
+      - $ref: '#/parameters/userid'
+      - $ref: '#/parameters/deviceid'
+      - $ref: '#/parameters/actionid'
+      - $ref: '#/parameters/getDeleteActionsRequestBody'
+      responses:
+        200:
+          description: The activation was successful
+        400:
+          description: Bad Request
+        401:
+          description: Unauthorized
+        404:
+          description: Not Found
   /users/{userid}/devices/{deviceid}/sensors:
     post:
       summary: summary here

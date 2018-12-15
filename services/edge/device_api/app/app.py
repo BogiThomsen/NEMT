@@ -4,10 +4,11 @@ import requests
 import validator
 import json
 import datetime
+import sys
 
 from coapthon.resources.resource import Resource
 
-core_url = 'http://sensor-service:5900/v1'
+core_url = 'http://device-service:5400/v1'
 headers = {'User-Agent': 'web-app-api', 'Content-Type': 'application/json'}
 api_version = 'v1'
 
@@ -31,17 +32,17 @@ class updateValue(Resource):
         sensorName = split[1]
         value = split[2]
 
-        data = {}
-        data['value'] = value
-        json_data = json.dumps(data)
+        data = {
+            "value":value
+        }
 
         print(value)
 
-        response = requests.patch(core_url + '/devices/' + deviceToken + "/sensors/" + sensorName, headers=headers, data=json_data)
+        response = requests.patch(core_url + '/devices/' + deviceToken + "/sensors/" + sensorName, headers=headers, json=data)
         response_code = response.status_code
 
         if response_code == 400 or response_code == 404:
-            response.payload = response.status_code + " - " + response.json["error"]
+            response.payload = "{}".format(response.status_code) + " - " + response.text
         else:
             response.payload = response_code
 
@@ -111,22 +112,36 @@ class exposeActions(Resource):
 
 
 class CoAPServer(CoAP):
+    print("pre init")
+    
     def __init__(self, host, port):
-        CoAP.__init__(self, (host, port))
-        self.add_resource('updateValue/', updateValue())
-        self.add_resource('exposeSensors/', exposeSensors())
-        self.add_resource('exposeActions/', exposeActions())
+        try:
+            print("first")
+            CoAP.__init__(self, (host, port))
+            print("second")
+            self.add_resource('updateValue/', updateValue())
+            print("third")
+            self.add_resource('exposeSensors/', exposeSensors())
+            print("fourth")
+            self.add_resource('exposeActions/', exposeActions())
+            print("last")
+        except Exception as e:
+            print(e)
 
 def outbound(host, port, value):
+    print("outbound 1")
     client = HelperClient(server=(host, port))
-    response = client.put("action", valuev)
-    print(response)
+    print("outbound 2")
+    response = client.put("action", value)
+    print("response is " + response.__str__)
 
 
 if __name__ == '__main__':
-    server = CoAPServer("172.29.0.1", 5683)
-    outbound("172.31.91.128", 5683, "blink")
+    print("starting....")
+    server = CoAPServer("0.0.0.0", 5683)
+    print("coap server started")
     server.listen(10)
+    print("listen is over")
 
 
 

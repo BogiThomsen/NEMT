@@ -32,7 +32,7 @@ def signin():
         #json = {'id': '3', 'accessToken': 'ABC123'}
         json = r.json()
         if r.status_code == 200:
-            id = json["_id"]
+            id = json['_id']
             access_token = json['accessToken']
             user = login_manager.User()
             user.id = id + ';' + access_token
@@ -102,13 +102,27 @@ def register():
             flash('An error occurred when trying to register.', 'danger')
             return render_template('auth/register.html', form=form)
 
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            username = form.username.data
+            password = form.password.data
+            r = requests.post('http://web-app-api:5000/v1/users', json={'username': username, 'password': password})
+            status_code = 200
+            if r.status_code == 200:
+                flash('Your user was successfully created.', 'success')
+                return redirect(url_for('signin'))
+            elif r.status_code == 400:
+                flash('An error occurred when trying to register.', 'danger')
+                return render_template('auth/register.html', form=form)
+        else:
+            return render_template('auth/register.html', form=form, was_validated='was-validated')
+
     return render_template('auth/register.html', form=form)
 
 @app.route('/signout')
 @flask_login.login_required
 def logout():
     flask_login.logout_user()
-    flash('You have been logged out.', 'success')
     return render_template('auth/logout.html')
 
 @app.route('/dashboard')
@@ -121,13 +135,26 @@ def dashboard():
 @app.route('/devices')
 @flask_login.login_required
 def devices():
+    split_id_access_token = flask_login.current_user.id.split(';')
+    user_id = split_id_access_token[0]
+    access_token = split_id_access_token[1]
+    ur = requests.get("http://web-app-api:5000/v1/users/{}".format(user_id), json={"accessToken": access_token})
+    u = ur.json()
+    userDevices = []
+    if ur.status_code == 200 and 'devices' in u:
+        for device in u["devices"]:
+            device_resp = requests.get("http://web-app-api:5000/v1/users/{0}/devices/{1}".format(user_id, device), json={"accessToken": access_token})
+            userDevice = device_resp.json()
+            userDevices.append(userDevice)
+
+
+
     # UI links all devices to their sensors and actions
     # Needed fields for Device: ["name"], ["prettyname"], ["sensors"], ["actions"]
     # Needed fields for Actions ["id"], ["prettyname"], ["public"]
     # Needed fields for Sensors ["id"], ["prettyname"], ["value"], ["public"]
 
     # Expected: all devices to a given user
-    userDevices = testDevices
     # Expected: all sensors to a given user
 
     return render_template('pages/devices.html', userDevices=userDevices)
@@ -135,6 +162,32 @@ def devices():
 @app.route('/devices/<string:id>', methods=["GET", "POST"])
 @flask_login.login_required
 def devices_id(id):
+    split_id_access_token = flask_login.current_user.id.split(';')
+    user_id = split_id_access_token[0]
+    access_token = split_id_access_token[1]
+    ur = requests.get("http://web-app-api:5000/v1/users/{}".format(user_id), json={"accessToken": access_token})
+    u = ur.json()
+    userDevices = []
+    userActions = []
+    userSensors = []
+
+    if ur.status_code == 200 and 'devices' in u:
+        for device in u["devices"]:
+            device_resp = requests.get("http://web-app-api:5000/v1/users/{0}/devices/{1}".format(user_id, device),
+                                       json={"accessToken": access_token})
+            userDevice = device_resp.json()
+            userDevices.append(userDevice)
+            if userDevice["_id"] == id and 'actions' in userDevice:
+                for action in userDevice["actions"]:
+                    action = action.split(":")[1]
+                    user_action = requests.get("http://web-app-api:5000/v1/users/{0}/devices/{1}/actions/{2}".format(user_id, id, action), json={"accessToken": access_token}).json()
+
+                    userActions.append(user_action)
+            if userDevice["_id"] == id and 'sensors' in userDevice:
+                for sensor in userDevice["sensors"]:
+                    sensor = sensor.split(":")[1]
+                    user_sensor = requests.get("http://web-app-api:5000/v1/users/{0}/devices/{1}/sensors/{2}".format(user_id, id, sensor), json={"accessToken": access_token}).json()
+                    userSensors.append(user_sensor)
     if request.method == 'POST':
         split_id_access_token = flask_login.current_user.id.split(';')
         user_id = split_id_access_token[0]
@@ -152,17 +205,16 @@ def devices_id(id):
             r = requests.get('http://web-app-api:5000/v1/users/' + user_id + '/devices/' + id + '/actions/' + action_id + '/activate', data={'accessToken': access_token})
             status_code = 200
 
-            if status_code == 200:
+            if r.status_code == 200:
                 flash('The action was succesfully triggered.', 'success')
-            elif status_code == 400:
+            elif r.status_code == 400:
                 flash('An error occurred when trying to trigger the action.', 'danger')
 
-    device = testDevice
-    userSensors = testSensors
-    # Expected: all actions to a given user
-    userActions = testActions
 
-    return render_template('pages/device.html', device=testDevice, userSensors=userSensors, userActions=userActions)
+    device = testDevice
+    # Expected: all actions to a given user
+
+    return render_template('pages/device.html', userDevices=userDevices, device=device, userSensors=userSensors, userActions=userActions)
 
 @app.route('/devices/<string:id>/delete', methods=["POST"])
 @flask_login.login_required

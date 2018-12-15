@@ -19,6 +19,16 @@ paths:
       responses:
         200:    # status code
           description: Action was added Sucessfully.
+    get:
+      summary: get an action list
+      operationId: action_data_access.get_actions
+      consumes:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/getActions'
+      responses:
+        200:    # status code
+          description: list gotten.
   /actions/{id}:
     get:
       summary: Returns an action in the form of a json array.
@@ -86,6 +96,19 @@ parameters:
         public:
           type: boolean
         access_token:
+          type: array
+          items:
+            type: string
+  getActions:
+    in: body
+    name: actionsIdList
+    description: a list of action ids
+    schema:
+      type: object
+      required:
+        - actionList
+      properties:
+        actionList:
           type: array
           items:
             type: string

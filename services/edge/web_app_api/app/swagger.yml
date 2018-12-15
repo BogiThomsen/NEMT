@@ -112,6 +112,17 @@ paths:
           description: Unauthorized
         404:
           description: Not Found
+    get:
+      summary: get a sensor list
+      operationId: web_app_api.get_users_user_id_devices
+      consumes:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/userid'
+        - $ref: '#/parameters/getDevices'
+      responses:
+        200:    # status code
+          description: list gotten.
   /users/{userid}/devices/{deviceid}:
     get:
       summary: summary here
@@ -186,6 +197,18 @@ paths:
           description: Unauthorized
         404:
           description: Not Found
+    get:
+      summary: get a sensor list
+      operationId: web_app_api.get_users_user_id_devices_device_id_actions
+      consumes:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/userid'
+        - $ref: '#/parameters/deviceid'
+        - $ref: '#/parameters/getActions'
+      responses:
+        200:    # status code
+          description: list gotten.
   /users/{userid}/devices/{deviceid}/actions/{actionid}:
     get:
       summary: summary here
@@ -283,6 +306,18 @@ paths:
           description: Unauthorized
         404:
           description: Not Found
+    get:
+      summary: get a sensor list
+      operationId: web_app_api.get_users_user_id_devices_device_id_sensors
+      consumes:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/userid'
+        - $ref: '#/parameters/deviceid'
+        - $ref: '#/parameters/getSensors'
+      responses:
+        200:    # status code
+          description: list gotten.
   /users/{userid}/devices/{deviceid}/sensors/{sensorid}:
     get:
       summary: summary here
@@ -586,3 +621,66 @@ parameters:
       properties:
         accessToken:
           type: string
+  getSensors:
+    in: body
+    name: sensorIdList
+    description: a list of sensor ids
+    schema:
+      type: object
+      required:
+        - accessToken
+        - data
+      properties:
+        accessToken:
+          type: string
+        data:
+          type: object
+          required:
+            - sensorList
+          properties:
+            sensorList:
+              type: array
+              items:
+                type: string
+  getActions:
+    in: body
+    name: actionIdList
+    description: a list of action ids
+    schema:
+      type: object
+      required:
+        - accessToken
+        - data
+      properties:
+        accessToken:
+          type: string
+        data:
+          type: object
+          required:
+            - actionList
+          properties:
+            actionList:
+              type: array
+              items:
+                type: string
+  getDevices:
+    in: body
+    name: deviceIdList
+    description: a list of device ids
+    schema:
+      type: object
+      required:
+        - accessToken
+        - data
+      properties:
+        accessToken:
+          type: string
+        data:
+          type: object
+          required:
+            - deviceList
+          properties:
+            deviceList:
+              type: array
+              items:
+                type: string

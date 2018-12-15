@@ -21,6 +21,16 @@ paths:
           description: device was added Sucessfully.
         400:
           description: device already exists
+    get:
+      summary: Returns a device list.
+      operationId: device_data_access.get_devices
+      produces:
+        - application/json
+      responses:
+        200:    # status code
+          description: device was returned sucessfully.
+      parameters:
+        - $ref: '#/parameters/getDevices'
   /devices/{id}:  
     get:
       summary: Returns a device in the form of a json array.
@@ -100,6 +110,19 @@ parameters:
           items:
             type: string
         rule:
+          type: array
+          items:
+            type: string
+  getDevices:
+    in: body
+    name: deviceIdList
+    description: a list of device ids
+    schema:
+      type: object
+      required:
+        - deviceList
+      properties:
+        deviceList:
           type: array
           items:
             type: string

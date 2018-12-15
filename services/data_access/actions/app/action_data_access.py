@@ -43,6 +43,19 @@ def get_action(id):
         x["_id"] = str(x["_id"])
         return make_response(json.dumps(x), 200)
 
+def get_actions():
+    action_db = connect_to_db()
+    action_list = request.json["actionList"]
+    ids = [ObjectId(id) for id in action_list]
+    liste = list(action_db.find({"_id": {"$in": ids}}))
+    actions = []
+    for action in liste:
+        action["_id"] = str(action["_id"])
+        actions.append(action)
+
+
+    return make_response(json.dumps(actions), 200)
+
 def patch_action(id):
     strings = {"prettyName", "public"}
     strings_dict = string_dict()

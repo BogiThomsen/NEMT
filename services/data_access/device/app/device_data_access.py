@@ -53,6 +53,19 @@ def get_device(id):
         x["_id"] = str(x["_id"])
         return make_response(json.dumps(x), 200)
 
+def get_devices():
+    device_db = connect_to_db()
+    device_list = request.json["deviceList"]
+    ids = [ObjectId(id) for id in device_list]
+    liste = list(device_db.find({"_id": {"$in": ids}}))
+    devices = []
+    for device in liste:
+        device["_id"] = str(device["_id"])
+        devices.append(device)
+
+
+    return make_response(json.dumps(devices), 200)
+
 
 def patch_device(id):
     strings = {"prettyName"}

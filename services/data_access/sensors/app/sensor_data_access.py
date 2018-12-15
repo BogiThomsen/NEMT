@@ -43,6 +43,19 @@ def get_sensor(id):
         x["_id"] = str(x["_id"])
         return make_response(json.dumps(x), 200)
 
+def get_sensors():
+    sensor_db = connect_to_db()
+    sensor_list = request.json["sensorList"]
+    ids = [ObjectId(id) for id in sensor_list]
+    liste = list(sensor_db.find({"_id": {"$in": ids}}))
+    sensors = []
+    for sensor in liste:
+        sensor["_id"] = str(sensor["_id"])
+        sensors.append(sensor)
+
+
+    return make_response(json.dumps(sensors), 200)
+
 def patch_sensor(id):
     strings = {"prettyName", "value", "timestamp", "public"}
     ignore_vals = {"_id", "operation"}

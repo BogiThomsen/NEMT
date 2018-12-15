@@ -29,6 +29,10 @@ def add_device(userid):
     else:
         return make_response(device_response.content, device_response.status_code)
 
+def get_devices(userid):
+    device_response = requests.get("http://device-access:5500/v1/devices", json=request.json)
+    return make_response(device_response.content, device_response.status_code)
+
 def delete_device(userid, deviceid):
     device = requests.get("http://device-access:5500/v1/devices/{}".format(deviceid)).json()
     if 'sensors' in device:

@@ -22,6 +22,18 @@ paths:
       responses:
         200:    # status code
           description: An sensor was added
+    get:
+      summary: get a sensor list
+      operationId: sensor_api.get_sensors
+      consumes:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/userid'
+        - $ref: '#/parameters/deviceid'
+        - $ref: '#/parameters/getSensors'
+      responses:
+        200:    # status code
+          description: list gotten.
   /users/{userid}/devices/{deviceid}/sensors/{sensorid}:
     get:
       summary: Returns a sensor.
@@ -122,6 +134,19 @@ parameters:
         public:
           type: boolean
         accessToken:
+          type: array
+          items:
+            type: string
+  getSensors:
+    in: body
+    name: sensorIdList
+    description: a list of sensor ids
+    schema:
+      type: object
+      required:
+        - sensorList
+      properties:
+        sensorList:
           type: array
           items:
             type: string

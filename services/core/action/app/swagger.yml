@@ -22,6 +22,18 @@ paths:
       responses:
         200:    # status code
           description: An action was added
+    get:
+      summary: get an action list
+      operationId: action_api.get_actions
+      consumes:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/userid'
+        - $ref: '#/parameters/deviceid'
+        - $ref: '#/parameters/getActions'
+      responses:
+        200:    # status code
+          description: list gotten.
   /users/{userid}/devices/{deviceid}/actions/{actionid}:
     get:
       summary: Returns a action.
@@ -135,6 +147,19 @@ parameters:
         public:
           type: boolean
         accessToken:
+          type: array
+          items:
+            type: string
+  getActions:
+    in: body
+    name: actionsIdList
+    description: a list of action ids
+    schema:
+      type: object
+      required:
+        - actionList
+      properties:
+        actionList:
           type: array
           items:
             type: string

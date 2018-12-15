@@ -75,6 +75,18 @@ def post_users_id_devices(userid):
     else:
         return make_response(json.dumps({"error": validation, "body": request.json}), 400, headers)
 
+def get_users_id_devices(userid):
+    validation = validate_devices_request(request)
+    if validation == '':
+        authorization = authorize(request.json['accessToken'], userid)
+        if authorization == '':
+            device_response = requests.get(device_url + '/users/' + userid + '/devices', headers=headers, json=request.json["data"])
+            return make_response(device_response.content, device_response.status_code)
+        else:
+            return make_response(json.dumps({"error": authorization, "body": request.json}), 401, headers)
+    else:
+        return make_response(json.dumps({"error": validation, "body": request.json}), 400, headers)
+
 def get_users_user_id_devices_device_id(userid, deviceid):
     validation = validate_devices_request(request)
     if validation == '':
@@ -117,6 +129,18 @@ def post_users_user_id_devices_device_id_actions(userid, deviceid):
         authorization = authorize(request.json['accessToken'], userid)
         if authorization == '':
             action_response = requests.post(action_url + '/users/' + userid + '/devices/' + deviceid + '/actions', headers=headers, json=request.json["data"])
+            return make_response(action_response.content, action_response.status_code)
+        else:
+            return make_response(json.dumps({"error": authorization, "body": request.json}), 401, headers)
+    else:
+        return make_response(json.dumps({"error": validation, "body": request.json}), 400, headers)
+
+def get_users_user_id_devices_device_id_actions(userid, deviceid):
+    validation = validate_actions_request(request)
+    if validation == '':
+        authorization = authorize(request.json['accessToken'], userid)
+        if authorization == '':
+            action_response = requests.get(action_url + '/users/' + userid + '/devices/' + deviceid + '/actions', headers=headers, json=request.json["data"])
             return make_response(action_response.content, action_response.status_code)
         else:
             return make_response(json.dumps({"error": authorization, "body": request.json}), 401, headers)
@@ -177,6 +201,18 @@ def post_users_user_id_devices_device_id_sensors(userid, deviceid):
         authorization = authorize(request.json['accessToken'], userid)
         if authorization == '':
             sensor_response = requests.post(sensor_url + '/users/' + userid + '/devices/' + deviceid + '/sensors', headers=headers, json=request.json["data"])
+            return make_response(sensor_response.content, sensor_response.status_code)
+        else:
+            return make_response(json.dumps({"error": authorization, "body": request.json}), 401, headers)
+    else:
+        return make_response(json.dumps({"error": validation, "body": request.json}), 400, headers)
+
+def get_users_user_id_devices_device_id_sensors(userid, deviceid):
+    validation = validate_sensors_request(request)
+    if validation == '':
+        authorization = authorize(request.json['accessToken'], userid)
+        if authorization == '':
+            sensor_response = requests.get(sensor_url + '/users/' + userid + '/devices/' + deviceid + '/sensors', headers=headers, json=request.json["data"])
             return make_response(sensor_response.content, sensor_response.status_code)
         else:
             return make_response(json.dumps({"error": authorization, "body": request.json}), 401, headers)

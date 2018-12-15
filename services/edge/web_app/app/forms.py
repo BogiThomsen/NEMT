@@ -5,7 +5,7 @@ from wtforms.validators import ValidationError, DataRequired, EqualTo
 class RegisterForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
-    password2 = PasswordField('Repeat password', validators=[DataRequired(), EqualTo('password')])
+    password2 = PasswordField('Repeat password', validators=[DataRequired(), EqualTo('password', 'Passwords must match.')])
     submit = SubmitField('Register')
 
 class SignInForm(FlaskForm):

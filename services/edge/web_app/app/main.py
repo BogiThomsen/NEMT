@@ -55,9 +55,8 @@ def register():
     if form.validate_on_submit():
         username = form.username.data
         password = form.password.data
-        r = requests.post('http://web-app-api:5000/v1/users', data={'username': username, 'password': password})
+        r = requests.post('http://web-app-api:5000/v1/users', json={'username': username, 'password': password})
         status_code = 200
-
         if r.status_code == 200:
             flash('Your user was successfully created.', 'success')
             return redirect(url_for('signin'))

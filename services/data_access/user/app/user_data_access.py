@@ -23,7 +23,7 @@ def post_user():
         user_db.insert_one(new_user)
         user = user_db.find_one({"username": username})
         user["_id"] = str(user["_id"])
-        return make_response(json.dumps(user), 201)
+        return make_response(json.dumps(user), 200)
 
 
 def delete_user(id):

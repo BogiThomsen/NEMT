@@ -1,8 +1,7 @@
 flask
-flask_login
+flask-login
 connexion
 configparser
 swagger-ui-bundle
 redis
-login_manager
-forms
+flask-wtf

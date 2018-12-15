@@ -21,7 +21,7 @@ def post_sensor():
     _id = sensor_db.insert_one(new_sensor).inserted_id
     sensor = sensor_db.find_one({"_id": _id})
     sensor["_id"] = str(sensor["_id"])
-    return make_response(json.dumps(sensor), 201)
+    return make_response(json.dumps(sensor), 200)
 
 
 def delete_sensor(id):

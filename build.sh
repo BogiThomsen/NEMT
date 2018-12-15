@@ -32,7 +32,7 @@ cd ..
 cd device_api
 docker-compose build --no-cache
 cd ..
-cd edge/web_app
+cd web_app
 docker-compose build
 cd ..
 cd ..

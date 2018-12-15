@@ -26,12 +26,12 @@ def signin():
     if form.validate_on_submit():
         username = form.username.data
         password = form.password.data
-        #r = requests.post('127.0.0.1:5000/v1/users/authenticate', data={'username': username, 'password': password})
-        status_code = 200
-        json = {'id': '3', 'accessToken': 'ABC123'}
-
-        if status_code == 200:
-            id = json['id']
+        r = requests.post('http://web-app-api:5000/v1/users/authenticate', json={'username': username, 'password': password})
+        #status_code = 200
+        #json = {'id': '3', 'accessToken': 'ABC123'}
+        json = r.json()
+        if r.status_code == 200:
+            id = json["_id"]
             access_token = json['accessToken']
             user = login_manager.User()
             user.id = id + ';' + access_token
@@ -40,7 +40,7 @@ def signin():
             if not next or urlparse(next).netloc != '':
                 next = url_for('dashboard')
             return redirect(next)
-        elif status_code == 400:
+        elif r.status_code == 404 or r.status_code == 400:
             flash('An error occurred when trying to sign in.', 'danger')
             return render_template('auth/signin.html', form=form)
 
@@ -55,9 +55,8 @@ def register():
     if form.validate_on_submit():
         username = form.username.data
         password = form.password.data
-        r = requests.post('http://web-app-api:5000/v1/users', data={'username': username, 'password': password})
+        r = requests.post('http://web-app-api:5000/v1/users', json={'username': username, 'password': password})
         status_code = 200
-
         if r.status_code == 200:
             flash('Your user was successfully created.', 'success')
             return redirect(url_for('signin'))
@@ -208,4 +207,4 @@ testRule = {"id": "001", "name": "Sunset rule", "condition": "Controller002.Ligh
 
 
 if __name__ == "__main__":
-  app.run(debug=True)
+  app.run(host="0.0.0.0", port='5000', debug=True)

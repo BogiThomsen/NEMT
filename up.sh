@@ -5,7 +5,7 @@ docker network create --driver bridge platform
 cd services/edge/web_app_api
 docker-compose up -d
 cd ..
-cd services/edge/web_app
+cd web_app
 docker-compose up -d
 cd ..
 cd device_api

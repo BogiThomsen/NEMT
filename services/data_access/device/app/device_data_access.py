@@ -24,7 +24,7 @@ def post_device():
     _id = device_db.insert_one(new_device).inserted_id
     device = device_db.find_one({"deviceToken": request.json["deviceToken"]})
     device["_id"] = str(device["_id"])
-    return make_response(json.dumps(device), 201)
+    return make_response(json.dumps(device), 200)
 
 def delete_device(id):
     device_db = connect_to_db()

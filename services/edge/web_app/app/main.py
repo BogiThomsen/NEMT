@@ -111,12 +111,15 @@ def devices_id(id):
     split_id_access_token = flask_login.current_user.id.split(';')
     user_id = split_id_access_token[0]
     access_token = split_id_access_token[1]
+
     ur = requests.get("http://web-app-api:5000/v1/users/{}".format(user_id), json={"accessToken": access_token})
     u = ur.json()
+
     userDevices = []
     if ur.status_code == 200 and 'devices' in u:
         userDevices = requests.get("http://web-app-api:5500/v1/devices",
                                    json={'accessToken': access_token, 'data': {"deviceList": u['devices']}}).json()
+
     userActions = []
     userSensors = []
     if ur.status_code == 200 and 'devices' in u:
@@ -128,6 +131,7 @@ def devices_id(id):
             if device["_id"] == id and 'sensors' in device:
                 sensors = [sensor.split(":")[1] for sensor in device['sensors']]
                 userSensors = requests.get("http://web-app-api:5600/v1/sensors", json={"sensorList": sensors}).json()
+
     if request.method == 'POST':
         split_id_access_token = flask_login.current_user.id.split(';')
         user_id = split_id_access_token[0]
@@ -179,7 +183,6 @@ def rules():
 @app.route('/rules/<string:id>')
 @flask_login.login_required
 def rules_id(id):
-
     rule = testRule
     rule = rule_parser.parse_rule(rule)
     rule = rule_parser.prettify_rule(rule, testDevices, testSensors, testActions)

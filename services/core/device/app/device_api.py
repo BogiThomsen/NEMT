@@ -8,9 +8,6 @@ import sys
 def add_device(userid):
     device = request.json
     
-    if 'prettyName' in request.json:
-        device["prettyName"] = request.json["prettyName"]
-
     device_response = requests.post("http://device-access:5500/v1/devices", json=device)
     
     if device_response.status_code == 200:

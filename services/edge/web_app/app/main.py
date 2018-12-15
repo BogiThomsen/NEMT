@@ -119,12 +119,13 @@ def devices_id(id):
             elif status_code == 400:
                 flash('An error occurred when trying to trigger the action.', 'danger')
 
+    userDevices = testDevices
     device = testDevice
     userSensors = testSensors
     # Expected: all actions to a given user
-    userActions = testActions
+    userActions = testActions   
 
-    return render_template('pages/device.html', device=testDevice, userSensors=userSensors, userActions=userActions)
+    return render_template('pages/device.html', userDevices=userDevices, device=device, userSensors=userSensors, userActions=userActions)
 
 @app.route('/devices/<string:id>/delete', methods=["POST"])
 @flask_login.login_required

@@ -69,15 +69,11 @@ def patch_sensor_values(deviceid, sensorid):
     if 'sensors' in device:
         for x in device["sensors"]:
             sensordata=x.split(':')
-            if sensordata[0] == sensorid:
-                sensor_id = sensordata[1]
-                sensor_response = requests.patch("http://sensor-service:5900/v1/devices/{0}/sensors/{1}".format(deviceid, sensor_id), json=sensor_patch)
-                return make_response(sensor_response.content, sensor_response.status_code)
-                break
-            else:
-                 make_response(json.dumps({"error:":"sensor not found"}), 404)
+            sensor_id = sensordata[1]
+            requests.patch("http://sensor-service:5900/v1/devices/{0}/sensors/{1}".format(deviceid, sensor_id), json=sensor_patch)
+            return make_response("sensor updated", 200)
     else:
-        make_response(json.dumps({"error:":"sensor not found"}), 404)
+        return make_response(json.dumps({"error:":"sensor not found"}), 404)
     
     
     #When sensor is found, make get request for sensor

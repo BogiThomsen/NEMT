@@ -8,7 +8,7 @@ import sys
 
 from coapthon.resources.resource import Resource
 
-core_url = 'http://sensor-service:5900/v1'
+core_url = 'http://device-service:5400/v1'
 headers = {'User-Agent': 'web-app-api', 'Content-Type': 'application/json'}
 api_version = 'v1'
 
@@ -32,17 +32,17 @@ class updateValue(Resource):
         sensorName = split[1]
         value = split[2]
 
-        data = {}
-        data['value'] = value
-        json_data = json.dumps(data)
+        data = {
+            "value":value
+        }
 
         print(value)
 
-        response = requests.patch(core_url + '/devices/' + deviceToken + "/sensors/" + sensorName, headers=headers, json=json_data)
+        response = requests.patch(core_url + '/device/' + deviceToken + "/sensors/" + sensorName, headers=headers, json=data)
         response_code = response.status_code
 
         if response_code == 400 or response_code == 404:
-            response.payload = response.status_code + " - " + response.json["error"]
+            response.payload = "{}".format(response.status_code) + " - " + response.text
         else:
             response.payload = response_code
 

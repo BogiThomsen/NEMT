@@ -100,8 +100,9 @@ def devices():
     ur = requests.get("http://web-app-api:5000/v1/users/{}".format(user_id), json={"accessToken": access_token})
     u = ur.json()
     userDevices = []
+    flash(ur.status_code)
     if ur.status_code == 200 and 'devices' in u:
-        userDevices = requests.get("http://web-app-api:5500/v1/devices", json={'accessToken': access_token, 'data': {"deviceList": u['devices']}}).json()
+        userDevices = requests.get("http://web-app-api:5000/v1/users/{}/devices".format(user_id), json={'accessToken': access_token, 'data': {"deviceList": u['devices']}}).json()
 
     return render_template('pages/devices.html', userDevices=userDevices)
 
@@ -117,20 +118,20 @@ def devices_id(id):
 
     userDevices = []
     if ur.status_code == 200 and 'devices' in u:
-        userDevices = requests.get("http://web-app-api:5500/v1/devices",
+        userDevices = requests.get("http://web-app-api:5000/v1/devices",
                                    json={'accessToken': access_token, 'data': {"deviceList": u['devices']}}).json()
 
     userActions = []
     userSensors = []
     if ur.status_code == 200 and 'devices' in u:
-        userDevices = requests.get("http://web-app-api:5500/v1/devices", json={"deviceList": u['devices']}).json()
+        userDevices = requests.get("http://web-app-api:5000/v1/devices", json={"deviceList": u['devices']}).json()
         for device in userDevices:
             if device["_id"] == id and 'actions' in device:
                 actions = [action.split(":")[1] for action in device['actions']]
-                userActions = requests.get("http://web-app-api:5700/v1/actions", json={"actionList": actions}).json()
+                userActions = requests.get("http://web-app-api:5000/v1/actions", json={"actionList": actions}).json()
             if device["_id"] == id and 'sensors' in device:
                 sensors = [sensor.split(":")[1] for sensor in device['sensors']]
-                userSensors = requests.get("http://web-app-api:5600/v1/sensors", json={"sensorList": sensors}).json()
+                userSensors = requests.get("http://web-app-api:5000/v1/sensors", json={"sensorList": sensors}).json()
 
     if request.method == 'POST':
         split_id_access_token = flask_login.current_user.id.split(';')

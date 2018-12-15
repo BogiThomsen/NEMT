@@ -159,6 +159,18 @@ def delete_users_user_id_devices_device_id_actions_action_id(userid, deviceid, a
     else:
         return make_response(json.dumps({"error": validation, "body": request.json}), 400, headers)
 
+def get_users_user_id_devices_device_id_actions_action_id_activate(userid, deviceid, actionid):
+    validation = validate_actions_request(request)
+    if validation == '':
+        authorization = authorize(request.json['accessToken'], userid)
+        if authorization == '':
+            action_response = requests.get(action_url + '/users/' + userid + '/devices/' + deviceid + '/actions/' + actionid + '/activate', headers=headers)
+            return make_response(action_response.content, action_response.status_code)
+        else:
+            return make_response(json.dumps({"error": authorization, "body": request.json}), 401, headers)
+    else:
+        return make_response(json.dumps({"error": validation, "body": request.json}), 400, headers)
+
 def post_users_user_id_devices_device_id_sensors(userid, deviceid):
     validation = validate_sensors_request(request)
     if validation == '':

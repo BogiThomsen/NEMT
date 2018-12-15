@@ -21,7 +21,7 @@ def add_action(userid, deviceid):
     return make_response(json.dumps(created_action), action_response.status_code)
 
 def get_actions(userid, deviceid):
-    action_response = requests.get("http://action-access:5700/v1/actions/", json=request.json)
+    action_response = requests.get("http://action-access:5700/v1/actions", json=request.json)
     return make_response(action_response.content, action_response.status_code)
 
 def delete_action(userid, deviceid, actionid):

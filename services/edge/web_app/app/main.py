@@ -86,14 +86,14 @@ def devices():
     split_id_access_token = flask_login.current_user.id.split(';')
     user_id = split_id_access_token[0]
     access_token = split_id_access_token[1]
-    ur = requests.get("http://web-app-api:5000/v1/users/{}".format(user_id))
+    ur = requests.get("http://web-app-api:5000/v1/users/{}".format(user_id), json={"accessToken": access_token})
     u = ur.json()
     userDevices = []
     if ur.status_code == 200 and 'devices' in u:
         for device in u["devices"]:
-            device_resp = requests.get("http://web-app-api:5000/v1/users/{0}/devices/{1}".format(user_id, device))
+            device_resp = requests.get("http://web-app-api:5000/v1/users/{0}/devices/{1}".format(user_id, device), json={"accessToken": access_token})
             userDevice = device_resp.json()
-            devices.append(userDevice)
+            userDevices.append(userDevice)
 
 
 

@@ -97,7 +97,7 @@ def devices():
     split_id_access_token = flask_login.current_user.id.split(';')
     user_id = split_id_access_token[0]
     access_token = split_id_access_token[1]
-    ur = requests.get("http://web-app-api:5000/v1/users/{}".format(user_id), json={"accessToken": access_token})
+    ur = requests.get("http://web-app-api:5000/v1/users/{}".format(user_id), json={"accessToken": access_token, "data":{}})
     u = ur.json()
     userDevices = []
     flash(ur.status_code)
@@ -113,25 +113,27 @@ def devices_id(id):
     user_id = split_id_access_token[0]
     access_token = split_id_access_token[1]
 
-    ur = requests.get("http://web-app-api:5000/v1/users/{}".format(user_id), json={"accessToken": access_token})
+    ur = requests.get("http://web-app-api:5000/v1/users/{}".format(user_id), json={"accessToken": access_token, "data":{}})
     u = ur.json()
 
     userDevices = []
     if ur.status_code == 200 and 'devices' in u:
-        userDevices = requests.get("http://web-app-api:5000/v1/devices",
-                                   json={'accessToken': access_token, 'data': {"deviceList": u['devices']}}).json()
+        userDevices = requests.get("http://web-app-api:5000/v1/users/{}/devices".format(user_id), json={'accessToken': access_token, 'data': {"deviceList": u['devices']}}).json()
 
     userActions = []
     userSensors = []
+    userDevice = None
     if ur.status_code == 200 and 'devices' in u:
-        userDevices = requests.get("http://web-app-api:5000/v1/devices", json={"deviceList": u['devices']}).json()
+        userDevices = requests.get("http://web-app-api:5000/v1/users/{}/devices".format(user_id), json={'accessToken': access_token, 'data': {"deviceList": u['devices']}}).json()
         for device in userDevices:
+            if device["_id"] == id:
+                userDevice = device
             if device["_id"] == id and 'actions' in device:
                 actions = [action.split(":")[1] for action in device['actions']]
-                userActions = requests.get("http://web-app-api:5000/v1/actions", json={"actionList": actions}).json()
+                userActions = requests.get("http://web-app-api:5000/v1/users/{0}/devices/{1}/actions".format(user_id, device["_id"]), json={'accessToken': access_token, 'data': {"actionList": actions}}).json()
             if device["_id"] == id and 'sensors' in device:
                 sensors = [sensor.split(":")[1] for sensor in device['sensors']]
-                userSensors = requests.get("http://web-app-api:5000/v1/sensors", json={"sensorList": sensors}).json()
+                userSensors = requests.get("http://web-app-api:5000/v1/users/{0}/devices/{1}/sensors".format(user_id, device["_id"]), json={'accessToken': access_token, 'data': {"sensorList": sensors}}).json()
 
     if request.method == 'POST':
         split_id_access_token = flask_login.current_user.id.split(';')
@@ -140,11 +142,13 @@ def devices_id(id):
         form = request.form
         if 'prettyName' in form:
             pretty_name = request.form['prettyName']
-            r = requests.patch("http://web-app-api:5000/users/" + user_id + "/devices/" + id, json={'accessToken': access_token, 'data': {'prettyname': pretty_name}})
-
-        if r.status_code == 200:
-            flash('Your device has been updated.', 'success')
-            return redirect(url_for('devices_id', id=id))
+            r = requests.patch("http://web-app-api:5000/v1/users/" + user_id + "/devices/" + id, json={'accessToken': access_token, 'data': {'prettyName': pretty_name}})
+            flash(id)
+            if r.status_code == 200:
+                flash('Your device has been updated.', 'success')
+                return redirect(url_for('devices_id', id=id))
+            elif r.status_code == 400 or r.status_code == 404:
+                flash('An error occurred when trying to update your device.', 'danger')
         elif 'actionId' in form:
             action_id = request.form['actionId']
             r = requests.get('http://web-app-api:5000/v1/users/' + user_id + '/devices/' + id + '/actions/' + action_id + '/activate', json={'accessToken': access_token})
@@ -154,9 +158,7 @@ def devices_id(id):
             elif r.status_code == 400:
                 flash('An error occurred when trying to trigger the action.', 'danger')
 
-    device = userDevices.filter(lambda x: x['_id'] == id)[0]
-
-    return render_template('pages/device.html', userDevices=userDevices, device=device, userSensors=userSensors, userActions=userActions)
+    return render_template('pages/device.html', userDevices=userDevices, device=userDevice, userSensors=userSensors, userActions=userActions)
 
 @app.route('/devices/<string:id>/delete', methods=["POST"])
 @flask_login.login_required

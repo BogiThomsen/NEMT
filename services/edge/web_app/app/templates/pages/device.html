@@ -79,7 +79,7 @@
             {% for act in userActions %}
                 <tr>
                     <td scope="row">{{ act["prettyName"] }}</td>
-                    <td scope="row">Public</td>
+                    <td scope="row">Not Public</td>
                     <td scope="row">
                         <form method="POST" class="form-inline ml-auto mr-4" style="width: min-content">
                             <input hidden name="actionId" value="{{ act["_id"] }}">

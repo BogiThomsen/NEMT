@@ -124,9 +124,13 @@ def outbound(host, port, value):
 
 
 if __name__ == '__main__':
-    server = CoAPServer("172.29.0.1", 5683)
+    print("starting....")
+    server = CoAPServer("172.31.91.114", 5683)
+    print("coap server started")
     outbound("172.31.91.128", 5683, "blink")
+    print("outbound sent")
     server.listen(10)
+    print("listen is over")
 
 
 

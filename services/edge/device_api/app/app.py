@@ -38,7 +38,7 @@ class updateValue(Resource):
 
         print(value)
 
-        response = requests.patch(core_url + '/device/' + deviceToken + "/sensors/" + sensorName, headers=headers, json=data)
+        response = requests.patch(core_url + '/devices/' + deviceToken + "/sensors/" + sensorName, headers=headers, json=data)
         response_code = response.status_code
 
         if response_code == 400 or response_code == 404:

@@ -1,6 +1,7 @@
 from flask import jsonify, request, make_response
 import json
 import requests
+import sys
 
 ### Data Access Endpoints
 
@@ -69,11 +70,13 @@ def patch_sensor_values(deviceid, sensorid):
     if 'sensors' in device:
         for x in device["sensors"]:
             sensordata=x.split(':')
-            sensor_id = sensordata[1]
-            requests.patch("http://sensor-service:5900/v1/devices/{0}/sensors/{1}".format(deviceid, sensor_id), json=sensor_patch)
-            return make_response("sensor updated", 200)
+            if sensordata[0] == sensorid:
+                sensor_id = sensordata[1]
+                requests.patch("http://sensor-service:5900/v1/devices/{0}/sensors/{1}".format(deviceid, sensor_id), json=sensor_patch)
+                return make_response("sensor updated", 200)    
+        return make_response(json.dumps({"error:":"sensor not found"}), 402)
     else:
-        return make_response(json.dumps({"error:":"sensor not found"}), 404)
+        return make_response(json.dumps({"error:":"sensor not found"}), 402)
     
     
     #When sensor is found, make get request for sensor

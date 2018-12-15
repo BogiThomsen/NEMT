@@ -6,10 +6,7 @@ import sys
 ### Data Access Endpoints
 
 def add_device(userid):
-    device = {
-        "name" : request.json["name"],
-        "deviceToken" : request.json["deviceToken"]
-    }
+    device = request.json
     
     if 'prettyName' in request.json:
         device["prettyName"] = request.json["prettyName"]

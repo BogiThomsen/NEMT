@@ -12,7 +12,7 @@
                 <nav>
                 {% for dev in userDevices %}
                     <ul class="fixed-ul">
-                        <a class="h5 ml-3 text-dark" href="{{ url_for('devices_id', id=dev["id"]) }}">{{ dev["prettyname"] }}</a>
+                        <a class="h5 ml-3 text-dark" href="{{ url_for('devices_id', id=dev["_id"]) }}">{{ dev["prettyName"] }}</a>
                     </ul>
                 {% endfor %}
                 </nav>

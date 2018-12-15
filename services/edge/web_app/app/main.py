@@ -70,7 +70,6 @@ def register():
 @flask_login.login_required
 def logout():
     flask_login.logout_user()
-    flash('You have been logged out.', 'success')
     return render_template('auth/logout.html')
 
 @app.route('/dashboard')

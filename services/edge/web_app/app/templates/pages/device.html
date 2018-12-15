@@ -11,7 +11,7 @@
                            name="prettyName"
                            data-enable-on-input="{{ device["name"] }}_changePrettyName"
                            class="form-control form-control-lg searchInput"
-                           placeholder="{{ device["prettyname"] }}" >
+                           placeholder="{{ device["prettyName"] }}" >
                 </div>
                 <button type="submit"
                         id="{{ device["name"] }}_changePrettyName"
@@ -34,7 +34,7 @@
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-                    <form class="form-inline" method="POST" action="/devices/{{ device["id"] }}/delete">
+                    <form class="form-inline" method="POST" action="/devices/{{ device["_id"] }}/delete">
                         <button type="submit" class="btn btn-danger">Delete</button>
                     </form>
                   </div>
@@ -57,14 +57,12 @@
             </thead>
             <tbody>
             {% for sen in userSensors %}
-            {% if sen["id"] in device["sensors"] %}
                 <tr>
-                    <td scope="row">{{ sen["prettyname"] }}</td>
+                    <td scope="row">{{ sen["prettyName"] }}</td>
                     <td scope="row">{{ sen["value"] }}</td>
                     <td scope="row">{{ sen["timestamp"] }}</td>
                     <td scope="row">Public</td>
                 </tr>
-            {% endif %}
             {% endfor %}
             </tbody>
         </table>
@@ -79,18 +77,16 @@
             </thead>
             <tbody>
             {% for act in userActions %}
-            {% if act["id"] in device["actions"] %}
                 <tr>
-                    <td scope="row">{{ act["prettyname"] }}</td>
+                    <td scope="row">{{ act["prettyName"] }}</td>
                     <td scope="row">Public</td>
                     <td scope="row">
                         <form method="POST" class="form-inline ml-auto mr-4" style="width: min-content">
-                            <input hidden name="actionId" value="{{ act["id"] }}">
+                            <input hidden name="actionId" value="{{ act["_id"] }}">
                             <button type="submit" class="btn btn-primary btn-sm">Activate</button>
                         </form>
                     </td>
                 </tr>
-            {% endif %}
             {% endfor %}
             </tbody>
         </table>

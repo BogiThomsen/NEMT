@@ -1,23 +1,23 @@
 {% extends 'layout.html' %}
 {% block title %}Register{% endblock %}
 {% block content %}
-    <form class="form-signin text-center mt-5" method="POST">
+    <form class="form-signin text-center mt-5 needs-validation {{ was_validated }}" method="POST">
         {{ form.hidden_tag() }}
         <h1 class="h3 mb-3 font-weight-normal">Register</h1>
         {{ form.username.label(class_='sr-only') }}
         {{ form.username(class_='form-control', placeholder='Username') }}
         {% for error in form.username.errors %}
-            <span style="color: red">[{{ error }}]</span>
+            <div class="invalid-feedback">{{ error }}</div>
         {% endfor %}
         {{ form.password.label(class_='sr-only') }}
         {{ form.password(class_='form-control', placeholder='Password') }}
         {% for error in form.password.errors %}
-            <span style="color: red">[{{ error }}]</span>
+            <div class="invalid-feedback">{{ error }}</div>
         {% endfor %}
         {{ form.password2.label(class_='sr-only') }}
         {{ form.password2(class_='form-control', placeholder='Repeat password') }}
         {% for error in form.password2.errors %}
-            <span style="color: red">[{{ error }}]</span>
+            <div class="invalid-feedback">{{ error }}</div>
         {% endfor %}
         {{ form.submit(class_='btn btn-lg btn-primary btn-block') }}
     </form>

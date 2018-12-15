@@ -52,17 +52,21 @@ def register():
         return redirect(url_for('index'))
 
     form = RegisterForm(request.form)
-    if form.validate_on_submit():
-        username = form.username.data
-        password = form.password.data
-        r = requests.post('http://web-app-api:5000/v1/users', json={'username': username, 'password': password})
-        status_code = 200
-        if r.status_code == 200:
-            flash('Your user was successfully created.', 'success')
-            return redirect(url_for('signin'))
-        elif r.status_code == 400:
-            flash('An error occurred when trying to register.', 'danger')
-            return render_template('auth/register.html', form=form)
+
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            username = form.username.data
+            password = form.password.data
+            r = requests.post('http://web-app-api:5000/v1/users', json={'username': username, 'password': password})
+            status_code = 200
+            if r.status_code == 200:
+                flash('Your user was successfully created.', 'success')
+                return redirect(url_for('signin'))
+            elif r.status_code == 400:
+                flash('An error occurred when trying to register.', 'danger')
+                return render_template('auth/register.html', form=form)
+        else:
+            return render_template('auth/register.html', form=form, was_validated='was-validated')
 
     return render_template('auth/register.html', form=form)
 

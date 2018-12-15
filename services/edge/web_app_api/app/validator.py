@@ -49,7 +49,7 @@ def is_only_expected_data(recieved_dictionary, expected_dictionary, optional_dic
 
 
 def validate_request_body(request):
-    if request.method == "GET" or request.method == "DELETE":
+    if request.method == "DELETE":
         result = is_only_expected_data(request.json, ["accessToken"])
         if result != "":
             return result

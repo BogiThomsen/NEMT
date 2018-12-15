@@ -83,13 +83,26 @@ def dashboard():
 @app.route('/devices')
 @flask_login.login_required
 def devices():
+    split_id_access_token = flask_login.current_user.id.split(';')
+    user_id = split_id_access_token[0]
+    access_token = split_id_access_token[1]
+    ur = requests.get("http://web-app-api:5000/v1/users/{}".format(user_id))
+    u = ur.json()
+    userDevices = []
+    if ur.status_code == 200 and 'devices' in u:
+        for device in u["devices"]:
+            device_resp = requests.get("http://web-app-api:5000/v1/users/{0}/devices/{1}".format(user_id, device))
+            userDevice = device_resp.json()
+            devices.append(userDevice)
+
+
+
     # UI links all devices to their sensors and actions
     # Needed fields for Device: ["name"], ["prettyname"], ["sensors"], ["actions"]
     # Needed fields for Actions ["id"], ["prettyname"], ["public"]
     # Needed fields for Sensors ["id"], ["prettyname"], ["value"], ["public"]
 
     # Expected: all devices to a given user
-    userDevices = testDevices
     # Expected: all sensors to a given user
 
     return render_template('pages/devices.html', userDevices=userDevices)

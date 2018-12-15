@@ -52,7 +52,7 @@ paths:
       responses:
         200:    # status code
           description: A string
-  /device/{deviceid}/sensors/{sensorid}:
+  /devices/{deviceid}/sensors/{sensorid}:
     patch:
       summary: patches device info
       operationId: device_api.patch_sensor_values

@@ -4,11 +4,8 @@ from coapthon.client.helperclient import HelperClient
 ### Data Access Endpoints
 
 def add_action(userid, deviceid):
-    action = {
-        "name" : request.json["name"],
-        "public" : request.json["public"]
-    }
-    action_response = requests.post("http://action-access:5700/v1/actions", json=action)
+    sensor = request.json
+    action_response = requests.post("http://action-access:5700/v1/actions", json=sensor)
     created_action = action_response.json()
     action_list = []
     action_list.append(created_action["name"]+":"+created_action["_id"])

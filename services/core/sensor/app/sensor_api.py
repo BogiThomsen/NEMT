@@ -4,10 +4,7 @@ import requests
 ### Data Access Endpoints
 
 def add_sensor(userid, deviceid):
-    sensor = {
-        "name" : request.json["name"],
-        "public" : request.json["public"]
-    }
+    sensor = request.json
     sensor_response = requests.post("http://sensor-access:5600/v1/sensors", json=sensor)
     created_sensor = sensor_response.json()
     sensor_list = []
@@ -20,7 +17,7 @@ def add_sensor(userid, deviceid):
     return make_response(sensor_response.content, sensor_response.status_code)
 
 def get_sensors(userid, deviceid):
-    sensor_response = requests.get("http://sensor-access:5600/v1/sensors/", json=request.json)
+    sensor_response = requests.get("http://sensor-access:5600/v1/sensors", json=request.json)
     return make_response(sensor_response.content, sensor_response.status_code)
 
 def delete_sensor(userid, deviceid, sensorid):

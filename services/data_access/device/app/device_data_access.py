@@ -9,7 +9,10 @@ def connect_to_db():
 
 def post_device():
     device_db = connect_to_db()
+    r = re.compile('^(?:[0-9]{1,3}\.){3}[0-9]{1,3}:[0-9]{4}$')
     mac_address = request.json["deviceToken"]
+    if r.match(mac_address).group() != mac_address:
+        return make_response(json.dumps({"error": mac_address + " is not a valid device token"}), 400)
     if (device_db.count_documents({"deviceToken": mac_address})) > 0 :
         return make_response(json.dumps({"error": "device with Mac Address: "+ mac_address + " already exists"}), 400)
     if 'prettyName' not in request.json:

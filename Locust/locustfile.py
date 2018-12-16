@@ -1,4 +1,4 @@
-from locust import Locust, TaskSet, task
+from locust import Locust, TaskSet, task, HttpLocust
 
 class UserTaskSet(TaskSet):
     @task
@@ -9,7 +9,7 @@ class UserTaskSet(TaskSet):
 
 
 
-class UserLocust(Locust):
+class UserLocust(HttpLocust):
     task_set = UserTaskSet
     min_wait = 1000
     max_wait = 3000

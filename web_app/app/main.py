@@ -100,7 +100,6 @@ def devices():
     ur = requests.get("http://web-app-api:5000/v1/users/{}".format(user_id), json={"accessToken": access_token, "data":{}})
     u = ur.json()
     userDevices = []
-    flash(ur.status_code)
     if ur.status_code == 200 and 'devices' in u:
         userDevices = requests.get("http://web-app-api:5000/v1/users/{}/devices".format(user_id), json={'accessToken': access_token, 'data': {"deviceList": u['devices']}}).json()
 
@@ -143,7 +142,6 @@ def devices_id(id):
         if 'prettyName' in form:
             pretty_name = request.form['prettyName']
             r = requests.patch("http://web-app-api:5000/v1/users/" + user_id + "/devices/" + id, json={'accessToken': access_token, 'data': {'prettyName': pretty_name}})
-            flash(id)
             if r.status_code == 200:
                 flash('Your device has been updated.', 'success')
                 return redirect(url_for('devices_id', id=id))

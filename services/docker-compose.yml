@@ -16,6 +16,10 @@ services:
         build: 
           context: ./edge/web_app_api
           dockerfile: Dockerfile
+        ports:
+          - "5100:5100"
+        expose:
+          - "5100"
         volumes:
             - ./edge/web_app_api:/code
         networks:

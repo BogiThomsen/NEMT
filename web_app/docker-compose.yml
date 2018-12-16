@@ -10,7 +10,6 @@ services:
             - web-app-net
         container_name: web-app
 
-
 networks:
   web-app-net:
     external:

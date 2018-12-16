@@ -1,0 +1,102 @@
+version: '3.6'
+services:
+    device-api:
+        build: 
+          context: ./edge/device_api
+          dockerfile: Dockerfile
+        ports:
+            - "5683:5683/udp"
+        expose:
+            - "5683/udp"
+        volumes:
+            - ./edge/device_api:/code
+        networks:
+            - service-net
+    web-app-api:
+        build: 
+          context: ./edge/web_app_api
+          dockerfile: Dockerfile
+        volumes:
+            - ./edge/web_app_api:/code
+        networks:
+            - service-net
+    user-access:
+        build: 
+          context: ./data_access/user
+          dockerfile: Dockerfile
+
+        volumes:
+            - ./data_access/user:/code
+        networks:
+            - service-net
+    device-access:
+        build: 
+          context: ./data_access/device
+          dockerfile: Dockerfile
+        volumes:
+            - ./data_access/device:/code
+        networks:
+            - service-net
+    action-access:
+        build: 
+          context: ./data_access/actions
+          dockerfile: Dockerfile
+        volumes:
+            - ./data_access/actions:/code
+        networks:
+            - service-net
+    sensor-access:
+        build: 
+          context: ./data_access/sensors
+          dockerfile: Dockerfile
+        volumes:
+            - ./data_access/sensors:/code
+        networks:
+            - service-net
+    user-service:
+        build: 
+          context: ./core/user
+          dockerfile: Dockerfile
+        volumes:
+            - ./core/user:/code
+        networks:
+            - service-net
+    device-service:
+        build: 
+          context: ./core/device
+          dockerfile: Dockerfile
+        volumes:
+            - ./core/device:/code
+        networks:
+            - service-net
+    action-service:
+        build: 
+          context: ./core/action
+          dockerfile: Dockerfile
+        volumes:
+            - ./core/action:/code
+        networks:
+            - service-net
+    sensor-service:
+        build: 
+          context: ./core/sensor
+          dockerfile: Dockerfile
+        volumes:
+            - ./core/sensor:/code
+        networks:
+            - service-net
+    
+    load-balancer:
+        image: nginx:1.15.7
+        ports:
+            - "8080:8080"
+        volumes:
+            - ./nginx.conf:/etc/nginx/conf.d/nginx.conf:ro
+        networks:
+            - service-net
+        container_name: load-balancer
+
+networks:
+  service-net:
+    external:
+      name: platform

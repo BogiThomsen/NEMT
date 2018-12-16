@@ -254,3 +254,13 @@ def delete_users_user_id_devices_device_id_sensors_sensor_id(userid, deviceid, s
             return make_response(json.dumps({"error": authorization, "body": request.json}), 401, headers)
     else:
         return make_response(json.dumps({"error": validation, "body": request.json}), 400, headers)
+
+def test_patch_sensor():
+    deviceToken = request.json["deviceToken"]
+    sensorName = request.json["sensorName"]
+    value = request.json["value"]
+
+    data = {
+        "value": value
+    }
+    requests.patch('http://device-service:5400/v1' + '/devices/' + deviceToken + "/sensors/" + sensorName, headers=headers, json=data)

@@ -376,8 +376,35 @@ paths:
           description: Unauthorized
         404:
           description: Not Found
+  /patchSensor:
+    patch:
+      operationId: web_app_api.test_patch_sensor
+      consumes:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/patchsensor'
+      responses:
+        200:
+          description: A sensor
 
 parameters:
+  patchsensor:
+    in: body
+    name: patchsensor
+    schema:
+      type: object
+      required:
+        - deviceToken
+        - sensorName
+        - value
+      properties:
+        deviceToken:
+          type: string
+        sensorName:
+          type: string
+        value:
+          type: string
+
   postUsersAuthenticateRequestBody:
     in: body
     name: postUsersAuthenticateRequestBody

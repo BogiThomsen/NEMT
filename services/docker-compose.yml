@@ -17,9 +17,9 @@ services:
           context: ./edge/web_app_api
           dockerfile: Dockerfile
         ports:
-          - "5100:5000"
+          - "5000:5000"
         expose:
-          - "5100"
+          - "5000"
         volumes:
             - ./edge/web_app_api:/code
         networks:
@@ -90,15 +90,15 @@ services:
         networks:
             - service-net
     
-    # load-balancer:
-    #    image: nginx:1.15.7
-    #    ports:
-    #        - "80:80"
-    #    volumes:
-    #        - ./nginx.conf:/etc/nginx/conf.d/nginx.conf:ro
-    #    networks:
-    #        - service-net
-    #    container_name: load-balancer
+    load-balancer:
+       image: nginx:1.15.7
+       ports:
+           - "4900:4900"
+       volumes:
+           - ./nginx.conf:/etc/nginx/conf.d/nginx.conf:ro
+       networks:
+           - service-net
+       container_name: load-balancer
 
 networks:
   service-net:

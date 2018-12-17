@@ -4,7 +4,7 @@ from bson.objectid import ObjectId
 from flask import request, make_response
 
 sensor_db = pymongo.MongoClient("mongodb+srv://Andreas:dummypassword64@sw7-3mptj.gcp.mongodb.net/admin")["database"]["Sensors"]
-
+dummy_sensor = [{"_id": "5c1577b117d37c000b6a9f7b", "name": "sensor005", "prettyName": "Coffee Temperature", "public": False, "value": "3", "timestamp": "11-12@09:11"}]
 
 def post_sensor():
     name = request.json["name"]
@@ -42,14 +42,14 @@ def get_sensor(id):
 def get_sensors():
     sensor_list = request.json["sensorList"]
     ids = [ObjectId(id) for id in sensor_list]
-    liste = list(sensor_db.find({"_id": {"$in": ids}}))
-    sensors = []
-    for sensor in liste:
-        sensor["_id"] = str(sensor["_id"])
-        sensors.append(sensor)
+    #liste = list(sensor_db.find({"_id": {"$in": ids}}))
+    #sensors = []
+    #for sensor in liste:
+        #sensor["_id"] = str(sensor["_id"])
+        #sensors.append(dummy_sensor)
 
 
-    return make_response(json.dumps(sensors), 200)
+    return make_response(json.dumps(dummy_sensor), 200)
 
 def patch_sensor(id):
     strings = {"prettyName", "value", "timestamp", "public"}
@@ -68,13 +68,12 @@ def patch_sensor(id):
             else:
                 make_response("operation field is required for list patching", 400)
         elif val in strings:
-            sensor_db.update_one({"_id": ObjectId(id)},
-                                   {"$set": {strings_dict[val]: request.json[val]}})
+            return make_response("", 200)
         else:
             return make_response(val + "is not a patcheable field", 400)
     patched_sensor = sensor_db.find_one({"_id": ObjectId(id)})
     patched_sensor["_id"] = str(patched_sensor["_id"])
-    return make_response(json.dumps(patched_sensor), 200)
+    return make_response("", 200)
 
 def patch_lists(db, id, json_object, current_val):
     lists_dict = list_dict()

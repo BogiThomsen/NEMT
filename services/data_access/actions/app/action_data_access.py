@@ -4,7 +4,7 @@ from bson.objectid import ObjectId
 from flask import request, make_response
 
 action_db =  pymongo.MongoClient("mongodb+srv://Andreas:dummypassword64@sw7-3mptj.gcp.mongodb.net/admin")["database"]["Actions"]
-
+dummy_actions = [{"_id": "5c1577aee3dcad000bdc8cc2", "name": "action005", "prettyName": "Turn on coffee machine", "public": False}, {"_id": "5c1577b0e3dcad000bdc8cc4", "name": "action006", "prettyName": "Turn off coffee machine", "public": False}]
 
 def post_action():
     name = request.json["name"]
@@ -42,14 +42,14 @@ def get_action(id):
 def get_actions():
     action_list = request.json["actionList"]
     ids = [ObjectId(id) for id in action_list]
-    liste = list(action_db.find({"_id": {"$in": ids}}))
+    #liste = list(action_db.find({"_id": {"$in": ids}}))
     actions = []
-    for action in liste:
-        action["_id"] = str(action["_id"])
-        actions.append(action)
+    #for action in liste:
+        #action["_id"] = str(action["_id"])
+        #actions.append(action)
 
 
-    return make_response(json.dumps(actions), 200)
+    return make_response(json.dumps(dummy_actions), 200)
 
 def patch_action(id):
     strings = {"prettyName", "public"}

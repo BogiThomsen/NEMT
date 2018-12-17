@@ -5,7 +5,9 @@ from bson.objectid import ObjectId
 from flask import request, make_response
 
 device_db = pymongo.MongoClient("mongodb+srv://Andreas:dummypassword64@sw7-3mptj.gcp.mongodb.net/admin")["database"]["Devices"]
-
+dummy_device = {"_id": "5c1577ad438c8700184c3db4", "name": "device003", "prettyName": "Coffee Machine", "deviceToken": "170.34.94.158:5687",
+                "actions": ["action005:5c1577aee3dcad000bdc8cc2", "action006:5c1577b0e3dcad000bdc8cc4"],
+                "sensors": ["sensor005:5c1577b117d37c000b6a9f7b"]}
 def post_device():
     r = re.compile('^(?:[0-9]{1,3}\.){3}[0-9]{1,3}:[0-9]{4}$')
     mac_address = request.json["deviceToken"]
@@ -45,24 +47,23 @@ def get_device(id):
         type = "token"
     else:
         return make_response(json.dumps({"error": "value: " + id + " is not a valid id or token"}), 400)
-    if (device_db.count_documents(query)) < 1 :
-        return make_response(json.dumps({"error": "device with" + type + ": " + id +" does not exists"}), 404)
-    else:
-        x = device_db.find_one(query)
-        x["_id"] = str(x["_id"])
-        return make_response(json.dumps(x), 200)
+    #if (device_db.count_documents(query)) < 1 :
+        #return make_response(json.dumps({"error": "device with" + type + ": " + id +" does not exists"}), 404)
+    #x = device_db.find_one(query)
+    #x["_id"] = str(x["_id"])
+    return make_response(json.dumps(dummy_device), 200)
 
 def get_devices():
     device_list = request.json["deviceList"]
     ids = [ObjectId(id) for id in device_list]
-    liste = list(device_db.find({"_id": {"$in": ids}}))
+    #liste = list(device_db.find({"_id": {"$in": ids}}))
     devices = []
-    for device in liste:
-        device["_id"] = str(device["_id"])
-        devices.append(device)
+    #for device in liste:
+    #    device["_id"] = str(device["_id"])
+    #    devices.append(device)
 
 
-    return make_response(json.dumps(devices), 200)
+    return make_response(json.dumps([dummy_device]), 200)
 
 
 def patch_device(id):

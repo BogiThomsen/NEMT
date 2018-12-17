@@ -6,7 +6,8 @@ from flask import request, make_response
 
 
 user_db = pymongo.MongoClient("mongodb+srv://Andreas:dummypassword64@sw7-3mptj.gcp.mongodb.net/admin")["database"]["Users"]
-
+dummy_user = {"_id": "5c157799a8568b000b92e9c4", "accessToken": "b0436d96c40128c9312c05d04eaf4440875876485fd24b4779b235e3",
+              "password": "8c1ad979d7d4c40d8f7d6bac7b1d6e7bee01fc79a073d5acf95f77705602485e:06dba173a0ef4970a2523e59fd0cbbf0", "username": "test5", "devices": ["5c15779b438c8700184c3da8", "5c1577a4438c8700184c3dae", "5c1577ad438c8700184c3db4"]}
 
 def post_user():
     username = request.json["username"]
@@ -37,20 +38,20 @@ def get_user(id):
         query = {"_id": ObjectId(id)}
     else:
         query = {"accessToken": id}
-    if (user_db.count_documents(query)) < 1 :
-        return make_response(json.dumps({"error": "user with id: "+ id +" does not exist"}), 404)
-    else:
-        x = user_db.find_one(query)
-        x["_id"] = str(x["_id"])
-        return make_response(json.dumps(x), 200)
+    #if (user_db.count_documents(query)) < 1 :
+        #return make_response(json.dumps({"error": "user with id: "+ id +" does not exist"}), 404)
+    #else:
+        #x = user_db.find_one(query)
+        #x["_id"] = str(x["_id"])
+    return make_response(json.dumps(dummy_user), 200)
 
 
 def get_user_id_by_username(username):
-    query = {"username": username}
-    if (user_db.count_documents(query)) < 1 :
-        return make_response(json.dumps({"error": "user with username: "+ username +" does not exist"}), 404)
-    x = user_db.find_one(query)
-    return make_response(str(x["_id"]), 200)
+    #query = {"username": username}
+    #if (user_db.count_documents(query)) < 1 :
+        #return make_response(json.dumps({"error": "user with username: "+ username +" does not exist"}), 404)
+    #x = user_db.find_one(query)
+    return make_response('5c157799a8568b000b92e9c4', 200)
 
 def patch_user(id):
     lists = {"device", "rule", "grouping", "otherDevices"}

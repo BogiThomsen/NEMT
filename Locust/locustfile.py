@@ -11,19 +11,19 @@ class UserTaskSet(TaskSet):
 
     @task
     def login(self):
-        self.client.post(':5100/v1/users/authenticate',
+        self.client.post('/v1/users/authenticate',
                       json={'username': 'test5', 'password': 'test5'})
     @task
     def get_devices(self):
-        self.client.get(":5100/v1/users/{}/devices".format(self.user_id), json = {'accessToken': self.access_token, 'data': {
+        self.client.get("/v1/users/{}/devices".format(self.user_id), json = {'accessToken': self.access_token, 'data': {
             "deviceList": self.deviceList}}).json()
     @task
     def get_actions(self):
-        self.client.get(":5100/v1/users/{0}/devices/{1}/actions".format(self.user_id, self.device_id),
+        self.client.get("/v1/users/{0}/devices/{1}/actions".format(self.user_id, self.device_id),
                         json={'accessToken': self.access_token, 'data': {"actionList": self.action_list}}).json()
     @task
     def get_sensors(self):
-            self.client.get(":5100/v1/users/{0}/devices/{1}/sensors".format(self.user_id, self.device_id),
+            self.client.get("/v1/users/{0}/devices/{1}/sensors".format(self.user_id, self.device_id),
                         json={'accessToken': self.access_token, 'data': {"sensorList": self.sensor_list}}).json()
 
 class DeviceTaskSet(TaskSet):
@@ -38,13 +38,13 @@ class DeviceTaskSet(TaskSet):
             "value": self.value
         }
 
-        self.client.patch(":5100/v1/patchSensor", json=data)
+        self.client.patch("/v1/patchSensor", json=data)
 
 class DeviceLocust(HttpLocust):
     weight = 4
     task_set = DeviceTaskSet
-    min_wait = 2000
-    max_wait = 2000
+    min_wait = 10000
+    max_wait = 10000
 class UserLocust(HttpLocust):
     weight = 1
     task_set = UserTaskSet

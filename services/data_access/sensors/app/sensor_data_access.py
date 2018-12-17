@@ -3,12 +3,10 @@ import json
 from bson.objectid import ObjectId
 from flask import request, make_response
 
-def connect_to_db():
-    return pymongo.MongoClient("mongodb+srv://Andreas:dummypassword64@sw7-3mptj.gcp.mongodb.net/admin")["database"]["Sensors"]
+sensor_db = pymongo.MongoClient("mongodb+srv://Andreas:dummypassword64@sw7-3mptj.gcp.mongodb.net/admin")["database"]["Sensors"]
 
 
 def post_sensor():
-    sensor_db = connect_to_db()
     name = request.json["name"]
     if 'prettyName' not in request.json:
         new_sensor = {"name": name,
@@ -25,7 +23,6 @@ def post_sensor():
 
 
 def delete_sensor(id):
-    sensor_db = connect_to_db()
     query = {"_id": ObjectId(id)}
     if (sensor_db.count_documents(query)) < 1 :
         return make_response("sensor with id: " + id + " doesnt exist", 404)
@@ -34,7 +31,6 @@ def delete_sensor(id):
         return make_response("", 200)
 
 def get_sensor(id):
-    sensor_db = connect_to_db()
     query = {"_id": ObjectId(id)}
     if (sensor_db.count_documents(query)) < 1 :
         return make_response("sensor with id: " + id + " doesnt exist", 404)
@@ -44,7 +40,6 @@ def get_sensor(id):
         return make_response(json.dumps(x), 200)
 
 def get_sensors():
-    sensor_db = connect_to_db()
     sensor_list = request.json["sensorList"]
     ids = [ObjectId(id) for id in sensor_list]
     liste = list(sensor_db.find({"_id": {"$in": ids}}))
@@ -61,7 +56,6 @@ def patch_sensor(id):
     ignore_vals = {"_id", "operation"}
     strings_dict = string_dict()
     lists = {"accessToken"}
-    sensor_db = connect_to_db()
     for val in request.json:
         if val not in strings and val not in lists and val not in ignore_vals:
             return make_response(val + "is not a patcheable field", 400)

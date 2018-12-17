@@ -69,10 +69,6 @@ services:
         build: 
           context: ./core/device
           dockerfile: Dockerfile
-        ports:
-          - "5400:5400"
-        expose:
-          - "5400"
         volumes:
             - ./core/device:/code
         networks:
@@ -94,15 +90,15 @@ services:
         networks:
             - service-net
     
-    load-balancer:
-       image: nginx:1.15.7
-       ports:
-           - "80:80"
-       volumes:
-           - ./nginx.conf:/etc/nginx/conf.d/nginx.conf:ro
-       networks:
-           - service-net
-       container_name: load-balancer
+    # load-balancer:
+    #    image: nginx:1.15.7
+    #    ports:
+    #        - "80:80"
+    #    volumes:
+    #        - ./nginx.conf:/etc/nginx/conf.d/nginx.conf:ro
+    #    networks:
+    #        - service-net
+    #    container_name: load-balancer
 
 networks:
   service-net:

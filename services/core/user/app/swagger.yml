@@ -1,8 +1,7 @@
 swagger: "2.0"
 
 info:
-  title: "API"
-  description: description of api
+  title: "User Core Service API"
   version: "1.0"
 
 basePath: /v1
@@ -10,8 +9,8 @@ basePath: /v1
 paths:
   /users:
     post:
-      summary: Returns a string.
-      description: Optional extended description in CommonMark or HTML.
+      summary: Add new user.
+      description: Generates an access-token and passes the information to the User Access Service to put it in the database.
       operationId: user_api.add_user
       consumes:
         - application/json
@@ -23,7 +22,7 @@ paths:
   /users/{id}:
     get:
       summary: Returns a user.
-      description: Optional extended description in CommonMark or HTML.
+      description: Returns a user based on an ID.
       operationId: user_api.get_user
       responses:
         200:    # status code
@@ -31,7 +30,7 @@ paths:
       parameters:
         - $ref: '#/parameters/id'
     patch:
-      summary: patches user info
+      summary: Updates user information.
       operationId: user_api.patch_user
       parameters:
         - $ref: '#/parameters/id'

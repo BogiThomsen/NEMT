@@ -69,10 +69,6 @@ services:
         build: 
           context: ./core/device
           dockerfile: Dockerfile
-        ports:
-          - "5400:5400"
-        expose:
-          - "5400"
         volumes:
             - ./core/device:/code
         networks:

@@ -4,11 +4,9 @@ import json
 from bson.objectid import ObjectId
 from flask import request, make_response
 
-def connect_to_db():
-    return pymongo.MongoClient("mongodb+srv://Andreas:dummypassword64@sw7-3mptj.gcp.mongodb.net/admin")["database"]["Devices"]
+device_db = pymongo.MongoClient("mongodb+srv://Andreas:dummypassword64@sw7-3mptj.gcp.mongodb.net/admin")["database"]["Devices"]
 
 def post_device():
-    device_db = connect_to_db()
     r = re.compile('^(?:[0-9]{1,3}\.){3}[0-9]{1,3}:[0-9]{4}$')
     mac_address = request.json["deviceToken"]
     if r.match(mac_address).group() != mac_address:
@@ -30,7 +28,6 @@ def post_device():
     return make_response(json.dumps(device), 200)
 
 def delete_device(id):
-    device_db = connect_to_db()
     query = {"_id": ObjectId(id)}
     if (device_db.count_documents(query)) < 1 :
         return make_response("device with id: "+ id +" doesnt exist", 404)
@@ -39,7 +36,6 @@ def delete_device(id):
         return make_response("", 200)
 
 def get_device(id):
-    device_db = connect_to_db()
     r = re.compile('^(?:[0-9]{1,3}\.){3}[0-9]{1,3}:[0-9]{4}$')
     if ObjectId.is_valid(id):
         query = {"_id": ObjectId(id)}
@@ -57,7 +53,6 @@ def get_device(id):
         return make_response(json.dumps(x), 200)
 
 def get_devices():
-    device_db = connect_to_db()
     device_list = request.json["deviceList"]
     ids = [ObjectId(id) for id in device_list]
     liste = list(device_db.find({"_id": {"$in": ids}}))
@@ -75,7 +70,6 @@ def patch_device(id):
     strings_dict = string_dict()
     lists = {"sensor", "rule", "action"}
     ignore_vals = {"_id", "operation"}
-    device_db = connect_to_db()
     for val in request.json:
         if val not in strings and val not in lists and val not in ignore_vals:
             return make_response(val + "is not a patcheable field", 400)

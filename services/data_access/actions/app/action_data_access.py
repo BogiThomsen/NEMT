@@ -3,12 +3,10 @@ import json
 from bson.objectid import ObjectId
 from flask import request, make_response
 
-def connect_to_db():
-    return pymongo.MongoClient("mongodb+srv://Andreas:dummypassword64@sw7-3mptj.gcp.mongodb.net/admin")["database"]["Actions"]
+action_db =  pymongo.MongoClient("mongodb+srv://Andreas:dummypassword64@sw7-3mptj.gcp.mongodb.net/admin")["database"]["Actions"]
 
 
 def post_action():
-    action_db = connect_to_db()
     name = request.json["name"]
     if 'prettyName' not in request.json:
         new_action = {"name": name,
@@ -25,7 +23,6 @@ def post_action():
 
 
 def delete_action(id):
-    action_db = connect_to_db()
     query = {"_id": ObjectId(id)}
     if (action_db.count_documents(query)) < 1 :
         return make_response("action with id: " + id + " doesnt exist", 404)
@@ -34,7 +31,6 @@ def delete_action(id):
         return make_response("", 200)
 
 def get_action(id):
-    action_db = connect_to_db()
     query = {"_id": ObjectId(id)}
     if (action_db.count_documents(query)) < 1 :
         return make_response("action with id: " + id + " doesnt exist", 404)
@@ -44,7 +40,6 @@ def get_action(id):
         return make_response(json.dumps(x), 200)
 
 def get_actions():
-    action_db = connect_to_db()
     action_list = request.json["actionList"]
     ids = [ObjectId(id) for id in action_list]
     liste = list(action_db.find({"_id": {"$in": ids}}))
@@ -62,7 +57,6 @@ def patch_action(id):
     lists = {"accessToken"}
     ignore_vals = {"_id", "operation"}
     lists_dict = list_dict()
-    action_db = connect_to_db()
     for val in request.json:
         if val not in strings and val not in lists and val not in ignore_vals:
             return make_response(val + "is not a patcheable field", 400)

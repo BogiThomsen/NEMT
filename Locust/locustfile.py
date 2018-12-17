@@ -9,19 +9,19 @@ class UserTaskSet(TaskSet):
     sensor_list = ["5c1577b117d37c000b6a9f7b"]
 
 
-    @task
+    @task(1)
     def login(self):
         self.client.post('/v1/users/authenticate',
                       json={'username': 'test5', 'password': 'test5'})
-    @task
+    @task(8)
     def get_devices(self):
         self.client.get("/v1/users/{}/devices".format(self.user_id), json = {'accessToken': self.access_token, 'data': {
             "deviceList": self.deviceList}}).json()
-    @task
+    @task(4)
     def get_actions(self):
         self.client.get("/v1/users/{0}/devices/{1}/actions".format(self.user_id, self.device_id),
                         json={'accessToken': self.access_token, 'data': {"actionList": self.action_list}}).json()
-    @task
+    @task(4)
     def get_sensors(self):
             self.client.get("/v1/users/{0}/devices/{1}/sensors".format(self.user_id, self.device_id),
                         json={'accessToken': self.access_token, 'data': {"sensorList": self.sensor_list}}).json()

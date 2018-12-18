@@ -74,17 +74,7 @@ paths:
       responses:
         200:    #status code
           description: device was patched successfully
-  /devices/{deviceid}/action/{actionid}:
-    patch:
-      summary: patches action info
-      operationId: device_api.patch_action_values
-      parameters:
-        - $ref: '#/parameters/deviceid'
-        - $ref: '#/parameters/actionid'
-        - $ref: '#/parameters/patchAction'
-      responses:
-        200:    #status code
-          description: action was patched successfully
+
 
 parameters:
   userid:
@@ -166,26 +156,6 @@ parameters:
         value:
           type: string
         timestamp:
-          type: string
-        public:
-          type: boolean
-        accessToken:
-          type: array
-          items:
-            type: string
-  patchAction:
-    in: body
-    name: actionInfo
-    description: Action info to be patched
-    schema:
-      type: object
-      properties:
-        name:
-          type: string
-        operation:
-          type: string
-          enum: [add, remove]
-        prettyName:
           type: string
         public:
           type: boolean

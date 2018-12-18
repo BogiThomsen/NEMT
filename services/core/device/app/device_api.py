@@ -79,16 +79,3 @@ def patch_sensor_values(deviceid, sensorid):
     
     #When sensor is found, make get request for sensor
     #When sensor is retrieved, update sensor with body and make patch request
-
-def patch_action_values(deviceid, actionid):
-    device = requests.get("http://device-access:5500/v1/devices/{}".format(deviceid)).json()
-    action_patch = request.json()
-
-    #Iterate thorugh the list of actions and match actionid
-    for x in device["actions"]:
-        actiondata=x.split(':')
-        if actiondata[0] == actionid:
-            action_id = actiondata[1]
-            break
-    action_response = requests.patch("http://action-service:5800/v1/devices/{0}/actions/{1}".format(deviceid, action_id), json=action_patch)
-    return make_response(action_response.content, action_response.status_code)

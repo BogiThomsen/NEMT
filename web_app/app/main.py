@@ -27,7 +27,7 @@ def signin():
     if form.validate_on_submit():
         username = form.username.data
         password = form.password.data
-        r = requests.post('http://172.31.91.114:5000/v1/users/authenticate', json={'username': username, 'password': password})
+        r = requests.post('http://172.31.91.114:4900/v1/users/authenticate', json={'username': username, 'password': password})
         json = r.json()
         if r.status_code == 200:
             id = json['_id']
@@ -54,7 +54,7 @@ def register():
     if form.validate_on_submit():
         username = form.username.data
         password = form.password.data
-        r = requests.post('http://172.31.91.114:5000/v1/users', json={'username': username, 'password': password})
+        r = requests.post('http://172.31.91.114:4900/v1/users', json={'username': username, 'password': password})
         if r.status_code == 200:
             flash('Your user was successfully created.', 'success')
             return redirect(url_for('signin'))
@@ -66,7 +66,7 @@ def register():
         if form.validate_on_submit():
             username = form.username.data
             password = form.password.data
-            r = requests.post('http://172.31.91.114:5000/v1/users', json={'username': username, 'password': password})
+            r = requests.post('http://172.31.91.114:4900/v1/users', json={'username': username, 'password': password})
             if r.status_code == 200:
                 flash('Your user was successfully created.', 'success')
                 return redirect(url_for('signin'))
@@ -97,11 +97,11 @@ def devices():
     split_id_access_token = flask_login.current_user.id.split(';')
     user_id = split_id_access_token[0]
     access_token = split_id_access_token[1]
-    ur = requests.get("http://172.31.91.114:5000/v1/users/{}".format(user_id), json={"accessToken": access_token, "data":{}})
+    ur = requests.get("http://172.31.91.114:4900/v1/users/{}".format(user_id), json={"accessToken": access_token, "data":{}})
     u = ur.json()
     userDevices = []
     if ur.status_code == 200 and 'devices' in u:
-        userDevices = requests.get("http://172.31.91.114:5000/v1/users/{}/devices".format(user_id), json={'accessToken': access_token, 'data': {"deviceList": u['devices']}}).json()
+        userDevices = requests.get("http://172.31.91.114:4900/v1/users/{}/devices".format(user_id), json={'accessToken': access_token, 'data': {"deviceList": u['devices']}}).json()
 
     return render_template('pages/devices.html', userDevices=userDevices)
 
@@ -112,27 +112,27 @@ def devices_id(id):
     user_id = split_id_access_token[0]
     access_token = split_id_access_token[1]
 
-    ur = requests.get("http://172.31.91.114:5000/v1/users/{}".format(user_id), json={"accessToken": access_token, "data":{}})
+    ur = requests.get("http://172.31.91.114:4900/v1/users/{}".format(user_id), json={"accessToken": access_token, "data":{}})
     u = ur.json()
 
     userDevices = []
     if ur.status_code == 200 and 'devices' in u:
-        userDevices = requests.get("http://172.31.91.114:5000/v1/users/{}/devices".format(user_id), json={'accessToken': access_token, 'data': {"deviceList": u['devices']}}).json()
+        userDevices = requests.get("http://172.31.91.114:4900/v1/users/{}/devices".format(user_id), json={'accessToken': access_token, 'data': {"deviceList": u['devices']}}).json()
 
     userActions = []
     userSensors = []
     userDevice = None
     if ur.status_code == 200 and 'devices' in u:
-        userDevices = requests.get("http://172.31.91.114:5000/v1/users/{}/devices".format(user_id), json={'accessToken': access_token, 'data': {"deviceList": u['devices']}}).json()
+        userDevices = requests.get("http://172.31.91.114:4900/v1/users/{}/devices".format(user_id), json={'accessToken': access_token, 'data': {"deviceList": u['devices']}}).json()
         for device in userDevices:
             if device["_id"] == id:
                 userDevice = device
             if device["_id"] == id and 'actions' in device:
                 actions = [action.split(":")[1] for action in device['actions']]
-                userActions = requests.get("http://172.31.91.114:5000/v1/users/{0}/devices/{1}/actions".format(user_id, device["_id"]), json={'accessToken': access_token, 'data': {"actionList": actions}}).json()
+                userActions = requests.get("http://172.31.91.114:4900/v1/users/{0}/devices/{1}/actions".format(user_id, device["_id"]), json={'accessToken': access_token, 'data': {"actionList": actions}}).json()
             if device["_id"] == id and 'sensors' in device:
                 sensors = [sensor.split(":")[1] for sensor in device['sensors']]
-                userSensors = requests.get("http://172.31.91.114:5000/v1/users/{0}/devices/{1}/sensors".format(user_id, device["_id"]), json={'accessToken': access_token, 'data': {"sensorList": sensors}}).json()
+                userSensors = requests.get("http://172.31.91.114:4900/v1/users/{0}/devices/{1}/sensors".format(user_id, device["_id"]), json={'accessToken': access_token, 'data': {"sensorList": sensors}}).json()
 
     if request.method == 'POST':
         split_id_access_token = flask_login.current_user.id.split(';')
@@ -141,7 +141,7 @@ def devices_id(id):
         form = request.form
         if 'prettyName' in form:
             pretty_name = request.form['prettyName']
-            r = requests.patch("http://172.31.91.114:5000/v1/users/" + user_id + "/devices/" + id, json={'accessToken': access_token, 'data': {'prettyName': pretty_name}})
+            r = requests.patch("http://172.31.91.114:4900/v1/users/" + user_id + "/devices/" + id, json={'accessToken': access_token, 'data': {'prettyName': pretty_name}})
             if r.status_code == 200:
                 flash('Your device has been updated.', 'success')
                 return redirect(url_for('devices_id', id=id))
@@ -149,7 +149,7 @@ def devices_id(id):
                 flash('An error occurred when trying to update your device.', 'danger')
         elif 'actionId' in form:
             action_id = request.form['actionId']
-            r = requests.get('http://172.31.91.114:5000/v1/users/' + user_id + '/devices/' + id + '/actions/' + action_id + '/activate', json={'accessToken': access_token})
+            r = requests.get('http://172.31.91.114:4900/v1/users/' + user_id + '/devices/' + id + '/actions/' + action_id + '/activate', json={'accessToken': access_token})
 
             if r.status_code == 200:
                 flash('The action was succesfully triggered.', 'success')
@@ -164,7 +164,7 @@ def devices_id_delete(id):
     split_id_access_token = flask_login.current_user.id.split(';')
     user_id = split_id_access_token[0]
     access_token = split_id_access_token[1]
-    r = requests.delete("http://172.31.91.114:5000/v1/users/" + user_id + "/devices/" + id, json={'accessToken': access_token})
+    r = requests.delete("http://172.31.91.114:4900/v1/users/" + user_id + "/devices/" + id, json={'accessToken': access_token})
 
     if r.status_code == 200:
         flash('Your device has been deleted.', 'success')
@@ -232,7 +232,6 @@ testActions = [
 testRules = [
     {"id": "001", "name": "Sunset rule", "condition": "Controller002.Light002 < val.15", "invocations": ["Controller002.CoolBed", "Controller001.LightOnLiv"]},
     {"id": "002", "name": "Sunrise rule", "condition": "Controller001.Light003 > val.30", "invocations": ["Controller001.HeatUpLiv", "Controller002.LightOnBed"]},
-
 ]
 
 testRule = {"id": "001", "name": "Sunset rule", "condition": "Controller002.Light002 < val.15", "invocations": ["Controller002.CoolBed", "Controller001.LightOnLiv"]}

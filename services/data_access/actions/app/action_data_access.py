@@ -3,10 +3,26 @@ import json
 from bson.objectid import ObjectId
 from flask import request, make_response
 
+#Sets up the mongoClient containing connection pools for the action database
 action_db =  pymongo.MongoClient("mongodb+srv://Andreas:dummypassword64@sw7-3mptj.gcp.mongodb.net/admin")["database"]["Actions"]
 
 
 def post_action():
+    """adds an action to the database,
+        if a prettyName is included it is used,
+        otherwise the name becomes the prettyName.
+
+        Body:
+            Args:
+                name (string): Name of the action
+                public (bool): Whether or not the device is public
+                prettyName (string): can potentially be included for the user to set its own name for the action
+
+
+        Returns:
+            the action.
+
+        """
     name = request.json["name"]
     if 'prettyName' not in request.json:
         new_action = {"name": name,
@@ -23,6 +39,16 @@ def post_action():
 
 
 def delete_action(id):
+    """deletes an action from the database given an action_id
+
+        path:
+            Args:
+                _id (string): id of the action
+
+        Returns:
+            empty string with a status code of 200.
+
+        """
     query = {"_id": ObjectId(id)}
     if (action_db.count_documents(query)) < 1 :
         return make_response("action with id: " + id + " doesnt exist", 404)
@@ -30,7 +56,18 @@ def delete_action(id):
         action_db.delete_one(query)
         return make_response("", 200)
 
+
 def get_action(id):
+    """Gets an action from the database
+
+        path:
+            Args:
+                _id (string): id of the action
+
+        Returns:
+            all information on an action from the database given an action_id
+
+        """
     query = {"_id": ObjectId(id)}
     if (action_db.count_documents(query)) < 1 :
         return make_response("action with id: " + id + " doesnt exist", 404)
@@ -40,6 +77,17 @@ def get_action(id):
         return make_response(json.dumps(x), 200)
 
 def get_actions():
+    """Gets all actions from the database in a given actionList,
+    used when presenting all actions a device has in the user interface.
+
+        Body:
+            Args:
+                actionList (array of strings): list of action ids
+
+        Returns:
+            all information regarding all actions in the given actionList
+
+        """
     action_list = request.json["actionList"]
     ids = [ObjectId(id) for id in action_list]
     liste = list(action_db.find({"_id": {"$in": ids}}))
@@ -51,7 +99,25 @@ def get_actions():
 
     return make_response(json.dumps(actions), 200)
 
+
+#,
+#
 def patch_action(id):
+    """patches action information,
+    changes prettyName and public status when the proper id is given
+    if the accessToken list should be updated, one must also include an operation value of either 'add' or 'remove'
+
+        path:
+            Args:
+                id (string): id of the action
+        Body:
+            Args:
+                json object containing information to be patched
+
+        Returns:
+            all information regarding the patched action
+
+        """
     strings = {"prettyName", "public"}
     strings_dict = string_dict()
     lists = {"accessToken"}
@@ -85,6 +151,7 @@ def patch_action(id):
     return make_response(json.dumps(patched_action), 200)
 
 
+#dictionaries used for the patch function, Could be made redundant or moved to some sort of configuration file.
 def string_dict():
     dict = {
         "prettyName": "prettyName",

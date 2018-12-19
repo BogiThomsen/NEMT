@@ -3,10 +3,26 @@ import json
 from bson.objectid import ObjectId
 from flask import request, make_response
 
+#Sets up the mongoClient containing connection pools for the sensor database
 sensor_db = pymongo.MongoClient("mongodb+srv://Andreas:dummypassword64@sw7-3mptj.gcp.mongodb.net/admin")["database"]["Sensors"]
 
 
 def post_sensor():
+    """adds a sensor to the database,
+        if a prettyName is included it is used,
+        otherwise the name becomes the prettyName.
+
+        Body:
+            Args:
+                name (string): Name of the sensor
+                public (bool): Whether or not the device is public
+                prettyName (string): can potentially be included for the user to set its own name for the action
+
+
+        Returns:
+            the sensor
+
+        """
     name = request.json["name"]
     if 'prettyName' not in request.json:
         new_sensor = {"name": name,
@@ -23,6 +39,16 @@ def post_sensor():
 
 
 def delete_sensor(id):
+    """deletes a sensor from the database given an sensor_id
+
+        path:
+            Args:
+                _id (string): id of the sensor
+
+        Returns:
+            empty string with a status code of 200.
+
+        """
     query = {"_id": ObjectId(id)}
     if (sensor_db.count_documents(query)) < 1 :
         return make_response("sensor with id: " + id + " doesnt exist", 404)
@@ -31,6 +57,16 @@ def delete_sensor(id):
         return make_response("", 200)
 
 def get_sensor(id):
+    """Gets an sensor from the database
+
+        path:
+            Args:
+                _id (string): id of the action
+
+        Returns:
+            all information on an sensor from the database given an sensor_id
+
+        """
     query = {"_id": ObjectId(id)}
     if (sensor_db.count_documents(query)) < 1 :
         return make_response("sensor with id: " + id + " doesnt exist", 404)
@@ -40,6 +76,17 @@ def get_sensor(id):
         return make_response(json.dumps(x), 200)
 
 def get_sensors():
+    """Gets all sensors from the database in a given sensorList,
+    used when presenting all sensors a device has in the user interface.
+
+        Body:
+            Args:
+                sensorList (array of strings): list of sensor ids
+
+        Returns:
+            all information regarding all sensors in the given sensorList
+
+        """
     sensor_list = request.json["sensorList"]
     ids = [ObjectId(id) for id in sensor_list]
     liste = list(sensor_db.find({"_id": {"$in": ids}}))
@@ -52,6 +99,21 @@ def get_sensors():
     return make_response(json.dumps(sensors), 200)
 
 def patch_sensor(id):
+    """patches sensor information,
+    changes prettyName, value, timestamp and the public boolean if the proper id is given
+    if the accessToken list should be updated, one must also include an operation value of either 'add' or 'remove'
+    patching lists makes use of the patch_lists helper function.
+        path:
+            Args:
+                id (string): id of the device
+        Body:
+            Args:
+                json object containing information to be patched
+
+        Returns:
+            all information regarding the patched sensor
+
+        """
     strings = {"prettyName", "value", "timestamp", "public"}
     ignore_vals = {"_id", "operation"}
     strings_dict = string_dict()
@@ -77,6 +139,19 @@ def patch_sensor(id):
     return make_response(json.dumps(patched_sensor), 200)
 
 def patch_lists(db, id, json_object, current_val):
+    """patches sensor information if the information is stored in a list,
+        helper function for the patch_device method
+        path:
+            Args:
+                db (MongoClient): the MongoClient used for connection pooling
+                id (string): id of the device
+                json_object (object): json object containing the information to be patched.
+                current_val (string): current value in the json object
+
+        Returns:
+            nothing
+
+        """
     lists_dict = list_dict()
     if json_object["operation"] == "remove":
         for item in json_object[current_val]:
@@ -87,6 +162,7 @@ def patch_lists(db, id, json_object, current_val):
             db.update_one({"_id": ObjectId(id)},
                                {"$addToSet": {lists_dict[current_val]: item}})
 
+#dictionaries used for the patch function, Could be made redundant or moved to some sort of configuration file.
 def string_dict():
     dict = {
         "prettyName": "prettyName",

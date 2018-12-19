@@ -4,9 +4,25 @@ import json
 from bson.objectid import ObjectId
 from flask import request, make_response
 
+#Sets up the mongoClient containing connection pools for the device database
 device_db = pymongo.MongoClient("mongodb+srv://Andreas:dummypassword64@sw7-3mptj.gcp.mongodb.net/admin")["database"]["Devices"]
 
 def post_device():
+    """adds a device to the database,
+        if a prettyName is included it is used,
+        otherwise the name becomes the prettyName.
+
+        Body:
+            Args:
+                name (string): Name of the action
+                deviceToken (string): The Mac address of the device
+                prettyName (string): can potentially be included for the user to set its own name for the action
+
+
+        Returns:
+            the device.
+
+        """
     r = re.compile('^(?:[0-9]{1,3}\.){3}[0-9]{1,3}:[0-9]{4}$')
     mac_address = request.json["deviceToken"]
     if r.match(mac_address).group() != mac_address:
@@ -28,6 +44,16 @@ def post_device():
     return make_response(json.dumps(device), 200)
 
 def delete_device(id):
+    """deletes a device from the database given an device_id
+
+        path:
+            Args:
+                id (string): id of the device
+
+        Returns:
+            empty string with a status code of 200.
+
+        """
     query = {"_id": ObjectId(id)}
     if (device_db.count_documents(query)) < 1 :
         return make_response("device with id: "+ id +" doesnt exist", 404)
@@ -36,6 +62,17 @@ def delete_device(id):
         return make_response("", 200)
 
 def get_device(id):
+    """Gets a device from the database
+    can take both a device_id or a device mac_address
+
+        path:
+            Args:
+                id (string): id of the device or the deviceToken of the device
+
+        Returns:
+            all information on a device from the database
+
+        """
     r = re.compile('^(?:[0-9]{1,3}\.){3}[0-9]{1,3}:[0-9]{4}$')
     if ObjectId.is_valid(id):
         query = {"_id": ObjectId(id)}
@@ -53,6 +90,17 @@ def get_device(id):
         return make_response(json.dumps(x), 200)
 
 def get_devices():
+    """Gets all devices from the database in a given deviceList,
+    used when presenting all devices a yser has in the user interface.
+
+        Body:
+            Args:
+                deviceList (array of strings): list of device ids
+
+        Returns:
+            all information regarding all devices in the given actionList
+
+        """
     device_list = request.json["deviceList"]
     ids = [ObjectId(id) for id in device_list]
     liste = list(device_db.find({"_id": {"$in": ids}}))
@@ -65,7 +113,23 @@ def get_devices():
     return make_response(json.dumps(devices), 200)
 
 
+
 def patch_device(id):
+    """patches device information,
+    changes prettyName the proper id is given
+    if the sensors,rule or actions list should be updated, one must also include an operation value of either 'add' or 'remove'
+    patching lists makes use of the patch_lists helper function.
+        path:
+            Args:
+                id (string): id of the device
+        Body:
+            Args:
+                json object containing information to be patched
+
+        Returns:
+            all information regarding the patched device
+
+        """
     strings = {"prettyName"}
     strings_dict = string_dict()
     lists = {"sensor", "rule", "action"}
@@ -90,7 +154,21 @@ def patch_device(id):
     patched_device["_id"] = str(patched_device["_id"])
     return make_response(json.dumps(patched_device), 200)
 
+
 def patch_lists(db, id, json_object, current_val):
+    """patches device information if the information is stored in a list,
+        helper function for the patch_device method
+        path:
+            Args:
+                db (MongoClient): the MongoClient used for connection pooling
+                id (string): id of the device
+                json_object (object): json object containing the information to be patched.
+                current_val (string): current value in the json object
+
+        Returns:
+            nothing
+
+        """
     lists_dict = list_dict()
     if json_object["operation"] == "remove":
         for item in json_object[current_val]:
@@ -100,6 +178,8 @@ def patch_lists(db, id, json_object, current_val):
         for item in json_object[current_val]:
             db.update_one({"_id": ObjectId(id)},
                                {"$addToSet": {lists_dict[current_val]: item}})
+
+#dictionaries used for the patch function, Could be made redundant or moved to some sort of configuration file.
 def string_dict():
     dict = {
         "prettyName": "prettyName",

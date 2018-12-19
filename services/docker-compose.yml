@@ -43,18 +43,18 @@ services:
             - service-net
     action-access:
         build: 
-          context: ./data_access/actions
+          context: ./data_access/action
           dockerfile: Dockerfile
         volumes:
-            - ./data_access/actions:/code
+            - ./data_access/action:/code
         networks:
             - service-net
     sensor-access:
         build: 
-          context: ./data_access/sensors
+          context: ./data_access/sensor
           dockerfile: Dockerfile
         volumes:
-            - ./data_access/sensors:/code
+            - ./data_access/sensor:/code
         networks:
             - service-net
     user-service:

@@ -3,7 +3,7 @@ services:
     web-app:
         build: .
         ports:
-            - "80:5000"
+            - "80:4800"
         expose: 
             - "80"
         volumes:

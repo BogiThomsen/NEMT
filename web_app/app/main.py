@@ -238,4 +238,4 @@ testRules = [
 testRule = {"id": "001", "name": "Sunset rule", "condition": "Controller002.Light002 < val.15", "invocations": ["Controller002.CoolBed", "Controller001.LightOnLiv"]}
 
 if __name__ == "__main__":
-  app.run(host="0.0.0.0", port='5000', debug=True)
+  app.run(host="0.0.0.0", port='4800', debug=True)

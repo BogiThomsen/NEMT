@@ -5,7 +5,7 @@ from bson.objectid import ObjectId
 from flask import request, make_response
 
 #Sets up the mongoClient containing connection pools for the device database
-device_db = pymongo.MongoClient("mongodb+srv://Andreas:dummypassword64@sw7-3mptj.gcp.mongodb.net/admin")["database"]["Devices"]
+device_db = pymongo.MongoClient('localhost', 27017)["database"]["Devices"]
 
 def post_device():
     """adds a device to the database,

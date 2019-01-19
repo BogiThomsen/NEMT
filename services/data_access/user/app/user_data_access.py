@@ -5,7 +5,7 @@ from flask import request, make_response
 
 
 #Sets up the mongoClient containing connection pools for the user database
-user_db = pymongo.MongoClient("mongodb+srv://Andreas:dummypassword64@sw7-3mptj.gcp.mongodb.net/admin")["database"]["Users"]
+user_db = pymongo.MongoClient('localhost', 27017)["database"]["Users"]
 
 
 def post_user():

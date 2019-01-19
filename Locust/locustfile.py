@@ -1,4 +1,8 @@
-from locust import Locust, TaskSet, task, HttpLocust
+from locust import Locust, TaskSet, task, HttpLocust, TaskSequence, seq_task
+from random import randint
+from pymongo import MongoClient
+
+user_db = MongoClient("mongodb+srv://Andreas:dummypassword64@sw7-3mptj.gcp.mongodb.net/admin")["database"]["Users"]
 
 class UserTaskSet(TaskSet):
     user_id = '5c157799a8568b000b92e9c4'
@@ -9,7 +13,7 @@ class UserTaskSet(TaskSet):
     sensor_list = ["5c1577b117d37c000b6a9f7b"]
 
 
-    @task(1)
+    @task(2)
     def login(self):
         self.client.post('/v1/users/authenticate',
                       json={'username': 'test5', 'password': 'test5'})
@@ -23,7 +27,7 @@ class UserTaskSet(TaskSet):
                         json={'accessToken': self.access_token, 'data': {"actionList": self.action_list}}).json()
     @task(4)
     def get_sensors(self):
-            self.client.get("/v1/users/{0}/devices/{1}/sensors".format(self.user_id, self.device_id),
+        self.client.get("/v1/users/{0}/devices/{1}/sensors".format(self.user_id, self.device_id),
                         json={'accessToken': self.access_token, 'data': {"sensorList": self.sensor_list}}).json()
 
 class DeviceTaskSet(TaskSet):
@@ -39,6 +43,7 @@ class DeviceTaskSet(TaskSet):
         }
 
         self.client.patch("/v1/patchSensor", json=data)
+
 
 class DeviceLocust(HttpLocust):
     weight = 4

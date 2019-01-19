@@ -4,7 +4,7 @@ from bson.objectid import ObjectId
 from flask import request, make_response
 
 #Sets up the mongoClient containing connection pools for the action database
-action_db =  pymongo.MongoClient("mongodb+srv://Andreas:dummypassword64@sw7-3mptj.gcp.mongodb.net/admin")["database"]["Actions"]
+action_db =  pymongo.MongoClient('localhost', 27017)["database"]["Actions"]
 
 
 def post_action():

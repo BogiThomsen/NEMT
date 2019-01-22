@@ -150,12 +150,12 @@ def devices_id(id):
                 flash('An error occurred when trying to update your device.', 'danger')
         elif 'actionId' in form:
             action_id = request.form['actionId']
-            r = requests.get(url+':4900/v1/users/' + user_id + '/devices/' + id + '/actions/' + action_id + '/activate', json={'accessToken': access_token})
+            r = requests.get(url+':4900/v1/users/' + user_id + '/devices/' + id + '/actions/' + action_id + '/activate', json={'accessToken': access_token, 'data': {"actionList":[]}})
 
             if r.status_code == 200:
                 flash('The action was succesfully triggered.', 'success')
             elif r.status_code == 400:
-                flash('An error occurred when trying to trigger the action.', 'danger')
+                flash('An error occured while triggering the action.', 'danger')
 
     return render_template('pages/device.html', userDevices=userDevices, device=userDevice, userSensors=userSensors, userActions=userActions)
 
